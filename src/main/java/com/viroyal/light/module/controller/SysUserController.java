@@ -14,5 +14,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/module/sysUser")
 public class SysUserController {
-	
+
 }

@@ -1,17 +1,19 @@
 package com.viroyal.light.config;
 
+import com.viroyal.light.module.entity.SysPermission;
+import com.viroyal.light.module.entity.SysRole;
 import com.viroyal.light.module.entity.SysUser;
-import com.viroyal.light.module.service.impl.SysUserServiceImpl;
+import com.viroyal.light.module.service.ISysPermissionService;
+import com.viroyal.light.module.service.ISysRoleService;
+import com.viroyal.light.module.service.ISysUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /***
@@ -23,9 +25,14 @@ import java.util.Map;
  */
 
 public class MyShiroRealm extends AuthorizingRealm {
+    @Autowired
+    ISysUserService sysUserService;
 
     @Autowired
-    SysUserServiceImpl sysUserService;
+    ISysRoleService sysRoleService;
+
+    @Autowired
+    ISysPermissionService sysPermissionService;
 
     /**
      * 认证信息.(身份验证) : Authentication 是用来验证用户身份
@@ -66,8 +73,27 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     //授权
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(
-            PrincipalCollection principals) {
-        return null;
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        //用来做授权
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        SysUser user = (SysUser) principals.getPrimaryPrincipal();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user_id", user.getId());
+        List<SysRole> roleList = sysRoleService.selectByMap(map);
+        Set<String> roleSet = new HashSet<String>();
+        for(SysRole role : roleList){
+            roleSet.add(role.getType());
+        }
+        //添加所有角色
+        info.setRoles(roleSet);
+
+        List<SysPermission> permissionList = sysPermissionService.selectByMap(map);
+        Set<String> permissionSet = new HashSet<String>();
+        for (SysPermission permission : permissionList){
+            permissionSet.add(permission.getName());
+        }
+        //添加所有权限
+        info.setStringPermissions(permissionSet);
+        return info;
     }
 }

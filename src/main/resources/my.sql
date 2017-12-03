@@ -13,8 +13,7 @@ File Encoding         : 65001
 Date: 2017-04-23 20:04:03
 */
 
-S
-  `last_update_date` datetime DEFAULT NUET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for beautiful_pictures

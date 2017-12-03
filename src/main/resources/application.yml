@@ -4,15 +4,15 @@ server:
         uri-encoding: UTF-8
         max-threads: 1000
         min-spare-threads: 30
-    port: 8080
+    port: 8090
     connection-timeout: 5000
-    context-path: /viroyal-security
+
+mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
 
 spring:
-    # 环境 dev|test|pro
-    profiles:
-        active: dev
-    # jackson时间格式化
     jackson:
         time-zone: GMT+8
         date-format: yyyy-MM-dd HH:mm:ss
@@ -22,7 +22,6 @@ spring:
             max-request-size: 100MB
             enabled: true
     redis:
-        database: 0
         host: localhost
         port: 6379
         password:       # 密码（默认为空）
@@ -32,16 +31,38 @@ spring:
             max-wait: -1      # 连接池最大阻塞等待时间（使用负值表示没有限制）
             max-idle: 10      # 连接池中的最大空闲连接
             min-idle: 5       # 连接池中的最小空闲连接
-
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/viroyal_light_db?characterEncoding=utf8
+        username: root
+        password: 123
+        #最大活跃数
+        maxActive: 20
+        #初始化数量
+        initialSize: 1
+        #最大连接等待超时时间
+        maxWait: 60000
+        #打开PSCache，并且指定每个连接PSCache的大小
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        #通过connectionProperties属性来打开mergeSql功能；慢SQL记录
+        #connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 1 from dual
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        #配置监控统计拦截的filters，去掉后监控界面sql将无法统计,'wall'用于防火墙
+        filters: stat, wall, log4j
 # Mybatis配置
 mybatis:
     mapperLocations: classpath:mapper/*.xml
-    configLocation: classpath:mybatis.xml
 
-viroyal:
+renren:
     redis:
         open: false  # 是否开启redis缓存  true开启   false关闭
     shiro:
         redis: false # true表示shiro session存到redis里，需要开启redis，才会生效【分布式场景】
-
-
