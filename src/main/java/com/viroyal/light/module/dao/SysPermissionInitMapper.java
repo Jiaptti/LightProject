@@ -4,6 +4,8 @@ import com.viroyal.light.module.entity.SysPermissionInit;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
   *  Mapper 接口
@@ -15,5 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SysPermissionInitMapper extends BaseMapper<SysPermissionInit> {
-
+    List<SysPermissionInit> selectAll();
 }

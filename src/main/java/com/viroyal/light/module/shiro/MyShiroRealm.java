@@ -1,4 +1,4 @@
-package com.viroyal.light.config;
+package com.viroyal.light.module.shiro;
 
 import com.viroyal.light.module.entity.SysPermission;
 import com.viroyal.light.module.entity.SysRole;
@@ -51,9 +51,11 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+        String name = token.getUsername();
+        String password = String.valueOf(token.getPassword());
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("nickname", token.getUsername());
-        map.put("password", token.getPassword());
+        map.put("nickname", name);
+        map.put("pswd", password);
         List<SysUser> userList = sysUserService.selectByMap(map);
         SysUser user = null;
         if(userList.size()!=0){
@@ -77,9 +79,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         //用来做授权
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         SysUser user = (SysUser) principals.getPrimaryPrincipal();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("user_id", user.getId());
-        List<SysRole> roleList = sysRoleService.selectByMap(map);
+        List<SysRole> roleList = sysRoleService.getRoleListById(user.getId());
         Set<String> roleSet = new HashSet<String>();
         for(SysRole role : roleList){
             roleSet.add(role.getType());
@@ -87,7 +87,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         //添加所有角色
         info.setRoles(roleSet);
 
-        List<SysPermission> permissionList = sysPermissionService.selectByMap(map);
+        List<SysPermission> permissionList = sysPermissionService.getUserPermissions(user.getId());
         Set<String> permissionSet = new HashSet<String>();
         for (SysPermission permission : permissionList){
             permissionSet.add(permission.getName());

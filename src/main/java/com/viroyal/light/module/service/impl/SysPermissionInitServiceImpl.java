@@ -6,6 +6,8 @@ import com.viroyal.light.module.service.ISysPermissionInitService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -16,5 +18,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysPermissionInitServiceImpl extends ServiceImpl<SysPermissionInitMapper, SysPermissionInit> implements ISysPermissionInitService {
-	
+
+    @Override
+    public List<SysPermissionInit> selectAll() {
+        return baseMapper.selectAll();
+    }
 }

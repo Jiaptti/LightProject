@@ -10,4 +10,7 @@
 		<result column="sort" property="sort" />
 	</resultMap>
 
+	<select id="selectAll" resultMap="BaseResultMap">
+		SELECT * FROM sys_permission_init ORDER BY sort ASC
+	</select>
 </mapper>

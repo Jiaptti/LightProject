@@ -4,6 +4,8 @@ import com.viroyal.light.module.entity.SysRole;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
   *  Mapper 接口
@@ -14,5 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
-
+    public List<SysRole> getRoleListById(String uid);
 }

@@ -25,7 +25,7 @@
     </properties>
 
     <dependencies>
-        <!-- redis数据库 -->
+        <!-- redis数据库-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -45,13 +45,18 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
 
         <!-- jstl标签 -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
+        </dependency>
+        <!--Servlet支持开启-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
         <dependency>
@@ -77,9 +82,6 @@
             <version>1.0.29</version>
         </dependency>
 
-        <!-- Hikari数据库连接池 单性能比druid好 -->
-        <!-- <dependency> <groupId>com.zaxxer</groupId> <artifactId>HikariCP</artifactId>
-            </dependency> -->
 
         <!-- MP 核心库 -->
         <dependency>
@@ -129,24 +131,40 @@
             <version>3.5</version>
         </dependency>
 
-        <!-- 提供监控插件。  有spring-boot actuator的jar包 -->
+        <!-- 提供监控插件。  有spring-boot actuator的jar包-->
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
             <version>1.4.6</version>
         </dependency>
 
-        <!-- TCP长连接即时通讯框架 -->
+        <!-- TCP长连接即时通讯框架
         <dependency>
             <groupId>org.t-io</groupId>
             <artifactId>tio-core</artifactId>
             <version>1.7.0.v20170501-RELEASE</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>1.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
