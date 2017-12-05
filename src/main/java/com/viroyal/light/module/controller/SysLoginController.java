@@ -24,9 +24,15 @@ public class SysLoginController {
         return "index";
     }
 
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "/login")
     public String login(){
         return "login";
+    }
+
+    //被踢出后跳转的页面
+    @RequestMapping(value="/kickout")
+    public String kickout() {
+        return "kickout";
     }
 
     @RequestMapping(value = "/logout",method =RequestMethod.GET)
@@ -77,7 +83,7 @@ public class SysLoginController {
      * 获取验证码（Gif版本）
      * @param response
      */
-    @RequestMapping(value="getGifCode",method=RequestMethod.GET)
+    @RequestMapping(value="/getGifCode",method=RequestMethod.GET)
     public void getGifCode(HttpServletResponse response, HttpServletRequest request){
         try {
             response.setHeader("Pragma", "No-cache");

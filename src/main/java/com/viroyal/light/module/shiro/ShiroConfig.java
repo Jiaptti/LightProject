@@ -2,6 +2,7 @@ package com.viroyal.light.module.shiro;
 
 import com.viroyal.light.module.entity.SysPermissionInit;
 import com.viroyal.light.module.service.ISysPermissionInitService;
+import com.viroyal.light.module.shiro.filter.KickoutSessionControlFilter;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +58,11 @@ public class ShiroConfig {
         // 未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
+        //自定义拦截器
+        Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
+        filtersMap.put("kickout", kickoutSessionControlFilter());
+        shiroFilterFactoryBean.setFilters(filtersMap);
+
         // 拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         List<SysPermissionInit> permissionInits = sysPermissionInitService.selectAll();
@@ -74,7 +81,6 @@ public class ShiroConfig {
         // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
 //        filterChainDefinitionMap.put("/**", "authc");
-
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         System.out.println("Shiro拦截器工厂类注入成功");
@@ -95,6 +101,27 @@ public class ShiroConfig {
         return securityManager;
     }
 
+    /**
+     * 限制同一账号登录同时登录人数控制
+     * @return
+     */
+    public KickoutSessionControlFilter kickoutSessionControlFilter(){
+        KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
+        //使用cacheManager获取相应的cache来缓存用户登录的会话；用于保存用户—会话之间的关系的；
+        //这里我们还是用之前shiro使用的redisManager()实现的cacheManager()缓存管理
+        //也可以重新另写一个，重新配置缓存时间之类的自定义缓存属性
+        kickoutSessionControlFilter.setCacheManager(cacheManager());
+        //用于根据会话ID，获取会话进行踢出操作的；
+        kickoutSessionControlFilter.setSessionManager(defaultWebSessionManager());
+        //是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；踢出顺序。
+        kickoutSessionControlFilter.setKickoutAfter(false);
+        //同一个用户最大的会话数，默认1；比如2的意思是同一个用户允许最多同时两个人登录；
+        kickoutSessionControlFilter.setMaxSession(1);
+        //被踢出后重定向到的地址；
+        kickoutSessionControlFilter.setKickoutUrl("/kickout");
+        return kickoutSessionControlFilter;
+    }
+
     public RedisManager redisManager(){
         RedisManager manager = new RedisManager();
         manager.setExpire(1800);
@@ -111,7 +138,7 @@ public class ShiroConfig {
     }
 
     //获得sessionDao
-    public RedisSessionDAO sessionDAO(){
+    public RedisSessionDAO redisSessionDAO(){
         RedisSessionDAO dao = new RedisSessionDAO();
         dao.setRedisManager(redisManager());
         return dao;
@@ -119,7 +146,7 @@ public class ShiroConfig {
 
     public DefaultWebSessionManager defaultWebSessionManager(){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(sessionDAO());
+        sessionManager.setSessionDAO(redisSessionDAOgit ());
         return sessionManager;
     }
 

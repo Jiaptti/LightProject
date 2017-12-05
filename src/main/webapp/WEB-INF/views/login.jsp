@@ -1,62 +1,102 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName()
-                + ":" + request.getServerPort() + path;
-%>
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript"
-        src="<%=basePath%>/static/js/jquery-1.11.3.js"></script>
+<% String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();%>
 <head>
-    <title>Title</title>
+    <meta http-equiv="content-type" content="text/html">
+    <meta charset="UTF-8">
+    <title>路灯项目</title>
+    <link rel="stylesheet" href="<%=contextPath%>/static/css/animate.min.css">
+    <link rel="stylesheet" href="<%=contextPath%>/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%=contextPath%>/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=contextPath%>/static/css/style.min.css">
+    <link rel="stylesheet" href="<%=contextPath%>/static/css/iconfont.css">
+    <link rel="stylesheet" href="<%=contextPath%>/static/js/validator-0.7.3/jquery.validator.css">
+    <link rel="stylesheet" href="<%=contextPath%>/static/css/sweetalert/sweetalert.css">
+    <script src="<%=contextPath%>/static/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="<%=contextPath%>/static/js/validator-0.7.3/jquery.validator.js"></script>
+    <script type="text/javascript" src="<%=contextPath%>/static/js/validator-0.7.3/local/zh_CN.js"></script>
+<%--<script type="text/javascript" src="<%=contextPath%>/static/js/host.js"></script>--%>
+<script type="text/javascript" src="<%=contextPath%>/static/js/sweetalert/sweetalert.min.js"></script>
 </head>
-<body>
-错误信息：
-<h4 id="error"></h4>
-<form>
-    <p>
-        账号：<input type="text" name="username" id="username" />
-    </p>
-    <p>
-        密码：<input type="password" name="password" id="password"/>
-    </p>
-    <P><input type="checkbox" name="rememberMe"  id="rememberMe" />记住我</P>
-    <p>
-        验证码：<input type="text" name="vcode" id="vcode"/>
-    </p>
-    <p>
-        <img src="/getGifCode">
-    </p>
-    <p>
-        <input type="button" id="ajaxLogin" onclick="login();"  value="登录" />
-    </p>
-</form>
+<body bgcolor="#FFFFFF">
+<div class="middle-box text-center loginscreen  ">
+<div >
+    <div onclick="boke();" class="animated animated lightSpeedIn ">
+        <i class="icon iconfont">
+            <img src="<%=contextPath%>/static/img/viroyal_logo.png" width="300px" height="200px"/>
+        </i>
+    </div>
+    <form id="userForm" class=" animated rollIn" data-validator-option="{theme:'yellow_right_effect',stopOnError:true}">
+        <div class="form-group">
+            <input type="text" class="form-control"  placeholder="用户名" data-rule="用户名:required" id = "username">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="密码" data-rule="密码:required;password" id = "password">
+        </div>
+        <div class="form-group col-xs-6" style="padding-left: 0px;">
+            <img id="gifCode" src="/getGifCode"  onclick="refreshCode()">
+        </div>
+        <div class="form-group col-xs-6">
+            <span><input type="text" class="form-control" placeholder="验证码" data-rule="验证码:required" id = "vcode"></span>
+        </div>
+        <div class="form-group" style="text-align : left">
+            <label><input type="checkbox" id="rememberMe" style="width: 12px; height: 12px;margin-right: 5px;">记住我</label>
+        </div>
+        <button type="submit" class="btn btn-primary block full-width " onclick="login();">登 录</button>
+    </form>
+    <br/>
+    <br/>
+    <div class = "animated bounceInLeft" onclick="boke();">
+        © 2017 All Rights Reserved.
+    </div>
+</div>
+</div>
+<div class="part" style="z-index:-1;position:fixed;height:100%;width:100%;top:0;left:0"></div>
 </body>
-<script>
-    function login() {
-        var username = $("#username").val();
-        var password = $("#password").val();
-        var vcode = $("#vcode").val();
-        var rememberMe =$('#rememberMe').is(':checked');
-        $.ajax({
-            type : "POST",
-            data : {
-                "username" : username,
-                "password" : password,
-                "vcode" : vcode,
-                "rememberMe" : rememberMe
-            },
-            dataType : "json",
-            url : "<%=basePath%>/ajaxLogin",
-            success : function(result) {
-                if (result.status != 200) {
-                    $("#error").html(result.message);
-                } else {
-                    location.href = "/index";
-                }
+<script type="text/javascript">
+
+//跳转到远煜主页
+function boke(){
+    location.href = "http://www.viroyal-elec.com/";
+}
+
+
+function refreshCode() {
+    var path = "${pageScope.basePath}";
+    var img = document.getElementById("gifCode");
+    var d = new Date();
+    var time = d.getTime();
+    img.src = "";
+    img.src = path + "getGifCode?" + time;
+}
+
+function login() {
+    var username = $("#username").val();
+    var password = $("#password").val();
+    var vcode = $("#vcode").val();
+    var rememberMe =$('#rememberMe').is(':checked');
+    $.ajax({
+        type : "POST",
+        data : {
+            "username" : username,
+            "password" : password,
+            "vcode" : vcode,
+            "rememberMe" : rememberMe
+        },
+        dataType : "json",
+        url : "<%=contextPath%>/ajaxLogin",
+        success : function(result) {
+            if (result.status != 200) {
+                swal("错误",result.message,"error");
+            } else {
+                swal({title:"登录",text:"登录成功，进入系统！",type:"success"},
+                    function () {
+                        location.href = "/index";
+                    });
             }
-        });
-    }
+        }
+    });
+}
 </script>
 </html>
