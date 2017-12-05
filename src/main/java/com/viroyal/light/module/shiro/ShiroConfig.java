@@ -146,7 +146,7 @@ public class ShiroConfig {
 
     public DefaultWebSessionManager defaultWebSessionManager(){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(redisSessionDAOgit ());
+        sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }
 
