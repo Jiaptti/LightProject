@@ -12,15 +12,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript"
 	src="<%=basePath%>/static/js/jquery-1.11.3.js"></script>
-<title>被踢出</title>
+<title>Insert title here</title>
 </head>
 <body>
-被踢出 或则在另一地方登录，或已经达到此账号登录上限被挤掉。
-<input type="button" id="login" value="重新登录" />
+具有添加权限   
+
+<input type="button" id="updatePermission" value="更新链接权限" />
 </body>
 <script type="text/javascript">
-$("#login").click(function(){
-	window.open("<%=basePath%>/login"); 
+$("#updatePermission").click(function(){
+	$.post("/updatePermission", {}, function(result) {
+		if (result == "true") {
+			alert("权限更新成功！！");
+		}
+	});
 });
 </script>
 </html>

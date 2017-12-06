@@ -1,10 +1,18 @@
 package com.viroyal.light.module.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.module.entity.CustomPage;
+import com.viroyal.light.module.entity.FrontPage;
+import com.viroyal.light.module.entity.UserOnlineBo;
+import com.viroyal.light.module.service.ISysUserService;
+import com.viroyal.light.module.shiro.ShiroService;
 import com.viroyal.light.vcode.Captcha;
 import com.viroyal.light.vcode.GifCaptcha;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,18 +27,52 @@ import java.util.Map;
 
 @Controller
 public class SysLoginController {
-    @RequestMapping(value = "/index")
-    public String index(){
+
+    @Autowired
+    ShiroService shiroService;
+
+    //首页
+    @RequestMapping(value="index")
+    public String index() {
         return "index";
     }
 
-    @RequestMapping(value = "/login")
-    public String login(){
+    //登录
+    @RequestMapping(value="login")
+    public String login() {
         return "login";
     }
 
+    //权限测试用
+    @RequestMapping(value="add")
+    public String add() {
+        return "add";
+    }
+
+    //未授权跳转的页面
+    @RequestMapping(value="403")
+    public String noPermissions() {
+        return "403";
+    }
+
+    //更新权限
+    @RequestMapping(value="updatePermission")
+    @ResponseBody
+    public String updatePermission() {
+        shiroService.updatePermission();
+        return "true";
+    }
+
+    //踢出用户
+    @RequestMapping(value="kickouting")
+    @ResponseBody
+    public String kickouting() {
+
+        return "kickout";
+    }
+
     //被踢出后跳转的页面
-    @RequestMapping(value="/kickout")
+    @RequestMapping(value="kickout")
     public String kickout() {
         return "kickout";
     }
@@ -48,6 +90,7 @@ public class SysLoginController {
         }
         return resultMap;
     }
+
 
     @RequestMapping(value = "/ajaxLogin", method = RequestMethod.POST)
     @ResponseBody

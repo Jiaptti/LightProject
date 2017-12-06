@@ -95,7 +95,7 @@ public class ShiroConfig {
         // 自定义session管理 使用redis
         securityManager.setCacheManager(cacheManager());
         // 自定义session管理 使用redis
-        securityManager.setSessionManager(defaultWebSessionManager());
+        securityManager.setSessionManager(sessionManager());
         //注入记住我管理器;
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
@@ -112,7 +112,7 @@ public class ShiroConfig {
         //也可以重新另写一个，重新配置缓存时间之类的自定义缓存属性
         kickoutSessionControlFilter.setCacheManager(cacheManager());
         //用于根据会话ID，获取会话进行踢出操作的；
-        kickoutSessionControlFilter.setSessionManager(defaultWebSessionManager());
+        kickoutSessionControlFilter.setSessionManager(sessionManager());
         //是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；踢出顺序。
         kickoutSessionControlFilter.setKickoutAfter(false);
         //同一个用户最大的会话数，默认1；比如2的意思是同一个用户允许最多同时两个人登录；
@@ -137,14 +137,23 @@ public class ShiroConfig {
         return redisCacheManager;
     }
 
-    //获得sessionDao
+    /**
+     * RedisSessionDAO shiro sessionDao层的实现 通过redis
+     * 使用的是shiro-redis开源插件
+     */
+    @Bean
     public RedisSessionDAO redisSessionDAO(){
-        RedisSessionDAO dao = new RedisSessionDAO();
-        dao.setRedisManager(redisManager());
-        return dao;
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        return redisSessionDAO;
     }
 
-    public DefaultWebSessionManager defaultWebSessionManager(){
+    /**
+     * Session Manager
+     * 使用的是shiro-redis开源插件
+     */
+    @Bean
+    public DefaultWebSessionManager sessionManager(){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
