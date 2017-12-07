@@ -1,7 +1,7 @@
 package com.viroyal.light.module.shiro;
 
-import com.viroyal.light.module.entity.SysPermissionInit;
-import com.viroyal.light.module.service.ISysPermissionInitService;
+import com.viroyal.light.module.entity.user.SysPermissionInit;
+import com.viroyal.light.module.service.user.ISysPermissionInitService;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;

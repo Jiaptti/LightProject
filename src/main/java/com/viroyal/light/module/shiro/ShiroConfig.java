@@ -1,7 +1,7 @@
 package com.viroyal.light.module.shiro;
 
-import com.viroyal.light.module.entity.SysPermissionInit;
-import com.viroyal.light.module.service.ISysPermissionInitService;
+import com.viroyal.light.module.entity.user.SysPermissionInit;
+import com.viroyal.light.module.service.user.ISysPermissionInitService;
 import com.viroyal.light.module.shiro.filter.KickoutSessionControlFilter;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

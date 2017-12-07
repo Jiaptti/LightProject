@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <% String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath(); %>
  <head>
@@ -18,7 +19,7 @@
 			</a>
 		</div>
 		<div class="dl-log">
-			欢迎您，<span class="dl-log-user"><shiro:principal property="nickname"/>  </span> <span class="admin">（管理员）</span>
+			欢迎您，<span class="dl-log-user"><shiro:principal property="nickname"/>  </span> <span class="admin"></span>
 			<a href="logout" title="退出系统" class="dl-log-quit">[退出]</a>
 		</div>
 	</div>
@@ -39,7 +40,6 @@
   <script type="text/javascript" src="<%=contextPath%>/static/assets/js/config-min.js"></script>
   <script type="text/javascript" src="<%=contextPath%>/static/js/barrage.js"></script>
   <script>	
-	//学生登录
 	BUI.use('common/main',function(){
       var config = [{
           id:'system',
@@ -47,7 +47,9 @@
               text:'系统管理',
               items:[
                 {id:'yhgl',text:'用户管理',href:'/user/userPage'},
+				<shiro:hasRole name="admin">
                 {id:'qxgl',text:'权限管理',href:'/permission/permissionPage' },
+                </shiro:hasRole>
 				{id:'jsgl',text:'角色管理',href:'/role/rolePage' },
 				{id:'csqxgl',text:'初始权限管理',href:'/permissionInit/permissionInitPage'},
 				{id:'zxyhgl',text:'在线用户管理',href:'/user/onlineUserPage'},

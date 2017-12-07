@@ -1,11 +1,11 @@
 package com.viroyal.light.module.shiro;
 
-import com.viroyal.light.module.entity.SysPermission;
-import com.viroyal.light.module.entity.SysRole;
-import com.viroyal.light.module.entity.SysUser;
-import com.viroyal.light.module.service.ISysPermissionService;
-import com.viroyal.light.module.service.ISysRoleService;
-import com.viroyal.light.module.service.ISysUserService;
+import com.viroyal.light.module.entity.user.SysPermission;
+import com.viroyal.light.module.entity.user.SysRole;
+import com.viroyal.light.module.entity.user.SysUser;
+import com.viroyal.light.module.service.user.ISysPermissionService;
+import com.viroyal.light.module.service.user.ISysRoleService;
+import com.viroyal.light.module.service.user.ISysUserService;
 import com.viroyal.light.utils.MyDES;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
@@ -72,13 +72,14 @@ public class MyShiroRealm extends AuthorizingRealm {
         ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
         opsForValue.increment(SHIRO_LOGIN_COUNT+name, 1);
         //计数大于5时，设置用户被锁定一小时
-//        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=5){
-//            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
-//            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
-//        }
-//        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
-//            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
-//        }
+        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=5){
+            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
+            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
+        }
+        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
+            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
+        }
+        System.out.print("password123 = " + MyDES.decryptBasedDes(sysUserService.selectById("11").getPswd()));
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("nickname", name);
         //密码进行加密处理  明文为  password+name

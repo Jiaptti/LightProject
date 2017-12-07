@@ -1,7 +1,7 @@
 package com.viroyal.light.module.shiro.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.viroyal.light.module.entity.SysUser;
+import com.viroyal.light.module.entity.user.SysUser;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
