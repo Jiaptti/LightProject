@@ -44,21 +44,27 @@
       var config = [{
           id:'system',
           menu:[{
-              text:'系统管理',
+              text:'用户管理',
               items:[
-                {id:'yhgl',text:'用户管理',href:'/user/userPage'},
+                {id:'yhgl',text:'用户列表',href:'/user/userPage'},
 				<shiro:hasRole name="admin">
-                {id:'qxgl',text:'权限管理',href:'/permission/permissionPage' },
+                {id:'qxgl',text:'权限列表',href:'/permission/permissionPage' },
                 </shiro:hasRole>
-				{id:'jsgl',text:'角色管理',href:'/role/rolePage' },
-				{id:'csqxgl',text:'初始权限管理',href:'/permissionInit/permissionInitPage'},
-				{id:'zxyhgl',text:'在线用户管理',href:'/user/onlineUserPage'},
+				{id:'jsgl',text:'角色列表',href:'/role/rolePage' },
+				{id:'csqxgl',text:'初始权限列表',href:'/permissionInit/permissionInitPage'},
+				{id:'zxyhgl',text:'在线用户列表',href:'/user/onlineUserPage'},
 				{id:'qxcsym',text:'权限测试页面',href:'/add'},
 				{id:'rjk',text:'Redis监控',href:'/redis/redisMonitor'},
 				{id:'djk',text:'Druid监控',href:'/druid'}
               ]
-          	 }]
-            }];
+          	 },{
+              text:'街道管理',
+              items:[
+                  {id:'jdxx',text:'街道列表',href:'/street/streetPage'},
+                  {id:'jdxx',text:'街道信息',href:'/street/streetPage'}
+              ]
+          	}]
+	  	}];
       new PageUtil.MainPage({
         modulesConfig : config
       });

@@ -17,6 +17,7 @@ import java.io.Serializable;
  * @since 2017-12-01
  */
 public interface ISysUserService extends IService<SysUser> {
-    public Page<UserOnlineBo> getPagePlus(FrontPage<UserOnlineBo> frontPage);
-    public void kickout(Serializable sessionId);
+    Page<UserOnlineBo> getPagePlus(FrontPage<UserOnlineBo> frontPage);
+    void kickout(Serializable sessionId);
+    boolean saveUser(SysUser user, String isEffective);
 }

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -27,6 +28,16 @@ public class SysUser extends Model<SysUser> {
      * 用户昵称
      */
 	private String nickname;
+
+	/**
+	 * 用户姓名
+	 */
+	private String username;
+
+	/**
+	 * 手机号码
+	 */
+	private String phone;
     /**
      * 邮箱|登录帐号
      */
@@ -55,6 +66,12 @@ public class SysUser extends Model<SysUser> {
 	private Date lastUpdateTime;
 	@TableField("last_update_name_id")
 	private String lastUpdateNameId;
+
+	/**
+	 * 角色ID
+	 */
+	@TableField(exist = false)
+	private String roleId;
 
 
 	@Override

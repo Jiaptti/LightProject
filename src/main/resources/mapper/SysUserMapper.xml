@@ -6,6 +6,8 @@
 	<resultMap id="BaseResultMap" type="com.viroyal.light.module.entity.user.SysUser">
 		<id column="id" property="id" />
 		<result column="nickname" property="nickname" />
+		<result column="username" property="username" />
+		<result column="phone" property="phone" />
 		<result column="email" property="email" />
 		<result column="pswd" property="pswd" />
 		<result column="create_time" property="createTime" />

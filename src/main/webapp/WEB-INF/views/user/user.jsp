@@ -91,7 +91,7 @@
 			var config = {
 				title : '用户列表',
 				url : '/user/getUserListWithPager',
-				colNames : [ '主键', '用户名称', '邮箱', '创建时间', '是否有效'],
+				colNames : [ '主键', '用户名称','姓名', '手机号','邮箱', '创建时间', '是否有效'],
 				colModel : [ {
 					name : 'id',
 					index : 'id',
@@ -103,6 +103,14 @@
 					index : 'nickname',
 					width : 100,
 				}, {
+                    name : 'username',
+                    index : 'username',
+                    width : 100,
+                },{
+                    name : 'phone',
+                    index : 'phone',
+                    width : 100,
+                },{
 					name : 'email',
 					index : 'email',
 					width : 100,

@@ -1,5 +1,7 @@
+<%@ page import="java.util.Date" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+		 pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 			+ request.getContextPath();
@@ -31,13 +33,49 @@
 						value="${user.id}" />
 					<div class="form-group">
 						<label class="col-sm-3 control-label"><label
-							for="LoginName">用户名称</label>：</label>
+								for="UserName">姓名</label>：</label>
+						<div class="col-sm-8">
+							<input class="form-control" id="username" name="username"
+								   placeholder="姓名" type="text" value="${user.username}"
+								   data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
+								   data-val-maxlength-max="20" data-val-required="姓名不能为空" /> <span
+								data-valmsg-for="username" data-valmsg-replace="true"
+								class="field-validation-valid"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"><label
+								for="LoginName">用户名称</label>：</label>
 						<div class="col-sm-8">
 							<input class="form-control" id="nickname" name="nickname"
-								placeholder="用户名称" type="text" value="${user.nickname}"
-								data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
-								data-val-maxlength-max="20" data-val-required="角色名称不能为空" /> <span
+								   placeholder="用户名称" type="text" value="${user.nickname}"
+								   data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
+								   data-val-maxlength-max="20" data-val-required="角色名称不能为空" /> <span
 								data-valmsg-for="nickname" data-valmsg-replace="true"
+								class="field-validation-valid"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"><label
+								for="Password">密码</label>：</label>
+						<div class="col-sm-8">
+							<input class="form-control" id="pswd" name="pswd"
+								   placeholder="密码" type="password" value="${user.pswd}"
+								   data-val="true" data-val-maxlength="密码长度不能超过20个字符"
+								   data-val-maxlength-max="20" data-val-required="密码不能为空" /> <span
+								data-valmsg-for="username" data-valmsg-replace="true"
+								class="field-validation-valid"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"><label
+								for="Phone">手机号码</label>：</label>
+						<div class="col-sm-8">
+							<input class="form-control" id="phone" name="phone"
+								   placeholder="手机号码" type="text" value="${user.phone}"
+								   data-val="true" data-val-maxlength="手机号码不能超过11位"
+								   data-val-maxlength-max="11" data-val-required="号码不能为空" /> <span
+								data-valmsg-for="phone" data-valmsg-replace="true"
 								class="field-validation-valid"></span>
 						</div>
 					</div>
@@ -54,6 +92,20 @@
 								placeholder="邮箱" type="text" value="${user.email}" /> <span
 								class="field-validation-valid" data-valmsg-for="email"
 								data-valmsg-replace="true"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"><label
+								for="RoleId">角色</label>：</label>
+						<div class="col-sm-8">
+							<div class="switch switch-mini">
+								<select id="roleId" name="roleId">
+									<option value="0">请选择</option>
+									<option value="1" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>管理员</option>
+									<option value="3" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>员工</option>
+									<option value="4" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>维修员</option>
+								</select>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">

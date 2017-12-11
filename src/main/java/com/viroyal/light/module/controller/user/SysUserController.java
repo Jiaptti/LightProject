@@ -7,8 +7,11 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.module.entity.page.CustomPage;
 import com.viroyal.light.module.entity.page.FrontPage;
 import com.viroyal.light.module.entity.user.SysUser;
+import com.viroyal.light.module.entity.user.SysUserRole;
 import com.viroyal.light.module.entity.user.UserOnlineBo;
+import com.viroyal.light.module.service.user.ISysUserRoleService;
 import com.viroyal.light.module.service.user.ISysUserService;
+import com.viroyal.light.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -36,6 +37,9 @@ public class SysUserController {
     @Autowired
     ISysUserService sysUserService;
 
+    @Autowired
+    ISysUserRoleService sysUserRoleService;
+
 
     // 跳转到用户管理页面
     @RequestMapping(value = "/userPage")
@@ -51,6 +55,9 @@ public class SysUserController {
         if (Id.equals("add")) {
         } else {
             SysUser user = sysUserService.selectById(Id);
+            SysUserRole userRole = sysUserRoleService.selectById(Long.valueOf(Id));
+            System.out.print("roleId = " + userRole.getRid());
+            user.setRoleId(userRole.getRid());
             model.addAttribute("user", user);
         }
         return "user/edit";
@@ -58,13 +65,8 @@ public class SysUserController {
 
     // 增加和修改
     @RequestMapping(value = "/edit")
-    public String edit(SysUser user,String isEffective, Model model) {
-        if(isEffective==null||isEffective==""){
-            user.setStatus("0");
-        }else{
-            user.setStatus("1");
-        }
-        if (sysUserService.insertOrUpdate(user)) {
+    public String edit(SysUser user, String isEffective, Model model) {
+        if (sysUserService.saveUser(user, isEffective)) {
             return "forward:userPage?edit=true";
         } else {
             return "forward:userPage?edit=false";

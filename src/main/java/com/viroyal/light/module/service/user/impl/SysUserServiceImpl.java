@@ -1,10 +1,13 @@
 package com.viroyal.light.module.service.user.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.module.dao.user.SysUserRoleMapper;
 import com.viroyal.light.module.entity.page.FrontPage;
 import com.viroyal.light.module.entity.user.SysUser;
 import com.viroyal.light.module.dao.user.SysUserMapper;
 import com.viroyal.light.module.entity.user.UserOnlineBo;
+import com.viroyal.light.module.service.user.ISysRoleService;
+import com.viroyal.light.module.service.user.ISysUserRoleService;
 import com.viroyal.light.module.service.user.ISysUserService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.shiro.session.Session;
@@ -15,12 +18,10 @@ import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -37,6 +38,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     SessionManager sessionManager;
+
+    //用户服务
+    @Autowired
+    ISysUserService sysUserService;
+    //用户角色服务
+    @Autowired
+    ISysUserRoleService sysUserRoleService;
+    //角色服务
+    @Autowired
+    ISysRoleService sysRoleService;
 
     @Override
     public Page<UserOnlineBo> getPagePlus(FrontPage<UserOnlineBo> frontPage) {
@@ -114,6 +125,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void kickout(Serializable sessionId){
         this.getSessionBysessionId(sessionId).setAttribute("kickout", true);
+    }
+
+    @Override
+    @Transactional
+    public boolean saveUser(SysUser user, String isEffective) {
+        user.setCreateTime(new Date());
+        if(isEffective==null||isEffective==""){
+            user.setStatus("0");
+        }else{
+            user.setStatus("1");
+        }
+        boolean success = insertOrUpdate(user);
+
+        //保存用户与角色关系
+        sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleId());
+        return success;
     }
 
     //根据sesisonid获取单个session对象
