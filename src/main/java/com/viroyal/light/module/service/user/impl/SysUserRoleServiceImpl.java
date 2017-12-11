@@ -36,6 +36,11 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(userId);
         userRole.setRid(roleId);
-        sysUserRoleMapper.insert(userRole);
+        insertOrUpdate(userRole);
+    }
+
+    @Override
+    public SysUserRole getUserRole(Long id) {
+        return sysUserRoleMapper.queryRoleIdList(id);
     }
 }

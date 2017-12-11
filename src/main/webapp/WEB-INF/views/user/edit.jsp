@@ -1,145 +1,150 @@
 <%@ page import="java.util.Date" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
-		 pageEncoding="utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
-	String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ request.getContextPath();
+    String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+            + request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>編輯</title>
-<link href="<%=contextPath%>/static/css/content-base.css"
-	rel="stylesheet" />
-<link href="<%=contextPath%>/static/lib/bootstrap-Switch/bootstrapSwitch.css"
-	rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編輯</title>
+    <link href="<%=contextPath%>/static/css/content-base.css"
+          rel="stylesheet"/>
+    <link href="<%=contextPath%>/static/lib/bootstrap-Switch/bootstrapSwitch.css"
+          rel="stylesheet"/>
 </head>
 <body class="gray-bg">
-	<div class="wrapper wrapper-content">
-		<div class="ibox float-e-margins">
-			<div class="ibox-title">
-				<h5>编辑用户信息</h5>
-				<div class="ibox-tools">
-					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a>
-				</div>
-			</div>
-			<div class="ibox-content">
-				<form action="/user/edit" class="form-horizontal" method="post">
-					<input hidden="true" id="id" name="id" type="text"
-						value="${user.id}" />
-					<div class="form-group">
-						<label class="col-sm-3 control-label"><label
-								for="UserName">姓名</label>：</label>
-						<div class="col-sm-8">
-							<input class="form-control" id="username" name="username"
-								   placeholder="姓名" type="text" value="${user.username}"
-								   data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
-								   data-val-maxlength-max="20" data-val-required="姓名不能为空" /> <span
-								data-valmsg-for="username" data-valmsg-replace="true"
-								class="field-validation-valid"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label"><label
-								for="LoginName">用户名称</label>：</label>
-						<div class="col-sm-8">
-							<input class="form-control" id="nickname" name="nickname"
-								   placeholder="用户名称" type="text" value="${user.nickname}"
-								   data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
-								   data-val-maxlength-max="20" data-val-required="角色名称不能为空" /> <span
-								data-valmsg-for="nickname" data-valmsg-replace="true"
-								class="field-validation-valid"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label"><label
-								for="Password">密码</label>：</label>
-						<div class="col-sm-8">
-							<input class="form-control" id="pswd" name="pswd"
-								   placeholder="密码" type="password" value="${user.pswd}"
-								   data-val="true" data-val-maxlength="密码长度不能超过20个字符"
-								   data-val-maxlength-max="20" data-val-required="密码不能为空" /> <span
-								data-valmsg-for="username" data-valmsg-replace="true"
-								class="field-validation-valid"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label"><label
-								for="Phone">手机号码</label>：</label>
-						<div class="col-sm-8">
-							<input class="form-control" id="phone" name="phone"
-								   placeholder="手机号码" type="text" value="${user.phone}"
-								   data-val="true" data-val-maxlength="手机号码不能超过11位"
-								   data-val-maxlength-max="11" data-val-required="号码不能为空" /> <span
-								data-valmsg-for="phone" data-valmsg-replace="true"
-								class="field-validation-valid"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label"><label
-							for="RealName">邮箱</label>：</label>
-						<div class="col-sm-8">
-							<input class="form-control" data-val="true"
-								data-val-maxlength="邮箱长度不能超过36个字符" data-val-maxlength-max="36"
-								data-val-minlength="邮箱长度不能少于5个字符" data-val-minlength-min="5"
-								data-val-regex="请输入正确的邮箱地址"
-								data-val-regex-pattern="^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$"
-								data-val-required="邮箱不能为空" id="email" name="email"
-								placeholder="邮箱" type="text" value="${user.email}" /> <span
-								class="field-validation-valid" data-valmsg-for="email"
-								data-valmsg-replace="true"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label"><label
-								for="RoleId">角色</label>：</label>
-						<div class="col-sm-8">
-							<div class="switch switch-mini">
-								<select id="roleId" name="roleId">
-									<option value="0">请选择</option>
-									<option value="1" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>管理员</option>
-									<option value="3" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>员工</option>
-									<option value="4" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>维修员</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label"><label
-							for="RealName">是否有效</label>：</label>
-						<div class="col-sm-8">
-							<div class="switch switch-mini" checked="true" data-on-label="有效" data-off-label="无效" >
-							    <input type="checkbox" name="isEffective" id="isEffective"/>
-							</div> 
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-offset-3 col-sm-8">
-							<button class="btn btn-info" type="submit" id="btnSave">保存</button>
-							<button class="btn btn-white" type="button" id="back"
-								data-type="url">返回</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<script src="<%=contextPath%>/static/js/content/base.js"></script>
-	<script src="<%=contextPath%>/static/js/content/action.js"></script>
-	<script src="<%=contextPath%>/static/js/content/jqueryValidator.js"></script>
-	<script src="<%=contextPath%>/static/lib/bootstrap-Switch/bootstrapSwitch.js"></script>
-	<script type="text/javascript">
-	//返回
-	$("#back").bind("click",function() {
-		window.location.href="/user/userPage";
-	});
-	//初始化是否有效开关
-	
-	</script>
+<div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>编辑用户信息</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <form action="/user/edit" class="form-horizontal" method="post">
+                <input hidden="true" id="id" name="id" type="text"
+                       value="${user.id}"/>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><label
+                            for="UserName">姓名</label>：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" id="username" name="username"
+                               placeholder="姓名" type="text" value="${user.username}"
+                               data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
+                               data-val-maxlength-max="20" data-val-required="姓名不能为空"/> <span
+                            data-valmsg-for="username" data-valmsg-replace="true"
+                            class="field-validation-valid"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><label
+                            for="LoginName">用户名称</label>：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" id="nickname" name="nickname"
+                               placeholder="用户名称" type="text" value="${user.nickname}"
+                               data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
+                               data-val-maxlength-max="20" data-val-required="角色名称不能为空"/> <span
+                            data-valmsg-for="nickname" data-valmsg-replace="true"
+                            class="field-validation-valid"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><label
+                            for="Password">密码</label>：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" id="pswd" name="pswd"
+                               placeholder="密码" type="password" value="${user.pswd}"
+                               data-val="true" data-val-maxlength="密码长度不能超过20个字符"
+                               data-val-maxlength-max="20" data-val-required="密码不能为空"/> <span
+                            data-valmsg-for="username" data-valmsg-replace="true"
+                            class="field-validation-valid"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><label
+                            for="Phone">手机号码</label>：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" id="phone" name="phone"
+                               placeholder="手机号码" type="text" value="${user.phone}"
+                               data-val="true" data-val-maxlength="手机号码不能超过11位"
+                               data-val-maxlength-max="11" data-val-required="号码不能为空"/> <span
+                            data-valmsg-for="phone" data-valmsg-replace="true"
+                            class="field-validation-valid"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><label
+                            for="RealName">邮箱</label>：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" data-val="true"
+                               data-val-maxlength="邮箱长度不能超过36个字符" data-val-maxlength-max="36"
+                               data-val-minlength="邮箱长度不能少于5个字符" data-val-minlength-min="5"
+                               data-val-regex="请输入正确的邮箱地址"
+                               data-val-regex-pattern="^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$"
+                               data-val-required="邮箱不能为空" id="email" name="email"
+                               placeholder="邮箱" type="text" value="${user.email}"/> <span
+                            class="field-validation-valid" data-valmsg-for="email"
+                            data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><label
+                            for="RoleId">角色</label>：</label>
+                    <div class="col-sm-8">
+                        <select id="roleId" name="roleId" data-val="true"
+                                data-val-required="请选择">
+                            <option value="0">请选择</option>
+                            <option value="3" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>员工</option>
+                            <option value="4" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>维修员</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><label
+                            for="RealName">是否有效</label>：</label>
+                    <div class="col-sm-8">
+                        <div class="switch switch-mini" checked="true" data-on-label="有效" data-off-label="无效">
+                            <input type="checkbox" name="isEffective" id="isEffective"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-8">
+                        <button class="btn btn-info" type="submit" id="btnSave">保存</button>
+                        <button class="btn btn-white" type="button" id="back"
+                                data-type="url">返回
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="<%=contextPath%>/static/js/content/base.js"></script>
+<script src="<%=contextPath%>/static/js/content/action.js"></script>
+<script src="<%=contextPath%>/static/js/content/jqueryValidator.js"></script>
+<script src="<%=contextPath%>/static/lib/bootstrap-Switch/bootstrapSwitch.js"></script>
+<script type="text/javascript">
+    //返回
+    $("#back").bind("click", function () {
+        window.location.href = "/user/userPage";
+    });
+    //返回
+    $("#btnSave").bind("click", function () {
+        var value = $("#roleId").val();
+        if(value = 0){
+            alert("请选择角色");
+        }
+    });
+
+</script>
 </body>
 </html>
 

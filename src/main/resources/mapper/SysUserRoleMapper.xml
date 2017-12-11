@@ -11,7 +11,7 @@
 
 
 	<!-- 查询用户创建的角色ID列表 -->
-	<select id="queryRoleIdList" resultType="long">
+	<select id="queryRoleIdList" resultType="com.viroyal.light.module.entity.user.SysUserRole">
 		select rid from sys_user_role where uid = #{userId}
 	</select>
 </mapper>

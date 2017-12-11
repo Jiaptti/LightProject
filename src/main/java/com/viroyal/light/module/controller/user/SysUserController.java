@@ -55,8 +55,7 @@ public class SysUserController {
         if (Id.equals("add")) {
         } else {
             SysUser user = sysUserService.selectById(Id);
-            SysUserRole userRole = sysUserRoleService.selectById(Long.valueOf(Id));
-            System.out.print("roleId = " + userRole.getRid());
+            SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(Id));
             user.setRoleId(userRole.getRid());
             model.addAttribute("user", user);
         }
