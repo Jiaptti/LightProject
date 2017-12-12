@@ -1,9 +1,13 @@
 package com.viroyal.light.module.entity.user;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -20,7 +24,8 @@ public class SysPermission extends Model<SysPermission> {
 
     private static final long serialVersionUID = 1L;
 
-	private String id;
+	@TableId(value="pid", type= IdType.AUTO)
+	private int pid;
     /**
      * url地址
      */
@@ -32,7 +37,7 @@ public class SysPermission extends Model<SysPermission> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.id;
+		return this.pid;
 	}
 
 }

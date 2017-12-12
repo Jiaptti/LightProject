@@ -66,6 +66,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+        System.out.print("token = " + token);
         String name = token.getUsername();
         String password = String.valueOf(token.getPassword());
         //访问一次，计数一次
@@ -116,7 +117,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         //用来做授权
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         SysUser user = (SysUser) principals.getPrimaryPrincipal();
-        List<SysRole> roleList = sysRoleService.getRoleListById(user.getId());
+        List<SysRole> roleList = sysRoleService.getRoleListById(user.getUid());
         Set<String> roleSet = new HashSet<String>();
         for(SysRole role : roleList){
             roleSet.add(role.getType());
@@ -124,7 +125,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         //添加所有角色
         info.setRoles(roleSet);
 
-        List<SysPermission> permissionList = sysPermissionService.getUserPermissions(user.getId());
+        List<SysPermission> permissionList = sysPermissionService.getUserPermissions(user.getUid());
         Set<String> permissionSet = new HashSet<String>();
         for (SysPermission permission : permissionList){
             permissionSet.add(permission.getName());

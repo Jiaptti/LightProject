@@ -1,7 +1,13 @@
 package com.viroyal.light.module.entity.user;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import lombok.Data;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -12,12 +18,14 @@ import java.io.Serializable;
  * @author jiaptti
  * @since 2017-12-01
  */
+@Data
 @TableName("sys_role")
 public class SysRole extends Model<SysRole> {
 
     private static final long serialVersionUID = 1L;
 
-	private String id;
+	@TableId(value="rid", type= IdType.AUTO)
+	private int rid;
     /**
      * 角色名称
      */
@@ -28,33 +36,9 @@ public class SysRole extends Model<SysRole> {
 	private String type;
 
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	@Override
 	protected Serializable pkVal() {
-		return this.id;
+		return this.rid;
 	}
 
 }

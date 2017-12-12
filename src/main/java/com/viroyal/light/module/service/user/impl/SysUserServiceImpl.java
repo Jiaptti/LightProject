@@ -136,10 +136,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }else{
             user.setStatus("1");
         }
+        //添加用户
         boolean success = insertOrUpdate(user);
 
         //保存用户与角色关系
-        sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleId());
+        sysUserRoleService.saveOrUpdate(user.getUid(), user.getRoleId());
         return success;
     }
 

@@ -3,9 +3,14 @@ package com.viroyal.light.module.entity.user;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,13 +22,14 @@ import java.util.List;
  * @author jiaptti
  * @since 2017-12-01
  */
-@TableName("sys_user")
 @Data
+@TableName("sys_user")
 public class SysUser extends Model<SysUser> {
 
     private static final long serialVersionUID = 1L;
 
-	private String id;
+	@TableId(value="uid", type= IdType.AUTO)
+	private int uid;
     /**
      * 用户昵称
      */
@@ -71,11 +77,11 @@ public class SysUser extends Model<SysUser> {
 	 * 角色ID
 	 */
 	@TableField(exist = false)
-	private String roleId;
+	private int roleId;
 
 
 	@Override
 	protected Serializable pkVal() {
-		return this.id;
+		return this.uid;
 	}
 }

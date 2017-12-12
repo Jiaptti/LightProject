@@ -65,6 +65,7 @@ public class SysUserController {
     // 增加和修改
     @RequestMapping(value = "/edit")
     public String edit(SysUser user, String isEffective, Model model) {
+        System.out.print("edit");
         if (sysUserService.saveUser(user, isEffective)) {
             return "forward:userPage?edit=true";
         } else {

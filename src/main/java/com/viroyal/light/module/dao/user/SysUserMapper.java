@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @author jiaptti
  * @since 2017-12-01
  */
+
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
 

@@ -28,7 +28,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     @Override
     @Transactional
-    public void saveOrUpdate(String userId, String roleId) {
+    public void saveOrUpdate(int userId, int roleId) {
         //先删除用户与角色关系
         sysUserRoleMapper.deleteById(userId);
 

@@ -24,7 +24,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     SysPermissionMapper sysPermissionMapper;
 
     @Override
-    public List<SysPermission> getUserPermissions(String uid) {
+    public List<SysPermission> getUserPermissions(int uid) {
         return sysPermissionMapper.getUserPermissions(uid);
     }
 }

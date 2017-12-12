@@ -4,12 +4,12 @@
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.viroyal.light.module.entity.user.SysRole">
-		<result column="id" property="id" />
+		<result column="rid" property="rid" />
 		<result column="name" property="name" />
 		<result column="type" property="type" />
 	</resultMap>
 
-	<select id="getRoleListById" parameterType="string" resultType="com.viroyal.light.module.entity.user.SysRole">
-		select r.type from sys_role as r where r.id in (select ur.uid from sys_user_role as ur , sys_user as u where u.id = #{uid})
+	<select id="getRoleListById" parameterType="Integer" resultType="com.viroyal.light.module.entity.user.SysRole">
+		select r.type from sys_role as r where r.rid in (select ur.rid from sys_user_role as ur , sys_user as u where u.uid = #{uid})
 	</select>
 </mapper>
