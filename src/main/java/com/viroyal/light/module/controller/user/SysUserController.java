@@ -12,13 +12,12 @@ import com.viroyal.light.module.entity.user.UserOnlineBo;
 import com.viroyal.light.module.service.user.ISysUserRoleService;
 import com.viroyal.light.module.service.user.ISysUserService;
 import com.viroyal.light.utils.CommonUtil;
+import com.viroyal.light.utils.MyDES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -57,15 +56,15 @@ public class SysUserController {
             SysUser user = sysUserService.selectById(Id);
             SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(Id));
             user.setRoleId(userRole.getRid());
+            user.setPswd(MyDES.decryptBasedDes(user.getPswd()));
             model.addAttribute("user", user);
         }
         return "user/edit";
     }
 
     // 增加和修改
-    @RequestMapping(value = "/edit")
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(SysUser user, String isEffective, Model model) {
-        System.out.print("edit");
         if (sysUserService.saveUser(user, isEffective)) {
             return "forward:userPage?edit=true";
         } else {
@@ -89,6 +88,7 @@ public class SysUserController {
     // 刪除用户
     @RequestMapping(value = "/delete")
     @ResponseBody
+    @Transactional
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {

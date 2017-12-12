@@ -28,8 +28,8 @@ public class SysUser extends Model<SysUser> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="uid", type= IdType.AUTO)
-	private int uid;
+	@TableId(type= IdType.AUTO)
+	private int id;
     /**
      * 用户昵称
      */
@@ -82,6 +82,6 @@ public class SysUser extends Model<SysUser> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.uid;
+		return this.id;
 	}
 }

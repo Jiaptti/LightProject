@@ -22,4 +22,5 @@ public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
      */
     SysUserRole queryRoleIdList(Long userId);
     void save(Map<String, Object> map);
+    void updateByUserId(SysUserRole userRole);
 }

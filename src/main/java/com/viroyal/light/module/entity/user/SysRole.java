@@ -24,8 +24,8 @@ public class SysRole extends Model<SysRole> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="rid", type= IdType.AUTO)
-	private int rid;
+	@TableId(type= IdType.AUTO)
+	private int id;
     /**
      * 角色名称
      */
@@ -38,7 +38,7 @@ public class SysRole extends Model<SysRole> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.rid;
+		return this.id;
 	}
 
 }

@@ -30,7 +30,7 @@
         <div class="ibox-content">
             <form action="/user/edit" class="form-horizontal" method="post">
                 <input hidden="true" id="id" name="id" type="text"
-                       value="${user.uid}"/>
+                       value="${user.id}"/>
                 <div class="form-group">
                     <label class="col-sm-3 control-label"><label
                             for="UserName">姓名</label>：</label>

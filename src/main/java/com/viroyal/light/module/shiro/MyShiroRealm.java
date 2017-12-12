@@ -66,20 +66,19 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        System.out.print("token = " + token);
         String name = token.getUsername();
         String password = String.valueOf(token.getPassword());
         //访问一次，计数一次
         ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
         opsForValue.increment(SHIRO_LOGIN_COUNT+name, 1);
         //计数大于5时，设置用户被锁定一小时
-//        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=5){
-//            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
-//            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
-//        }
-//        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
-//            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
-//        }
+        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=5){
+            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
+            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
+        }
+        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
+            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("nickname", name);
         //密码进行加密处理  明文为  password+name
@@ -117,7 +116,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         //用来做授权
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         SysUser user = (SysUser) principals.getPrimaryPrincipal();
-        List<SysRole> roleList = sysRoleService.getRoleListById(user.getUid());
+        List<SysRole> roleList = sysRoleService.getRoleListById(user.getId());
         Set<String> roleSet = new HashSet<String>();
         for(SysRole role : roleList){
             roleSet.add(role.getType());
@@ -125,7 +124,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         //添加所有角色
         info.setRoles(roleSet);
 
-        List<SysPermission> permissionList = sysPermissionService.getUserPermissions(user.getUid());
+        List<SysPermission> permissionList = sysPermissionService.getUserPermissions(user.getId());
         Set<String> permissionSet = new HashSet<String>();
         for (SysPermission permission : permissionList){
             permissionSet.add(permission.getName());

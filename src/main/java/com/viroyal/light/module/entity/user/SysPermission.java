@@ -24,8 +24,8 @@ public class SysPermission extends Model<SysPermission> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="pid", type= IdType.AUTO)
-	private int pid;
+	@TableId(type= IdType.AUTO)
+	private int id;
     /**
      * url地址
      */
@@ -37,7 +37,7 @@ public class SysPermission extends Model<SysPermission> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.pid;
+		return this.id;
 	}
 
 }

@@ -27,20 +27,13 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     SysUserRoleMapper sysUserRoleMapper;
 
     @Override
-    @Transactional
-    public void saveOrUpdate(int userId, int roleId) {
-        //先删除用户与角色关系
-        sysUserRoleMapper.deleteById(userId);
-
-        //保存用户与角色关系
-        SysUserRole userRole = new SysUserRole();
-        userRole.setUid(userId);
-        userRole.setRid(roleId);
-        insertOrUpdate(userRole);
+    public SysUserRole getUserRole(Long id) {
+        return sysUserRoleMapper.queryRoleIdList(id);
     }
 
     @Override
-    public SysUserRole getUserRole(Long id) {
-        return sysUserRoleMapper.queryRoleIdList(id);
+    @Transactional
+    public void updateByUserId(SysUserRole userRole) {
+        sysUserRoleMapper.updateByUserId(userRole);
     }
 }

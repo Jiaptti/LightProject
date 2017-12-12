@@ -1,7 +1,9 @@
 package com.viroyal.light.module.entity.user;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 
 import javax.persistence.GeneratedValue;
@@ -22,8 +24,7 @@ public class SysUserRole extends Model<SysUserRole> {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-	@GeneratedValue
+	@TableId(type= IdType.AUTO)
 	private int id;
     /**
      * 用户ID

@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission` (
-  `id`   VARCHAR(64)
+  `pid`   VARCHAR(64)
          CHARACTER SET utf8
          COLLATE utf8_general_ci NOT NULL,
   `url`  VARCHAR(256)

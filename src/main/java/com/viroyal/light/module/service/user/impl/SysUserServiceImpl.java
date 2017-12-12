@@ -5,11 +5,13 @@ import com.viroyal.light.module.dao.user.SysUserRoleMapper;
 import com.viroyal.light.module.entity.page.FrontPage;
 import com.viroyal.light.module.entity.user.SysUser;
 import com.viroyal.light.module.dao.user.SysUserMapper;
+import com.viroyal.light.module.entity.user.SysUserRole;
 import com.viroyal.light.module.entity.user.UserOnlineBo;
 import com.viroyal.light.module.service.user.ISysRoleService;
 import com.viroyal.light.module.service.user.ISysUserRoleService;
 import com.viroyal.light.module.service.user.ISysUserService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.viroyal.light.utils.MyDES;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -137,10 +139,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             user.setStatus("1");
         }
         //添加用户
-        boolean success = insertOrUpdate(user);
-
-        //保存用户与角色关系
-        sysUserRoleService.saveOrUpdate(user.getUid(), user.getRoleId());
+        user.setPswd(MyDES.encryptBasedDes(user.getPswd()));
+        boolean success;
+        SysUserRole userRole = new SysUserRole();
+        userRole.setUid(user.getId());
+        userRole.setRid(user.getRoleId());
+        if(user.getId() == 0){
+            success = insert(user);
+            //保存用户与角色关系
+            sysUserRoleService.insert(userRole);
+        } else {
+            success = updateById(user);
+            //更新用户与角色关系
+            sysUserRoleService.updateByUserId(userRole);
+        }
         return success;
     }
 
