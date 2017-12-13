@@ -37,7 +37,7 @@ public class MpGenerator {
         dsc.setDbType(DbType.MYSQL);
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setPassword("123");
         dsc.setUrl("jdbc:mysql://localhost:3306/viroyal_light_db?characterEncoding=utf8");
         mpg.setDataSource(dsc);
 

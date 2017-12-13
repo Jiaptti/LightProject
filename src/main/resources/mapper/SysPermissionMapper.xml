@@ -9,7 +9,7 @@
 		<result column="name" property="name" />
 	</resultMap>
 
-	<select id="getUserPermissions" parameterType="Integer" resultType="com.viroyal.light.module.entity.user.SysPermission">
+	<select id="getUserPermissions" parameterType="Long" resultType="com.viroyal.light.module.entity.user.SysPermission">
 		select p.name from sys_permission as p, sys_role_permission as rp
 		 where rp.rid in (select ur.rid from sys_user as u, sys_user_role as ur where u.id = #{id})
 	</select>

@@ -14,5 +14,5 @@ import java.util.List;
  * @since 2017-12-01
  */
 public interface ISysPermissionService extends IService<SysPermission> {
-    List<SysPermission> getUserPermissions(int id);
+    List<SysPermission> getUserPermissions(Long id);
 }

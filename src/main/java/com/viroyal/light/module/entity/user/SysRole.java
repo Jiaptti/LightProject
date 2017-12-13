@@ -24,8 +24,8 @@ public class SysRole extends Model<SysRole> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(type= IdType.AUTO)
-	private int id;
+	@TableId(value="id", type= IdType.AUTO)
+	private Long id;
     /**
      * 角色名称
      */

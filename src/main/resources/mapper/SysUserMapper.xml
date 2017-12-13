@@ -17,4 +17,33 @@
 		<result column="last_update_time" property="lastUpdateTime" />
 		<result column="last_update_name_id" property="lastUpdateNameId" />
 	</resultMap>
+
+
+	<insert id="save" parameterType="com.viroyal.light.module.entity.user.SysUser"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user
+		(
+		`id`,
+		`nickname`,
+		`username`,
+		`pswd`,
+		`phone`,
+		`email`,
+		`create_time`,
+		`last_login_time`,
+		`status`
+		)
+		values
+		(
+		#{id},
+		#{nickname},
+		#{username},
+		#{pswd},
+		#{phone},
+		#{email},
+		#{createTime},
+		#{lastLoginTime},
+		#{status}
+		)
+	</insert>
 </mapper>

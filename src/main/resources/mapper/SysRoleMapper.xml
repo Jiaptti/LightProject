@@ -9,7 +9,7 @@
 		<result column="type" property="type" />
 	</resultMap>
 
-	<select id="getRoleListById" parameterType="Integer" resultType="com.viroyal.light.module.entity.user.SysRole">
+	<select id="getRoleListById" parameterType="Long" resultType="com.viroyal.light.module.entity.user.SysRole">
 		select r.type from sys_role as r where r.id in (select ur.rid from sys_user_role as ur , sys_user as u where u.id = #{id})
 	</select>
 </mapper>

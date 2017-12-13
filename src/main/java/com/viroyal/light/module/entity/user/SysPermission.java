@@ -24,8 +24,8 @@ public class SysPermission extends Model<SysPermission> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(type= IdType.AUTO)
-	private int id;
+    @TableId(value="id", type= IdType.AUTO)
+    private Long id;
     /**
      * url地址
      */

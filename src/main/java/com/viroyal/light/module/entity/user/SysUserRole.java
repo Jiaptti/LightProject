@@ -24,17 +24,16 @@ public class SysUserRole extends Model<SysUserRole> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(type= IdType.AUTO)
-	private int id;
-    /**
-     * 用户ID
-     */
-	private int uid;
-    /**
-     * 角色ID
-     */
-	private int rid;
-
+	@TableId(value="id", type= IdType.AUTO)
+	private Long id;
+	/**
+	 * 用户ID
+	 */
+	private Long uid;
+	/**
+	 * 角色ID
+	 */
+	private Long rid;
 
 
 	@Override

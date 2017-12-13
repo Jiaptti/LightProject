@@ -51,6 +51,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     ISysRoleService sysRoleService;
 
+    @Autowired
+    SysUserMapper sysUserMapper;
+
     @Override
     public Page<UserOnlineBo> getPagePlus(FrontPage<UserOnlineBo> frontPage) {
         // 因为我们是用redis实现了shiro的session的Dao,而且是采用了shiro+redis这个插件
@@ -144,16 +147,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
         userRole.setRid(user.getRoleId());
-        if(user.getId() == 0){
-            success = insert(user);
+        if(user.getId() == null){
+            sysUserMapper.save(user);
+            System.out.print("id123412341234213432 = " + user.getId());
+//            success = insert(user);
             //保存用户与角色关系
             sysUserRoleService.insert(userRole);
         } else {
-            success = updateById(user);
+//            success = updateById(user);
             //更新用户与角色关系
             sysUserRoleService.updateByUserId(userRole);
         }
-        return success;
+        return true;
     }
 
     //根据sesisonid获取单个session对象
