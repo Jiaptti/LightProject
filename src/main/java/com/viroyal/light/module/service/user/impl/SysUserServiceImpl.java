@@ -134,7 +134,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional
-    public boolean saveUser(SysUser user, String isEffective) {
+    public void saveUser(SysUser user, String isEffective) {
         user.setCreateTime(new Date());
         if(isEffective==null||isEffective==""){
             user.setStatus("0");
@@ -143,22 +143,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         //添加用户
         user.setPswd(MyDES.encryptBasedDes(user.getPswd()));
-        boolean success;
         SysUserRole userRole = new SysUserRole();
-        userRole.setUid(user.getId());
         userRole.setRid(user.getRoleId());
         if(user.getId() == null){
             sysUserMapper.save(user);
-            System.out.print("id123412341234213432 = " + user.getId());
-//            success = insert(user);
+            userRole.setUid(user.getId());
             //保存用户与角色关系
             sysUserRoleService.insert(userRole);
         } else {
-//            success = updateById(user);
+            userRole.setUid(user.getId());
+            updateById(user);
             //更新用户与角色关系
             sysUserRoleService.updateByUserId(userRole);
         }
-        return true;
     }
 
     //根据sesisonid获取单个session对象
