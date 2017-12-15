@@ -75,14 +75,4 @@ public class MyDES {
 		}
 		return decryptedData;
 	}
-
-	public static void main(String[] args) {
-		String str = "123456";
-		// DES数据加密
-		String s1 = encryptBasedDes(str);
-		System.out.println(s1);
-		// DES数据解密
-		String s2 = decryptBasedDes(s1);
-		System.err.println(s2);
-	}
 }
