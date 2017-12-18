@@ -163,4 +163,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Session kickoutSession = sessionManager.getSession(new DefaultSessionKey(sessionId));
         return kickoutSession;
     }
+
+    @Override
+    public List<SysUser> getAllUser() {
+        return sysUserMapper.getAllUser();
+    }
 }

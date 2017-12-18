@@ -1,5 +1,7 @@
 package com.viroyal.light.module.controller.user;
 
+import com.alibaba.fastjson.JSON;
+import com.viroyal.light.module.entity.user.SysUser;
 import com.viroyal.light.module.shiro.ShiroService;
 import com.viroyal.light.utils.vcode.Captcha;
 import com.viroyal.light.utils.vcode.GifCaptcha;
@@ -114,6 +116,27 @@ public class SysLoginController {
             resultMap.put("message", e.getMessage());
         }
         return resultMap;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public String login(String username, String password){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        SysUser user = null;
+        try {
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            SecurityUtils.getSubject().login(token);
+            user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+            SecurityUtils.getSubject().getSession().getId();
+            resultMap.put("status", "200");
+            resultMap.put("user",user);
+            resultMap.put("message","登陆成功");
+        } catch (Exception e){
+            resultMap.put("status", "500");
+            resultMap.put("user",user);
+            resultMap.put("message","登录失败 error = " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
     }
 
     /**

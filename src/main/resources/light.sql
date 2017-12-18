@@ -198,11 +198,12 @@ CREATE TABLE IF NOT EXISTS `sys_permission_init` (
 INSERT INTO `sys_permission_init` (`id`, `url`, `permission_init`, `sort`) VALUES
   (1, '/static/**', 'anon,kickout', 1),
   (2, '/ajaxLogin', 'anon,kickout', 2),
-  (3, '/logout', 'logout,kickout', 3),
-  (4, '/add', 'perms[权限添加:权限删除],roles[100002],kickout', 4),
-  (5, '/**', 'user,kickout', 5),
-  (6, '/getGifCode', 'anon,kickout', 2),
-  (7, '/kickout', 'anon', 2),
+  (3, '/login', 'anon,kickout', 2),
+  (4, '/logout', 'logout,kickout', 3),
+  (5, '/add', 'perms[权限添加:权限删除],roles[100002],kickout', 4),
+  (6, '/**', 'user,kickout', 5),
+  (7, '/getGifCode', 'anon,kickout', 2),
+  (8, '/kickout', 'anon', 2),
   (10, '/delete', 'perms[权限删除]', 2);
 
 -- --------------------------------------------------------

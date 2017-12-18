@@ -4,6 +4,8 @@ import com.viroyal.light.module.entity.user.SysUser;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
   *  Mapper 接口
@@ -16,4 +18,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
     void save(SysUser user);
+
+    List<SysUser> getAllUser();
 }

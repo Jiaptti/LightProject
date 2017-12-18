@@ -18,6 +18,9 @@
 		<result column="last_update_name_id" property="lastUpdateNameId" />
 	</resultMap>
 
+	<select id="getAllUser" resultType="com.viroyal.light.module.entity.user.SysUser">
+		select * from sys_user
+	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.entity.user.SysUser"
 			useGeneratedKeys="true" keyProperty="id">

@@ -81,6 +81,21 @@ public class SysUserController {
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
         return JSON.toJSONString(customPage);
     }
+    @RequestMapping(value = "/list")
+    @ResponseBody
+
+    public String getUserList(){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        List<SysUser> userList = sysUserService.getAllUser();
+        resultMap.put("status", "200");
+        resultMap.put("userList",userList);
+        if(userList.size() > 0){
+            resultMap.put("message", "success");
+        } else {
+            resultMap.put("message", "no result");
+        }
+        return JSON.toJSONString(resultMap);
+    }
 
     // 刪除用户
     @RequestMapping(value = "/delete")
@@ -123,6 +138,7 @@ public class SysUserController {
             for (String sessionId : ids) {
                 sysUserService.kickout(sessionId);
             }
+
             resultMap.put("flag", true);
             resultMap.put("msg", "强制踢出成功！");
         } catch (Exception e) {

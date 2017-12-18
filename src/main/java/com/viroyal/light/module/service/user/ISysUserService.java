@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.viroyal.light.module.entity.user.UserOnlineBo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -20,4 +21,5 @@ public interface ISysUserService extends IService<SysUser> {
     Page<UserOnlineBo> getPagePlus(FrontPage<UserOnlineBo> frontPage);
     void kickout(Serializable sessionId);
     void saveUser(SysUser user, String isEffective);
+    List<SysUser> getAllUser();
 }

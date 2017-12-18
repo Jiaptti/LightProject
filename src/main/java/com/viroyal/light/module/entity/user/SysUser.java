@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.sun.istack.internal.Nullable;
 import lombok.Data;
 
 import javax.persistence.Column;

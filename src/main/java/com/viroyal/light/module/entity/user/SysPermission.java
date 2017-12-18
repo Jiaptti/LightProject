@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.viroyal.light.module.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import java.io.Serializable;
  */
 @TableName("sys_permission")
 @Data
-public class SysPermission extends Model<SysPermission> {
+public class SysPermission extends BaseEntity<SysPermission> {
 
     private static final long serialVersionUID = 1L;
 
