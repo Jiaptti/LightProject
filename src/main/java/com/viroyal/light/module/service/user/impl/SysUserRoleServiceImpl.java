@@ -33,7 +33,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     @Override
     @Transactional
-    public void updateByUserId(SysUserRole userRole) {
-        sysUserRoleMapper.updateByUserId(userRole);
+    public void updateUserRole(SysUserRole userRole) {
+        sysUserRoleMapper.updateUserRole(userRole);
     }
 }

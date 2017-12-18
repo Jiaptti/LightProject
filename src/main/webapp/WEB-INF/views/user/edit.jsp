@@ -114,7 +114,8 @@
                             for="RealName">是否有效</label>：</label>
                     <div class="col-sm-8">
                         <div class="switch switch-mini" checked="true" data-on-label="有效" data-off-label="无效">
-                            <input type="checkbox" name="isEffective" id="isEffective"/>
+                            <input type="checkbox" <c:if test="${user.status =='1'}">checked="true"</c:if>
+                            name="isEffective" id="isEffective"/>
                         </div>
                     </div>
                 </div>

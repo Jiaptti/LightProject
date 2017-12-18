@@ -64,7 +64,7 @@
 	<script>
 		function addModel() {
 			$("#btnAdd").button("loading");
-			window.location.href = "/role/editPage/add";
+			window.location.href = "/role/forward/save";
 		}
 
 		function editModel() {//编辑

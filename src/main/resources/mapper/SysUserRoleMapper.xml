@@ -15,7 +15,7 @@
 		select rid from sys_user_role where uid = #{userId}
 	</select>
 
-	<update id="updateByUserId" parameterType="com.viroyal.light.module.entity.user.SysUserRole">
+	<update id="updateUserRole" parameterType="com.viroyal.light.module.entity.user.SysUserRole">
 		update sys_user_role set sys_user_role.rid = #{rid} where sys_user_role.uid = #{uid}
 	</update>
 </mapper>

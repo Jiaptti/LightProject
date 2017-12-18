@@ -4,7 +4,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/viroyal_light_db?characterEncoding=utf8
     username: root
-    password: 123456
+    password: 123
     #最大活跃数
     maxActive: 20
     #初始化数量

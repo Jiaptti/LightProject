@@ -140,6 +140,7 @@ public class SysUserController {
     // 在线用户列表json
     @RequestMapping(value = "/onlineUsers")
     @ResponseBody
+    @RequiresPermissions("sys:user:list")
     public String OnlineUsers(FrontPage<UserOnlineBo> frontPage) {
         Page<UserOnlineBo> pageList = sysUserService.getPagePlus(frontPage);
         CustomPage<UserOnlineBo> customPage = new CustomPage<UserOnlineBo>(pageList);
@@ -149,6 +150,7 @@ public class SysUserController {
     // 强制踢出用户
     @RequestMapping(value = "/kickout")
     @ResponseBody
+    @RequiresPermissions("sys:user:kickout")
     public String kickout(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {

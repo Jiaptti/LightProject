@@ -175,7 +175,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if(StringUtils.isBlank(user.getPswd())){
             user.setPswd(null);
         }else{
-            user.setPswd(MyDES.decryptBasedDes(user.getUsername() + user.getPswd()));
+            user.setPswd(MyDES.encryptBasedDes(user.getUsername() + user.getPswd()));
         }
 
         //更新用户
@@ -186,6 +186,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         userRole.setRid(user.getRoleId());
 
         //更新用户与角色关系
-        sysUserRoleService.updateByUserId(userRole);
+        sysUserRoleService.updateUserRole(userRole);
     }
 }

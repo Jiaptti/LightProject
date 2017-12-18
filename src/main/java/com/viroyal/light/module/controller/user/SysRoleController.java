@@ -8,6 +8,7 @@ import com.viroyal.light.module.entity.page.CustomPage;
 import com.viroyal.light.module.entity.page.FrontPage;
 import com.viroyal.light.module.entity.user.SysRole;
 import com.viroyal.light.module.service.user.ISysRoleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +47,7 @@ public class SysRoleController {
     //获取角色分页对象
     @RequestMapping(value="/getRoleListWithPager")
     @ResponseBody
+    @RequiresPermissions("sys:role:list")
     public String getRoleListWithPager(FrontPage<SysRole> page) {
         Wrapper<SysRole> wrapper = new EntityWrapper<SysRole>();
         String keyWords = page.getKeywords();
@@ -70,6 +72,7 @@ public class SysRoleController {
     //刪除
     @RequestMapping(value="/delete")
     @ResponseBody
+    @RequiresPermissions("sys:role:delete")
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
@@ -84,12 +87,21 @@ public class SysRoleController {
     }
 
     //增加和修改
+    @RequestMapping(value="/forward/save")
+    public String save() {
+        return "role/edit";
+    }
+
+    //增加和修改
     @RequestMapping(value="/edit")
-    public String edit(SysRole role,Model model) {
-        if(sysRoleService.insertOrUpdate(role)){
-            return "redirect:rolePage?edit=true";
-        }else{
-            return "redirect:rolePage?edit=false";
-        }
+    public String editRole(SysRole role) {
+        sysRoleService.updateRole(role);
+        return "redirect:rolePage?edit=true";
+    }
+
+    @RequestMapping(value="/save")
+    public String saveRole(SysRole role){
+        sysRoleService.saveRole(role);
+        return "redirect:rolePage?edit=true";
     }
 }

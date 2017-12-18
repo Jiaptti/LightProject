@@ -32,4 +32,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public String getUserRoleName(Long id) {
         return sysRoleMapper.getUserRoleName(id);
     }
+
+    @Override
+    public void saveRole(SysRole role) {
+        sysRoleMapper.save(role);
+    }
+
+    @Override
+    public void updateRole(SysRole role) {
+        sysRoleMapper.update(role);
+    }
 }

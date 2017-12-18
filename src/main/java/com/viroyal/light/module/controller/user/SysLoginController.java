@@ -95,7 +95,6 @@ public class SysLoginController {
     @RequestMapping(value = "/ajaxLogin", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> submitLogin(String username, String password,String vcode , Boolean rememberMe , Model model){
-        System.out.print("username = " + username + " password = " + password);
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         if(vcode==null||vcode==""){
             resultMap.put("status", 500);

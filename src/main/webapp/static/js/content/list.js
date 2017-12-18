@@ -9335,12 +9335,9 @@ JucheapGrid = {
 			Data: []
 		},
 		u = $("#" + n),
-		f = u.getGridParam("selrow"),
-		r,
-		i;
+		f = u.getGridParam("selrow"),r,i;
 		if (f) for (r = u.getGridParam("selarrrow"), i = 0; i < r.length; i++) t.Data.push(r[i]);
-		return t.Len = t.Data.length,
-		t
+		return t.Len = t.Data.length,t
 	}
 },
 function() {

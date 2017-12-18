@@ -24,7 +24,7 @@
 				</div>
 			</div>
 			<div class="ibox-content">
-				<form action="/role/edit" class="form-horizontal" method="post">
+				<form action="${not empty role.id ? '/role/edit' : '/role/save'}" class="form-horizontal" method="post">
 					<input hidden="true" id="id" name="id" type="text"
 						value="${role.id}" />
 					<div class="form-group">
