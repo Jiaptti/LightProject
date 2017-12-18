@@ -9088,6 +9088,7 @@ function(n) {
 				minValue: "输值必须大于等于 ",
 				maxValue: "输值必须小于等于 ",
 				email: "这不是有效的e-mail地址",
+				phone: "这不是正确的电话号码",
 				integer: "请输入有效整数",
 				date: "请输入有效时间",
 				url: "无效网址。前缀必须为 ('http://' 或 'https://')",

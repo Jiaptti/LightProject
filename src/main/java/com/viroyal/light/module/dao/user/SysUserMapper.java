@@ -17,7 +17,21 @@ import java.util.List;
 
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
+    /**
+     * 添加用户
+     */
     void save(SysUser user);
 
+    /**
+     * 查询所有用户
+     */
     List<SysUser> getAllUser();
+
+    /**
+     * 查询用户的所有权限
+     * @param userId  用户ID
+     */
+    List<String> queryAllPerms(Long userId);
+
+    void update(SysUser user);
 }

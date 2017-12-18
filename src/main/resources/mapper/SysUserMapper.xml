@@ -49,4 +49,30 @@
 		#{status}
 		)
 	</insert>
+
+
+	<!-- 查询用户的所有权限 -->
+	<select id="queryAllPerms" resultType="string">
+		select m.perms from sys_user_role ur
+		LEFT JOIN sys_role_permission rm on ur.rid = rm.rid
+		LEFT JOIN sys_permission p on p.id = p.id
+		where ur.uid = #{userId}
+	</select>
+
+	<update id="update" parameterType="com.viroyal.light.module.entity.user.SysUser">
+		update sys_user
+		<set>
+			<if test="nickname != null">`nickname` = #{nickname}, </if>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="pswd != null">`pswd` = #{pswd}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+		</set>
+		where id = #{id}
+		<if test="createNameId != null">
+			and `create_name_id` = #{createNameId}
+		</if>
+	</update>
 </mapper>

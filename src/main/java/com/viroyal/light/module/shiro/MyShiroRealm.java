@@ -1,5 +1,7 @@
 package com.viroyal.light.module.shiro;
 
+import com.viroyal.light.module.dao.user.SysPermissionMapper;
+import com.viroyal.light.module.dao.user.SysUserMapper;
 import com.viroyal.light.module.entity.user.SysPermission;
 import com.viroyal.light.module.entity.user.SysRole;
 import com.viroyal.light.module.entity.user.SysUser;
@@ -7,6 +9,7 @@ import com.viroyal.light.module.service.user.ISysPermissionService;
 import com.viroyal.light.module.service.user.ISysRoleService;
 import com.viroyal.light.module.service.user.ISysUserService;
 import com.viroyal.light.utils.MyDES;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -31,13 +34,13 @@ import java.util.concurrent.TimeUnit;
 
 public class MyShiroRealm extends AuthorizingRealm {
     @Autowired
-    ISysUserService sysUserService;
+    SysUserMapper sysUserMapper;
 
     @Autowired
     ISysRoleService sysRoleService;
 
     @Autowired
-    ISysPermissionService sysPermissionService;
+    SysPermissionMapper permissionMapper;
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
@@ -72,13 +75,13 @@ public class MyShiroRealm extends AuthorizingRealm {
         ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
         opsForValue.increment(SHIRO_LOGIN_COUNT+name, 1);
         //计数大于5时，设置用户被锁定一小时
-//        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=5){
-//            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
-//            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
-//        }
-//        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
-//            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
-//        }
+        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=5){
+            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
+            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
+        }
+        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
+            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("nickname", name);
         //密码进行加密处理  明文为  password+name
@@ -87,7 +90,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         map.put("pswd", pawDES);
         SysUser user = null;
         // 从数据库获取对应用户名密码的用户
-        List<SysUser> userList = sysUserService.selectByMap(map);
+        List<SysUser> userList = sysUserMapper.selectByMap(map);
         if(userList.size()!=0){
             user = userList.get(0);
         }
@@ -102,7 +105,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             //登录成功
             //更新登录时间 last login time
             user.setLastLoginTime(new Date());
-            sysUserService.updateById(user);
+            sysUserMapper.updateById(user);
             //清空登录计数
             opsForValue.set(SHIRO_LOGIN_COUNT+name, "0");
         }
@@ -116,21 +119,28 @@ public class MyShiroRealm extends AuthorizingRealm {
         //用来做授权
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         SysUser user = (SysUser) principals.getPrimaryPrincipal();
-        List<SysRole> roleList = sysRoleService.getRoleListById(user.getId());
-        Set<String> roleSet = new HashSet<String>();
-        for(SysRole role : roleList){
-            roleSet.add(role.getType());
+        List<String> permsList = null;
+        //系统管理员，拥有最高权限
+        if(user.getId() == 1){
+            List<SysPermission> permissionList = permissionMapper.selectByMap(new HashMap<String, Object>());
+            permsList = new ArrayList<>(permissionList.size());
+            for(SysPermission permission : permissionList){
+                permsList.add(permission.getPerms());
+            }
+        } else{
+            permsList = sysUserMapper.queryAllPerms(user.getId());
         }
-        //添加所有角色
-        info.setRoles(roleSet);
 
-        List<SysPermission> permissionList = sysPermissionService.getUserPermissions(user.getId());
-        Set<String> permissionSet = new HashSet<String>();
-        for (SysPermission permission : permissionList){
-            permissionSet.add(permission.getName());
+        //用户权限列表
+        Set<String> permsSet = new HashSet<String>();
+        for(String perms : permsList){
+            if(StringUtils.isBlank(perms)){
+                continue;
+            }
+            permsSet.addAll(Arrays.asList(perms.trim().split(",")));
         }
         //添加所有权限
-        info.setStringPermissions(permissionSet);
+        info.setStringPermissions(permsSet);
         return info;
     }
 }

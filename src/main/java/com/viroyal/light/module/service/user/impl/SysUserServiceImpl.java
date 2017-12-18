@@ -12,6 +12,7 @@ import com.viroyal.light.module.service.user.ISysUserRoleService;
 import com.viroyal.light.module.service.user.ISysUserService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.viroyal.light.utils.MyDES;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -132,8 +133,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         this.getSessionBysessionId(sessionId).setAttribute("kickout", true);
     }
 
-    @Override
     @Transactional
+    @Override
     public void saveUser(SysUser user, String isEffective) {
         user.setCreateTime(new Date());
         if(isEffective==null||isEffective==""){
@@ -142,20 +143,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             user.setStatus("1");
         }
         //添加用户
-        user.setPswd(MyDES.encryptBasedDes(user.getPswd()));
+        user.setPswd(MyDES.encryptBasedDes(user.getUsername() + user.getPswd()));
+        sysUserMapper.save(user);
         SysUserRole userRole = new SysUserRole();
+        userRole.setUid(user.getId());
         userRole.setRid(user.getRoleId());
-        if(user.getId() == null){
-            sysUserMapper.save(user);
-            userRole.setUid(user.getId());
-            //保存用户与角色关系
-            sysUserRoleService.insert(userRole);
-        } else {
-            userRole.setUid(user.getId());
-            updateById(user);
-            //更新用户与角色关系
-            sysUserRoleService.updateByUserId(userRole);
-        }
+
+        //保存用户与角色关系
+        sysUserRoleService.insert(userRole);
     }
 
     //根据sesisonid获取单个session对象
@@ -167,5 +162,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public List<SysUser> getAllUser() {
         return sysUserMapper.getAllUser();
+    }
+
+    @Transactional
+    @Override
+    public void updateUser(SysUser user, String isEffective) {
+        if(isEffective == null||isEffective == ""){
+            user.setStatus("0");
+        }else{
+            user.setStatus("1");
+        }
+        if(StringUtils.isBlank(user.getPswd())){
+            user.setPswd(null);
+        }else{
+            user.setPswd(MyDES.decryptBasedDes(user.getUsername() + user.getPswd()));
+        }
+
+        //更新用户
+        sysUserMapper.update(user);
+
+        SysUserRole userRole = new SysUserRole();
+        userRole.setUid(user.getId());
+        userRole.setRid(user.getRoleId());
+
+        //更新用户与角色关系
+        sysUserRoleService.updateByUserId(userRole);
     }
 }

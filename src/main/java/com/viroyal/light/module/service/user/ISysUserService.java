@@ -22,4 +22,5 @@ public interface ISysUserService extends IService<SysUser> {
     void kickout(Serializable sessionId);
     void saveUser(SysUser user, String isEffective);
     List<SysUser> getAllUser();
+    void updateUser(SysUser user, String isEffective);
 }

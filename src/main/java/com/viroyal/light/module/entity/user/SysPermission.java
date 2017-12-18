@@ -36,6 +36,11 @@ public class SysPermission extends BaseEntity<SysPermission> {
      */
 	private String name;
 
+	/**
+	 * 授权(多个用逗号分隔，如：user:list,user:create)
+	 */
+	private String perms;
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;

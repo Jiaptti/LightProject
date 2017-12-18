@@ -10,6 +10,16 @@
 	</resultMap>
 
 	<select id="getRoleListById" parameterType="Long" resultType="com.viroyal.light.module.entity.user.SysRole">
-		select r.type from sys_role as r where r.id in (select ur.rid from sys_user_role as ur , sys_user as u where u.id = #{id})
+		select r.type from sys_role as r
+		LEFT JOIN sys_user_role as ur on ur.rid = r.id
+		where ur.uid = #{id}
 	</select>
+
+
+	<select id="getUserRoleName" parameterType="Long" resultType="string">
+		select r.name from sys_role as r
+		LEFT JOIN sys_user_role as ur on ur.rid = r.id
+		where ur.uid = #{id}
+	</select>
+
 </mapper>

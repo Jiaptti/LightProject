@@ -28,7 +28,8 @@
             </div>
         </div>
         <div class="ibox-content">
-            <form action="/user/edit" class="form-horizontal" method="post">
+            <form action="${not empty user.id ? '/user/edit' : '/user/save'}" class="form-horizontal" method="post"
+                id = "editForm">
                 <input hidden="true" id="id" name="id" type="text"
                        value="${user.id}"/>
                 <div class="form-group">
@@ -50,7 +51,7 @@
                         <input class="form-control" id="nickname" name="nickname"
                                placeholder="用户名称" type="text" value="${user.nickname}"
                                data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
-                               data-val-maxlength-max="20" data-val-required="角色名称不能为空"/> <span
+                               data-val-maxlength-max="20" data-val-required="账号不能为空"/> <span
                             data-valmsg-for="nickname" data-valmsg-replace="true"
                             class="field-validation-valid"></span>
                     </div>
@@ -59,11 +60,12 @@
                     <label class="col-sm-3 control-label"><label
                             for="Password">密码</label>：</label>
                     <div class="col-sm-8">
-                        <input class="form-control" id="pswd" name="pswd"
-                               placeholder="密码" type="password" value="${user.pswd}"
+                        <input class="form-control" id="password" name="pswd"
+                               placeholder="密码" type="text" value="${user.pswd}"
                                data-val="true" data-val-maxlength="密码长度不能超过20个字符"
+                               data-val-minlength="密码长度不能少于5个字符" data-val-minlength-min="5"
                                data-val-maxlength-max="20" data-val-required="密码不能为空"/> <span
-                            data-valmsg-for="username" data-valmsg-replace="true"
+                            data-valmsg-for="pswd" data-valmsg-replace="true"
                             class="field-validation-valid"></span>
                     </div>
                 </div>
@@ -73,8 +75,9 @@
                     <div class="col-sm-8">
                         <input class="form-control" id="phone" name="phone"
                                placeholder="手机号码" type="text" value="${user.phone}"
-                               data-val="true" data-val-maxlength="手机号码不能超过11位"
-                               data-val-maxlength-max="11" data-val-required="号码不能为空"/> <span
+                               data-val="true" data-val-regex="请输入正确的手机号码"
+                               data-val-regex-pattern="^1(3|4|5|7|8)\d{9}$"
+                               data-val-required="手机号码不能为空"/> <span
                             data-valmsg-for="phone" data-valmsg-replace="true"
                             class="field-validation-valid"></span>
                     </div>
@@ -101,8 +104,8 @@
                         <select id="roleId" name="roleId" data-val="true"
                                 data-val-required="请选择">
                             <option value="0">请选择</option>
-                            <option value="3" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>员工</option>
-                            <option value="4" <c:if test="${user.roleId =='4'}">selected="selected"</c:if>>维修员</option>
+                            <option value="2" <c:if test="${user.roleId =='3'}">selected="selected"</c:if>>员工</option>
+                            <option value="3" <c:if test="${user.roleId =='3'}">selected="selected"</c:if>>维修员</option>
                         </select>
                     </div>
                 </div>
@@ -136,14 +139,6 @@
     $("#back").bind("click", function () {
         window.location.href = "/user/userPage";
     });
-    //返回
-    $("#btnSave").bind("click", function () {
-        var value = $("#roleId").val();
-        if(value = 0){
-            alert("请选择角色");
-        }
-    });
-
 </script>
 </body>
 </html>

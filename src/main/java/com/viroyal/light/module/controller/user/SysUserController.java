@@ -13,6 +13,7 @@ import com.viroyal.light.module.service.user.ISysUserRoleService;
 import com.viroyal.light.module.service.user.ISysUserService;
 import com.viroyal.light.utils.CommonUtil;
 import com.viroyal.light.utils.MyDES;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ import java.util.*;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author jiaptti
@@ -48,29 +49,43 @@ public class SysUserController {
         return "user/user";
     }
 
-    // 跳轉到編輯頁面edit
-    @RequestMapping(value = "/editPage/{Id}")
-    public String editPage(@PathVariable("Id") String Id, Model model) {
-        if (Id.equals("add")) {
-        } else {
-            SysUser user = sysUserService.selectById(Id);
-            SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(Id));
-            user.setRoleId(userRole.getRid());
-            user.setPswd(MyDES.decryptBasedDes(user.getPswd()));
-            model.addAttribute("user", user);
-        }
+    //跳转到用户添加页面
+    @RequestMapping(value = "/forward/save")
+    public String save() {
         return "user/edit";
     }
 
-    // 增加和修改
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(SysUser user, String isEffective, Model model) {
+    // 跳轉到編輯頁面edit
+    @RequestMapping(value = "/editPage/{Id}")
+    public String editPage(@PathVariable("Id") String Id, Model model) {
+        SysUser user = sysUserService.selectById(Id);
+        SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(Id));
+        user.setRoleId(userRole.getRid());
+        user.setPswd(MyDES.decryptBasedDes(user.getPswd()));
+        model.addAttribute("user", user);
+        return "user/edit";
+    }
+
+    //添加用户
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequiresPermissions("sys:user:save")
+    public String saveUser(SysUser user, String isEffective, Model model) {
         sysUserService.saveUser(user, isEffective);
+        return "forward:userPage?edit=true";
+    }
+
+
+    // 更新用户
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @RequiresPermissions("sys:user:update")
+    public String updateUser(SysUser user, String isEffective, Model model) {
+        sysUserService.updateUser(user, isEffective);
         return "forward:userPage?edit=true";
     }
 
     // 用户列表分页json
     @RequestMapping(value = "/getUserListWithPager")
+    @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String getUserListWithPager(FrontPage<SysUser> page) {
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
@@ -81,15 +96,16 @@ public class SysUserController {
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
         return JSON.toJSONString(customPage);
     }
-    @RequestMapping(value = "/list")
-    @ResponseBody
 
-    public String getUserList(){
+    @RequestMapping(value = "/list")
+    @RequiresPermissions("sys:user:list")
+    @ResponseBody
+    public String getUserList() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<SysUser> userList = sysUserService.getAllUser();
         resultMap.put("status", "200");
-        resultMap.put("userList",userList);
-        if(userList.size() > 0){
+        resultMap.put("userList", userList);
+        if (userList.size() > 0) {
             resultMap.put("message", "success");
         } else {
             resultMap.put("message", "no result");
@@ -100,6 +116,7 @@ public class SysUserController {
     // 刪除用户
     @RequestMapping(value = "/delete")
     @ResponseBody
+    @RequiresPermissions("sys:user:delete")
     @Transactional
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -138,7 +155,6 @@ public class SysUserController {
             for (String sessionId : ids) {
                 sysUserService.kickout(sessionId);
             }
-
             resultMap.put("flag", true);
             resultMap.put("msg", "强制踢出成功！");
         } catch (Exception e) {

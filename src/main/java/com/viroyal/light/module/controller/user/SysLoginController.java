@@ -2,6 +2,7 @@ package com.viroyal.light.module.controller.user;
 
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.module.entity.user.SysUser;
+import com.viroyal.light.module.service.user.ISysRoleService;
 import com.viroyal.light.module.shiro.ShiroService;
 import com.viroyal.light.utils.vcode.Captcha;
 import com.viroyal.light.utils.vcode.GifCaptcha;
@@ -27,32 +28,35 @@ public class SysLoginController {
     @Autowired
     ShiroService shiroService;
 
+    @Autowired
+    ISysRoleService sysRoleService;
+
     //首页
-    @RequestMapping(value="index")
+    @RequestMapping(value="/index")
     public String index() {
-        return "index";
+        return "/index";
     }
 
     //登录
-    @RequestMapping(value="login")
+    @RequestMapping(value="/login")
     public String login() {
-        return "login";
+        return "/login";
     }
 
     //权限测试用
-    @RequestMapping(value="add")
+    @RequestMapping(value="/add")
     public String add() {
-        return "add";
+        return "/add";
     }
 
     //未授权跳转的页面
-    @RequestMapping(value="403")
+    @RequestMapping(value="/403")
     public String noPermissions() {
-        return "403";
+        return "/403";
     }
 
     //更新权限
-    @RequestMapping(value="updatePermission")
+    @RequestMapping(value="/updatePermission")
     @ResponseBody
     public String updatePermission() {
         shiroService.updatePermission();
@@ -60,17 +64,17 @@ public class SysLoginController {
     }
 
     //踢出用户
-    @RequestMapping(value="kickouting")
+    @RequestMapping(value="/kickouting")
     @ResponseBody
     public String kickouting() {
 
-        return "kickout";
+        return "/kickout";
     }
 
     //被踢出后跳转的页面
-    @RequestMapping(value="kickout")
+    @RequestMapping(value="/kickout")
     public String kickout() {
-        return "kickout";
+        return "/kickout";
     }
 
     @RequestMapping(value = "/logout",method =RequestMethod.GET)
@@ -127,14 +131,18 @@ public class SysLoginController {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             SecurityUtils.getSubject().login(token);
             user = (SysUser) SecurityUtils.getSubject().getPrincipal();
-            SecurityUtils.getSubject().getSession().getId();
             resultMap.put("status", "200");
             resultMap.put("user",user);
+            if(user != null){
+                String roleName = sysRoleService.getUserRoleName(user.getId());
+                resultMap.put("roleName", roleName);
+            }
             resultMap.put("message","登陆成功");
         } catch (Exception e){
             resultMap.put("status", "500");
             resultMap.put("user",user);
             resultMap.put("message","登录失败 error = " + e.getMessage());
+            resultMap.put("roleName", "");
         }
         return JSON.toJSONString(resultMap);
     }
