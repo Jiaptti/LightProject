@@ -9380,7 +9380,8 @@ XPage = {
 				},
 				success: function(n) {
 					i.button("reset");
-					n.flag ? (parent.layer.alert("删除成功"), $("#table_list").trigger("reloadGrid")) : parent.layer.alert("删除失败：" + n.msg)
+					n.status == '200' ? (parent.layer.alert("删除成功"), $("#table_list").trigger("reloadGrid"))
+						: parent.layer.alert("删除失败：" + n.message)
 				}
 			})
 		},

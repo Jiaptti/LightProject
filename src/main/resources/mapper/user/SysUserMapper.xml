@@ -74,4 +74,16 @@
 			and `create_name_id` = #{createNameId}
 		</if>
 	</update>
+
+	<delete id="deleteBatch">
+		delete from sys_user where id in
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+		;
+		delete from sys_user_role where uid in
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
 </mapper>

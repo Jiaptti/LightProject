@@ -64,7 +64,7 @@ public class SysUserController {
         if(user == null) {
             resultMap.put("statue", "500");
             resultMap.put("user", user);
-            resultMap.put("message","没有查到用户");
+            resultMap.put("message","no result");
         } else {
             resultMap.put("statue", "200");
             resultMap.put("user", user);
@@ -101,7 +101,7 @@ public class SysUserController {
         try{
             resultMap.put("statue", "200");
             sysUserService.save(user);
-            resultMap.put("message", "success");
+            resultMap.put("message", "save success!");
         } catch (Exception e){
             e.printStackTrace();
             resultMap.put("statue", "500");
@@ -128,11 +128,11 @@ public class SysUserController {
         try{
             resultMap.put("statue", "200");
             sysUserService.update(user);
-            resultMap.put("message", "success");
+            resultMap.put("message", "update success!");
         } catch (Exception e){
             e.printStackTrace();
             resultMap.put("statue", "500");
-            resultMap.put("message", "error = " + e.getMessage());
+            resultMap.put("message", "failure error = " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }
@@ -174,18 +174,17 @@ public class SysUserController {
     @Transactional
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try {
-            sysUserService.deleteBatchIds(Arrays.asList(ids));
-            resultMap.put("flag", true);
-            resultMap.put("msg", "刪除成功！");
-        } catch (Exception e) {
-            resultMap.put("flag", false);
-            resultMap.put("msg", e.getMessage());
+        int count = sysUserService.deleteBatch(ids);
+        System.out.print("count = " + count);
+        if(count > 0){
+            resultMap.put("status", "200");
+            resultMap.put("message", "delete success！");
+        } else {
+            resultMap.put("status", "500");
+            resultMap.put("message", "delete failure");
         }
         return JSON.toJSONString(resultMap);
     }
-
-
 
     // 跳转到在线用户管理页面
     @RequestMapping(value = "/onlineUserPage")

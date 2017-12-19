@@ -37,4 +37,7 @@ public interface ISysUserService extends IService<SysUser> {
     void updateUser(SysUser user, String isEffective);
 
     void update(SysUser user);
+
+    //删除用户
+    int deleteBatch(String[] userId);
 }

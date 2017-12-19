@@ -1,22 +1,29 @@
 package com.viroyal.light.config;
 
+import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
+import com.alibaba.druid.wall.WallConfig;
+import com.alibaba.druid.wall.WallFilter;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -35,6 +42,9 @@ public class DruidDataSourceConfig implements EnvironmentAware {
 
 	private RelaxedPropertyResolver propertyResolver;
 
+	@Autowired
+	WallFilter wallFilter;
+
 	public void setEnvironment(Environment env) {
 		this.propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
 	}
@@ -52,12 +62,30 @@ public class DruidDataSourceConfig implements EnvironmentAware {
 		datasource.setMaxActive(Integer.valueOf(propertyResolver.getProperty("max-active")));
 		datasource.setMinEvictableIdleTimeMillis(
 				Long.valueOf(propertyResolver.getProperty("min-evictable-idle-time-millis")));
+		List<Filter> filters = new ArrayList<Filter>();
+		filters.add(wallFilter);
+		datasource.setProxyFilters(filters);
 		try {
 			datasource.setFilters("stat,wall");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return datasource;
+	}
+
+	@Bean(name = "wallConfig")
+	WallConfig wallFilterConfig(){
+		WallConfig wc = new WallConfig ();
+		wc.setMultiStatementAllow(true);
+		return wc;
+	}
+
+	@Bean(name = "wallFilter")
+	@DependsOn("wallConfig")
+	WallFilter wallFilter(WallConfig wallConfig){
+		WallFilter wfilter = new WallFilter ();
+		wfilter.setConfig(wallConfig);
+		return wfilter;
 	}
 
 	@Bean

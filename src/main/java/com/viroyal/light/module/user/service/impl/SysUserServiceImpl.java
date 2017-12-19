@@ -207,6 +207,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void update(SysUser user) {
         //更新用户
+        if(StringUtils.isBlank(user.getPswd())){
+            user.setPswd(null);
+        }else{
+            user.setPswd(MyDES.encryptBasedDes(user.getUsername() + user.getPswd()));
+        }
         sysUserMapper.update(user);
 
         SysUserRole userRole = new SysUserRole();
@@ -215,5 +220,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         //更新用户与角色关系
         sysUserRoleService.updateUserRole(userRole);
+    }
+
+    @Transactional
+    @Override
+    public int deleteBatch(String[] userId) {
+        return sysUserMapper.deleteBatch(userId);
     }
 }

@@ -27,6 +27,8 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      */
     List<SysUser> getAllUser();
 
+    int deleteBatch(Object[] userId);
+
     /**
      * 查询用户的所有权限
      * @param userId  用户ID
