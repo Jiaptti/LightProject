@@ -119,7 +119,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         List<String> permsList = null;
         //系统管理员，拥有最高权限
         if(user.getId() == 1){
-            List<SysPermission> permissionList = permissionMapper.getAllPermission();
+            List<SysPermission> permissionList = permissionMapper.selectByMap(new HashMap<>());
             permsList = new ArrayList<>(permissionList.size());
             for(SysPermission permission : permissionList){
                 permsList.add(permission.getPerms());

@@ -157,14 +157,15 @@ public class SysUserController {
     @ResponseBody
     public String getUserList() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysUser> userList = sysUserService.getAllUser();
-        resultMap.put("status", "200");
-        resultMap.put("list", userList);
+        List<SysUser> userList = sysUserService.selectByMap(new HashMap<>());
         if (userList.size() > 0) {
-            resultMap.put("message", "success");
+            resultMap.put("status", "200");
+            resultMap.put("message", "成功");
         } else {
-            resultMap.put("message", "no result");
+            resultMap.put("status", "500");
+            resultMap.put("message", "失败");
         }
+        resultMap.put("list", userList);
         return JSON.toJSONString(resultMap);
     }
 

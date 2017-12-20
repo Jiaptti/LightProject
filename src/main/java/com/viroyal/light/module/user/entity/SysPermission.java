@@ -1,5 +1,7 @@
 package com.viroyal.light.module.user.entity;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -17,7 +19,7 @@ import java.io.Serializable;
  */
 @TableName("sys_permission")
 @Data
-public class SysPermission extends BaseEntity<SysPermission> {
+public class SysPermission extends Model<SysPermission> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +37,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
 	/**
 	 * 授权(多个用逗号分隔，如：user:list,user:create)
 	 */
+	@TableField("perms")
 	private String perms;
 
 	@Override
