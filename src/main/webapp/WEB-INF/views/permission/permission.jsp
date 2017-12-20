@@ -91,7 +91,7 @@
 			var config = {
 				title : '角色列表',
 				url : '/permission/getPermissionListWithPager',
-				colNames : [ '主键', 'url地址', 'url描述' ],
+				colNames : [ '主键', 'url地址', 'url描述', '权限'],
 				colModel : [ {
 					name : 'id',
 					index : 'id',
@@ -106,7 +106,11 @@
 					name : 'name',
 					index : 'name',
 					width : 100
-				} ]
+				} , {
+                    name : 'perms',
+                    index : 'perms',
+                    width : 100
+                }]
 			};
 			JucheapGrid.Load(config);
 			$("#btnSearch").bind("click", searchData);

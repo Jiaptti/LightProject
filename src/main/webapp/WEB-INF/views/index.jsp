@@ -46,12 +46,8 @@
           menu:[{
               text:'用户管理',
               items:[
-				<shiro:hasPermission name="sys:user:list">
                 {id:'yhgl',text:'用户列表',href:'/user/userPage'},
-				</shiro:hasPermission>
-				<shiro:hasPermission name="sys:psermission:list">
                 {id:'qxgl',text:'权限列表',href:'/permission/permissionPage' },
-                </shiro:hasPermission>
 				{id:'jsgl',text:'角色列表',href:'/role/rolePage' },
 				{id:'csqxgl',text:'初始权限列表',href:'/permissionInit/permissionInitPage'},
 				{id:'zxyhgl',text:'在线用户列表',href:'/user/onlineUserPage'},

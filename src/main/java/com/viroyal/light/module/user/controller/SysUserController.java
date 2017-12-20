@@ -151,6 +151,7 @@ public class SysUserController {
         return JSON.toJSONString(customPage);
     }
 
+    //移动端查询用户列表
     @RequestMapping(value = "/list")
     @RequiresPermissions("sys:user:list")
     @ResponseBody
@@ -158,7 +159,7 @@ public class SysUserController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<SysUser> userList = sysUserService.getAllUser();
         resultMap.put("status", "200");
-        resultMap.put("userList", userList);
+        resultMap.put("list", userList);
         if (userList.size() > 0) {
             resultMap.put("message", "success");
         } else {

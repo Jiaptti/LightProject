@@ -142,7 +142,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             user.setStatus("1");
         }
         //添加用户
-        user.setPswd(MyDES.encryptBasedDes(user.getUsername() + user.getPswd()));
+        if(StringUtils.isBlank(user.getPswd())){
+            user.setPswd(null);
+        }else{
+            user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
+        }
         sysUserMapper.save(user);
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
@@ -157,7 +161,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void save(SysUser user) {
         //添加用户
         user.setCreateTime(new Date());
-        user.setPswd(MyDES.encryptBasedDes(user.getUsername() + user.getPswd()));
+        if(StringUtils.isBlank(user.getPswd())){
+            user.setPswd(null);
+        }else{
+            user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
+        }
         sysUserMapper.save(user);
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
@@ -189,7 +197,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if(StringUtils.isBlank(user.getPswd())){
             user.setPswd(null);
         }else{
-            user.setPswd(MyDES.encryptBasedDes(user.getUsername() + user.getPswd()));
+            user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
         }
 
         //更新用户
@@ -210,7 +218,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if(StringUtils.isBlank(user.getPswd())){
             user.setPswd(null);
         }else{
-            user.setPswd(MyDES.encryptBasedDes(user.getUsername() + user.getPswd()));
+            user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
         }
         sysUserMapper.update(user);
 

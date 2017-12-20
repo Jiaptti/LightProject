@@ -34,13 +34,12 @@
                        value="${user.id}"/>
                 <div class="form-group">
                     <label class="col-sm-3 control-label"><label
-                            for="UserName">姓名</label>：</label>
+                            for="NickName">姓名</label>：</label>
                     <div class="col-sm-8">
-                        <input class="form-control" id="username" name="username"
-                               placeholder="姓名" type="text" value="${user.username}"
-                               data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
-                               data-val-maxlength-max="20" data-val-required="姓名不能为空"/> <span
-                            data-valmsg-for="username" data-valmsg-replace="true"
+                        <input class="form-control" id="nickname" name="nickname"
+                               placeholder="姓名" type="text" value="${user.nickname}"
+                               data-val-required="姓名不能为空"/> <span
+                            data-valmsg-for="nickname" data-valmsg-replace="true"
                             class="field-validation-valid"></span>
                     </div>
                 </div>
@@ -48,11 +47,11 @@
                     <label class="col-sm-3 control-label"><label
                             for="LoginName">用户名称</label>：</label>
                     <div class="col-sm-8">
-                        <input class="form-control" id="nickname" name="nickname"
-                               placeholder="用户名称" type="text" value="${user.nickname}"
-                               data-val="true" data-val-maxlength="角色名称长度不能超过20个字符"
+                        <input class="form-control" id="username" name="username"
+                               placeholder="用户名称" type="text" value="${user.username}"
+                               data-val="true" data-val-maxlength="账号长度不能超过20个字符"
                                data-val-maxlength-max="20" data-val-required="账号不能为空"/> <span
-                            data-valmsg-for="nickname" data-valmsg-replace="true"
+                            data-valmsg-for="username" data-valmsg-replace="true"
                             class="field-validation-valid"></span>
                     </div>
                 </div>
