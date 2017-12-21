@@ -63,11 +63,11 @@ public class SysUserController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysUser user = sysUserService.selectById(id);
         if(user == null) {
-            resultMap.put("statue", "500");
+            resultMap.put("code", 500);
             resultMap.put("user", user);
             resultMap.put("message","no result");
         } else {
-            resultMap.put("statue", "200");
+            resultMap.put("code", 200);
             resultMap.put("user", user);
             resultMap.put("message","success");
         }
@@ -157,7 +157,6 @@ public class SysUserController {
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String getUserList() {
-        Gson gson = new Gson();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<SysUser> userList = sysUserService.selectByMap(new HashMap<>());
         if (userList.size() > 0) {
@@ -168,7 +167,7 @@ public class SysUserController {
             resultMap.put("message", "失败");
         }
         resultMap.put("list", userList);
-        return gson.toJson(resultMap);
+        return JSON.toJSONString(resultMap);
     }
 
     // 刪除用户
@@ -178,9 +177,7 @@ public class SysUserController {
     @Transactional
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        int count = sysUserService.deleteBatch(ids);
-        System.out.print("count = " + count);
-        if(count > 0){
+        if(sysUserService.deleteBatch(ids) > 0){
             resultMap.put("status", "200");
             resultMap.put("message", "delete success！");
         } else {

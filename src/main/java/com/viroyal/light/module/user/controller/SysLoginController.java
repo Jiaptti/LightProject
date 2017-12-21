@@ -3,6 +3,7 @@ package com.viroyal.light.module.user.controller;
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.viroyal.light.module.user.service.ISysRoleService;
+import com.viroyal.light.module.user.service.ISysUserService;
 import com.viroyal.light.module.user.shiro.ShiroService;
 import com.viroyal.light.common.utils.vcode.Captcha;
 import com.viroyal.light.common.utils.vcode.GifCaptcha;
@@ -31,6 +32,9 @@ public class SysLoginController {
 
     @Autowired
     ISysRoleService sysRoleService;
+
+    @Autowired
+    ISysUserService sysUserService;
 
     //首页
     @RequestMapping(value="/index")
@@ -83,6 +87,8 @@ public class SysLoginController {
     public Map<String,Object> logout(){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         try {
+            SysUser user = (SysUser)SecurityUtils.getSubject().getPrincipal();
+            sysUserService.logout(user.getId());
             SecurityUtils.getSubject().logout();
         } catch (Exception e) {
             resultMap.put("status", 500);

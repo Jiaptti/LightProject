@@ -69,7 +69,7 @@
 
 		function editModel() {//编辑
 			var row = JucheapGrid.GetData();
-			var selectSize = $("#table_list").getGridParam("selrow");
+			var selectSize = $("#table_list").getGridParam("selarrrow").length;
 			if(row != null){
 			    if(selectSize > 1){
                     parent.layer.alert("请选择单条数据");

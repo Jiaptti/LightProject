@@ -34,7 +34,8 @@
 		`email`,
 		`create_time`,
 		`last_login_time`,
-		`status`
+		`status`,
+		`create_name_id`
 		)
 		values
 		(
@@ -46,7 +47,8 @@
 		#{email},
 		#{createTime},
 		#{lastLoginTime},
-		#{status}
+		#{status},
+		#{createNameId}
 		)
 	</insert>
 
@@ -68,11 +70,10 @@
 			<if test="phone != null">`phone` = #{phone}, </if>
 			<if test="email != null">`email` = #{email}, </if>
 			<if test="status != null">`status` = #{status}, </if>
+			<if test="lastUpdateNameId != null">`last_update_name_id` = #{lastUpdateNameId}, </if>
+			<if test="lastUpdateTime != null">`last_update_time` = #{lastUpdateTime} </if>
 		</set>
 		where id = #{id}
-		<if test="createNameId != null">
-			and `create_name_id` = #{createNameId}
-		</if>
 	</update>
 
 	<delete id="deleteBatch">

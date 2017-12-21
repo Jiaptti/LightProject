@@ -2,6 +2,7 @@ package com.viroyal.light.module.user.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.utils.MyDES;
+import com.viroyal.light.common.utils.ShiroUtils;
 import com.viroyal.light.module.user.entity.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.viroyal.light.module.user.dao.SysUserMapper;
@@ -12,6 +13,7 @@ import com.viroyal.light.module.user.service.ISysUserRoleService;
 import com.viroyal.light.module.user.service.ISysUserService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -127,9 +129,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     //根据sessionId执行强制退出
+    @Transactional
     @Override
     public void kickout(Serializable sessionId){
+        SysUser user =  sysUserMapper.selectById(sessionId);
+        user.setLastLoginTime(new Date());
+        sysUserMapper.update(user);
         this.getSessionBysessionId(sessionId).setAttribute("kickout", true);
+    }
+
+    @Transactional
+    @Override
+    public void logout(Serializable sessionId) {
+        SysUser user =  sysUserMapper.selectById(sessionId);
+        user.setLastLoginTime(new Date());
+        sysUserMapper.update(user);
     }
 
     @Transactional
@@ -147,6 +161,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }else{
             user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
         }
+        user.setCreateNameId(String.valueOf(ShiroUtils.getUserId()));
         sysUserMapper.save(user);
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
@@ -166,6 +181,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }else{
             user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
         }
+        user.setCreateNameId(String.valueOf(ShiroUtils.getUserId()));
         sysUserMapper.save(user);
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
@@ -199,7 +215,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }else{
             user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
         }
-
+        user.setLastUpdateTime(new Date());
+        user.setLastUpdateNameId(String.valueOf(ShiroUtils.getUserId()));
         //更新用户
         sysUserMapper.update(user);
 
@@ -220,6 +237,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }else{
             user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
         }
+        user.setLastUpdateTime(new Date());
+        user.setLastUpdateNameId(String.valueOf(ShiroUtils.getUserId()));
         sysUserMapper.update(user);
 
         SysUserRole userRole = new SysUserRole();

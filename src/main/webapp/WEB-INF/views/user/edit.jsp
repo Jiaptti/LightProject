@@ -29,7 +29,7 @@
         </div>
         <div class="ibox-content">
             <form action="${not empty user.id ? '/user/edit' : '/user/save'}" class="form-horizontal" method="post"
-                id = "editForm">
+                  id="editForm">
                 <input hidden="true" id="id" name="id" type="text"
                        value="${user.id}"/>
                 <div class="form-group">
@@ -38,6 +38,8 @@
                     <div class="col-sm-8">
                         <input class="form-control" id="nickname" name="nickname"
                                placeholder="姓名" type="text" value="${user.nickname}"
+                               data-val="true" data-val-regex="请输入正确的姓名"
+                               data-val-regex-pattern="[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*"
                                data-val-required="姓名不能为空"/> <span
                             data-valmsg-for="nickname" data-valmsg-replace="true"
                             class="field-validation-valid"></span>
@@ -49,7 +51,7 @@
                     <div class="col-sm-8">
                         <input class="form-control" id="username" name="username"
                                placeholder="用户名称" type="text" value="${user.username}"
-                               data-val="true" data-val-maxlength="账号长度不能超过20个字符"
+                               data-val-maxlength="账号长度不能超过20个字符"
                                data-val-maxlength-max="20" data-val-required="账号不能为空"/> <span
                             data-valmsg-for="username" data-valmsg-replace="true"
                             class="field-validation-valid"></span>
@@ -113,8 +115,9 @@
                             for="RealName">是否有效</label>：</label>
                     <div class="col-sm-8">
                         <div class="switch switch-mini" checked="true" data-on-label="有效" data-off-label="无效">
-                            <input type="checkbox" <c:if test="${user.status =='1'}">checked="true"</c:if>
-                            name="isEffective" id="isEffective"/>
+                            <input type="checkbox"
+                                   <c:if test="${user.status =='1'}">checked="true"</c:if>
+                                   name="isEffective" id="isEffective"/>
                         </div>
                     </div>
                 </div>
