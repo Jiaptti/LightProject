@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.google.gson.Gson;
 import com.viroyal.light.common.utils.MyDES;
 import com.viroyal.light.module.user.entity.page.CustomPage;
 import com.viroyal.light.module.user.entity.page.FrontPage;
@@ -99,12 +100,12 @@ public class SysUserController {
     public String save(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try{
-            resultMap.put("statue", "200");
+            resultMap.put("code", 200);
             sysUserService.save(user);
             resultMap.put("message", "save success!");
         } catch (Exception e){
             e.printStackTrace();
-            resultMap.put("statue", "500");
+            resultMap.put("code", 500);
             resultMap.put("message", "error = " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
@@ -126,12 +127,12 @@ public class SysUserController {
     public String update(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try{
-            resultMap.put("statue", "200");
+            resultMap.put("code", 200);
             sysUserService.update(user);
             resultMap.put("message", "update success!");
         } catch (Exception e){
             e.printStackTrace();
-            resultMap.put("statue", "500");
+            resultMap.put("code", 500);
             resultMap.put("message", "failure error = " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
@@ -156,17 +157,18 @@ public class SysUserController {
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String getUserList() {
+        Gson gson = new Gson();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<SysUser> userList = sysUserService.selectByMap(new HashMap<>());
         if (userList.size() > 0) {
-            resultMap.put("status", "200");
+            resultMap.put("code", 200);
             resultMap.put("message", "成功");
         } else {
-            resultMap.put("status", "500");
+            resultMap.put("code", 500);
             resultMap.put("message", "失败");
         }
         resultMap.put("list", userList);
-        return JSON.toJSONString(resultMap);
+        return gson.toJson(resultMap);
     }
 
     // 刪除用户
@@ -182,7 +184,7 @@ public class SysUserController {
             resultMap.put("status", "200");
             resultMap.put("message", "delete success！");
         } else {
-            resultMap.put("status", "500");
+            resultMap.put("code", "500");
             resultMap.put("message", "delete failure");
         }
         return JSON.toJSONString(resultMap);

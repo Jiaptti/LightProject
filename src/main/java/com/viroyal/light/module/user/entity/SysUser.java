@@ -1,6 +1,8 @@
 package com.viroyal.light.module.user.entity;
 
 import java.util.Date;
+
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -51,11 +53,13 @@ public class SysUser extends Model<SysUser> {
     /**
      * 创建时间
      */
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@TableField("create_time")
 	private Date createTime;
     /**
      * 最后登录时间
      */
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@TableField("last_login_time")
 	private Date lastLoginTime;
     /**

@@ -98,7 +98,7 @@ public class SysLoginController {
     public Map<String, Object> submitLogin(String username, String password,String vcode , Boolean rememberMe , Model model){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         if(vcode==null||vcode==""){
-            resultMap.put("status", 500);
+            resultMap.put("status", "500");
             resultMap.put("message", "验证码不能为空！");
             return resultMap;
         }
@@ -106,17 +106,17 @@ public class SysLoginController {
         vcode = vcode.toLowerCase();
         String v = (String) session.getAttribute("_code");
         if(!vcode.equals(v)){
-            resultMap.put("status", 500);
+            resultMap.put("status", "500");
             resultMap.put("message", "验证码错误！");
             return resultMap;
         }
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
             SecurityUtils.getSubject().login(token);
-            resultMap.put("status", 200);
+            resultMap.put("status", "200");
             resultMap.put("message", "登录成功");
         } catch (Exception e){
-            resultMap.put("status", 500);
+            resultMap.put("status", "500");
             resultMap.put("message", e.getMessage());
         }
         return resultMap;
@@ -131,7 +131,7 @@ public class SysLoginController {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             SecurityUtils.getSubject().login(token);
             user = (SysUser) SecurityUtils.getSubject().getPrincipal();
-            resultMap.put("status", "200");
+            resultMap.put("code", 200);
             resultMap.put("user",user);
             if(user != null){
                 String roleName = sysRoleService.getUserRoleName(user.getId());
@@ -145,7 +145,7 @@ public class SysLoginController {
             } else {
                 errorMessage = e.getMessage();
             }
-            resultMap.put("status", "500");
+            resultMap.put("code", 500);
             resultMap.put("user",user);
             resultMap.put("message","error = " + errorMessage);
         }
