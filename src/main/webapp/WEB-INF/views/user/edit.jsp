@@ -105,6 +105,7 @@
                         <select id="roleId" name="roleId" data-val="true"
                                 data-val-required="请选择">
                             <option value="0">请选择</option>
+                            <option value="1" <c:if test="${user.roleId =='3'}">selected="selected"</c:if>>管理员</option>
                             <option value="2" <c:if test="${user.roleId =='3'}">selected="selected"</c:if>>员工</option>
                             <option value="3" <c:if test="${user.roleId =='3'}">selected="selected"</c:if>>维修员</option>
                         </select>

@@ -146,7 +146,7 @@ public class SysUserController {
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
         String keyWords = page.getKeywords();
         if (keyWords != null && keyWords != "")
-            wrapper.like("nickname", keyWords);
+            wrapper.like("username", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
         return JSON.toJSONString(customPage);

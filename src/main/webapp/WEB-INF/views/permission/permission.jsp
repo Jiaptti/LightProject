@@ -68,13 +68,18 @@
 		}
 
 		function editModel() {//编辑
-			var row = JucheapGrid.GetData();
-			if (row != null) {
-				$("#btnEdit").button("loading");
-				window.location.href = "/permission/editPage/" + row.id;
-			} else {
-				parent.layer.alert("请选择要编辑的数据");
-			}
+            var row = JucheapGrid.GetData();
+            var selectSize = $("#table_list").getGridParam("selarrrow").length;
+            if(row != null){
+                if(selectSize > 1){
+                    parent.layer.alert("请选择单条数据");
+                } else {
+                    $("#btnEdit").button("loading");
+                    window.location.href = "/permission/editPage/" + row.id;
+                }
+            } else {
+                parent.layer.alert("请选择要编辑的数据");
+            }
 		}
 
 		function delData() {//删除

@@ -13,6 +13,259 @@ File Encoding         : 65001
 Date: 2017-12-18 17:49:57
 */
 
+
+
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : my_db
+Source Server Version : 50527
+Source Host           : localhost:3306
+Source Database       : viroyal_light_db
+
+Target Server Type    : MYSQL
+Target Server Version : 50527
+File Encoding         : 65001
+
+Date: 2017-12-22 14:50:48
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for sys_light_street
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_light_street`;
+CREATE TABLE `sys_light_street` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '街道名' ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Records of sys_light_street
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light_street` VALUES ('1', '漕宝路'), ('2', '桂平路'),('3', '桂林路'),
+	('4', '莲花南路'),('5', '春申路'),('6', '紫薇路'),
+	('7', '阳明路'),('8', '松林路'),('9', '清溪路'),
+	('10','川心路'),('11','荷泉路'),('12','凤池路');
+COMMIT;
+
+
+-- ----------------------------
+-- Table structure for sys_light_area_street
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_light_area_street`;
+CREATE TABLE `sys_light_area_street` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`aid`  bigint(20) NULL DEFAULT NULL COMMENT '区ID' ,
+`sid`  bigint(20) NULL DEFAULT NULL COMMENT '街道ID' ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Records of sys_light_area_street
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light_area_street` VALUES ('1','1','1'), ('1','1','2'), ('1','1','3')
+	, ('1','2','4'), ('1','2','5'), ('1','3','6')
+	, ('1','4','7'), ('1','4','8'), ('1','4','9')
+	, ('1','5','10'), ('1','5','11'), ('1','5','12');
+COMMIT;
+
+
+-- ----------------------------
+-- Table structure for sys_light_area
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_light_area`;
+CREATE TABLE `light_area` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`name`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区名' ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Records of `sys_light_area`
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light_area` VALUES ('1', '徐汇区'),
+('2', '闵行区'),('3', '浦东区'),('4', '贵阳市'),('5', '六盘水市');
+COMMIT;
+
+
+-- ----------------------------
+-- Table structure for sys_light_city_area
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_light_city_area`;
+CREATE TABLE `sys_light_city_area` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`cid`  bigint(20) NULL DEFAULT NULL COMMENT '城市ID' ,
+`aid`  bigint(20) NULL DEFAULT NULL COMMENT '区域ID' ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Records of sys_light_city_area
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light_city_area` VALUES ('1', '1', '1'), ('2', '1', '2'), ('3', '1', '3'),
+('4', '1', '4'),('4', '2', '5'),('4', '2', '6');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_light_city
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_light_city`;
+CREATE TABLE `sys_light_city` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '城市名' ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Records of sys_light_city
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light_city` VALUES ('1', '上海'), ('2', '贵州');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_light_record
+-- ----------------------------
+DROP TABLE IF EXISTS sys_light_record;
+CREATE TABLE `sys_light_record` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`r_date` datetime  NULL DEFAULT NULL COMMENT '记录时间' ,
+`r_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录状态' ,
+`r_operation` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录操作' ,
+`r_userid` bigint(20) NULL DEFAULT NULL COMMENT '谁进行了操作' ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+
+-- ----------------------------
+-- Records of sys_light_record
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light_city` VALUES ('1', '2016-06-16 11:15:33','更新路灯','对路灯位置进行了修改','1'),
+('2', '2017-12-22 11:01:56','指派路灯','对路灯指派了维修人员','2');
+COMMIT;
+
+
+
+-- ----------------------------
+-- Table structure for sys_light_info
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_light_info`;
+CREATE TABLE `sys_light_info` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`code`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路灯编码',
+`info`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路灯信息',
+`status`  varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '1:正在使用，0:刚注册信息并没有投入使用' ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Records of sys_light_info
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light_info` VALUES ('1', '10001','xx1路灯','0'), ('2', '1002','xx2路灯','1')
+, ('3', '1003','xx3路灯','1'), ('4', '1004','xx4路灯','0');
+COMMIT;
+
+
+
+-- ----------------------------
+-- Table structure for sys_light
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_light`;
+CREATE TABLE `sys_light` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`code`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路灯编码',
+`info`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路灯信息',
+`status`  varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '1:正在使用，0:刚注册信息并没有投入使用' ,
+`info`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路灯信息',
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Records of sys_light
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_light` VALUES ('1', '10001','xx1路灯','0'), ('2', '1002','xx2路灯','1')
+, ('3', '1003','xx3路灯','1'), ('4', '1004','xx4路灯','0');
+COMMIT;
+
+
+
+-- ----------------------------
+-- Auto increment value for sys_light_area
+-- ----------------------------
+ALTER TABLE `sys_light_area` AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Auto increment value for sys_light_city_area
+-- ----------------------------
+ALTER TABLE `sys_light_city_area` AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Auto increment value for sys_light_city
+-- ----------------------------
+ALTER TABLE `sys_light_city` AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Auto increment value for sys_light_record
+-- ----------------------------
+ALTER TABLE `sys_light_record` AUTO_INCREMENT=1;
+
+-- ----------------------------
+-- Auto increment value for sys_light_info
+-- ----------------------------
+ALTER TABLE `sys_light_info` AUTO_INCREMENT=1;
+
+
+-- ----------------------------
+-- Auto increment value for sys_light
+-- ----------------------------
+ALTER TABLE `sys_light` AUTO_INCREMENT=1;
+
+
+
+
+
+
+
+
+
+
+
+
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------

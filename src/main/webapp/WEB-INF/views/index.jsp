@@ -14,9 +14,7 @@
  <body>
 	<div class="header">
 		<div class="dl-title">
-			<a href="http://z77z.oschina.io/" title="个人博客地址" target="_blank">
-				<span class="lp-title-port">路灯</span><span class="dl-title-text">系统</span>
-			</a>
+			<span class="lp-title-port">路灯</span><span class="dl-title-text">系统</span>
 		</div>
 		<div class="dl-log">
 			欢迎您，<span class="dl-log-user"><shiro:principal property="nickname"/>  </span> <span class="admin"></span>
