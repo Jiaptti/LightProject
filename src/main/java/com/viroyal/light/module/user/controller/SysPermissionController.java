@@ -8,6 +8,7 @@ import com.viroyal.light.module.user.entity.page.CustomPage;
 import com.viroyal.light.module.user.entity.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.viroyal.light.module.user.service.ISysPermissionService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,7 @@ public class SysPermissionController {
 
     @RequestMapping(value = "/getPermissionListWithPager")
     @ResponseBody
+    @RequiresPermissions("sys:permission:list")
     public String getPermissionListWithPager(FrontPage<SysPermission> page){
         Wrapper<SysPermission> wrapper = new EntityWrapper<SysPermission>();
         String keyWords = page.getKeywords();
@@ -54,6 +56,15 @@ public class SysPermissionController {
         Page<SysPermission> pageList = sysPermissionService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysPermission> customPage = new CustomPage<SysPermission>(pageList);
         return JSON.toJSONString(customPage);
+    }
+
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    @RequiresPermissions("sys:permission:list")
+    public String permissionList(){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        return JSON.toJSONString(resultMap);
     }
 
     @RequestMapping(value = "/editPage/{Id}")

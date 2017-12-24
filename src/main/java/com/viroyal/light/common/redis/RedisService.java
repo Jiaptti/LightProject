@@ -1,4 +1,4 @@
-package com.viroyal.light.module.user.service;
+package com.viroyal.light.common.redis;
 
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.redis.Operate;

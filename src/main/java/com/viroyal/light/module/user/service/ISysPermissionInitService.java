@@ -14,5 +14,5 @@ import java.util.List;
  * @since 2017-12-01
  */
 public interface ISysPermissionInitService extends IService<SysPermissionInit> {
-    public List<SysPermissionInit> selectAll();
+    List<SysPermissionInit> selectAll();
 }

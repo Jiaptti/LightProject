@@ -158,7 +158,7 @@ public class SysUserController {
     @ResponseBody
     public String getUserList() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysUser> userList = sysUserService.selectByMap(new HashMap<>());
+        List<SysUser> userList = sysUserService.getAllUser();
         if (userList.size() > 0) {
             resultMap.put("code", 200);
             resultMap.put("message", "成功");

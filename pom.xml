@@ -156,12 +156,12 @@
             <version>1.4.6</version>
         </dependency>
 
-        <!-- TCP长连接即时通讯框架
+        <!-- TCP长连接即时通讯框架-->
         <dependency>
             <groupId>org.t-io</groupId>
             <artifactId>tio-core</artifactId>
             <version>1.7.0.v20170501-RELEASE</version>
-        </dependency>-->
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -185,17 +185,6 @@
     </dependencies>
 
     <build>
-        <!--
-        <finalName>light</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
-        </plugins>-->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -1,7 +1,7 @@
 spring:
     # 环境 dev|test|pro
     profiles:
-        active: test
+        active: pro
     # jackson时间格式化
     jackson:
         time-zone: GMT+8
@@ -31,7 +31,6 @@ spring:
 # Mybatis配置
 mybatis:
     mapperLocations: classpath:mapper/**/*.xml
-
 viroyal:
     redis:
         open: false  # 是否开启redis缓存  true开启   false关闭

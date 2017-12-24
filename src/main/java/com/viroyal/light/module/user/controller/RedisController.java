@@ -3,7 +3,7 @@ package com.viroyal.light.module.user.controller;
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.redis.Operate;
 import com.viroyal.light.common.redis.RedisInfoDetail;
-import com.viroyal.light.module.user.service.RedisService;
+import com.viroyal.light.common.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

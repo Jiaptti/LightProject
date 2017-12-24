@@ -19,7 +19,7 @@
 	</resultMap>
 
 	<select id="getAllUser" resultType="com.viroyal.light.module.user.entity.SysUser">
-		select * from sys_user
+		select u.nickname, u.username, u.phone, u.email from sys_user as u
 	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.user.entity.SysUser"

@@ -29,7 +29,7 @@
 						value="${permission.id}" />
 					<div class="form-group">
 						<label class="col-sm-3 control-label"><label
-							for="LoginName">url地址</label>：</label>
+							for="UrlPath">url地址</label>：</label>
 						<div class="col-sm-8">
 							<input class="form-control" id="url" name="url"
 								placeholder="url地址" type="text" value="${permission.url}"

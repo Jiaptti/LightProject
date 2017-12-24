@@ -137,6 +137,7 @@ public class SysLoginController {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             SecurityUtils.getSubject().login(token);
             user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+            user.setPswd(null);
             resultMap.put("code", 200);
             resultMap.put("user",user);
             if(user != null){
