@@ -1,7 +1,6 @@
 package com.viroyal.light.common.shiro;
 
-import com.viroyal.light.common.filter.MyFormAuthenticationFilter;
-import com.viroyal.light.common.filter.SessionFilter;
+import com.viroyal.light.common.filter.LoginFilter;
 import com.viroyal.light.module.user.entity.SysPermissionInit;
 import com.viroyal.light.module.user.service.ISysPermissionInitService;
 import com.viroyal.light.common.filter.KickoutSessionControlFilter;
@@ -20,14 +19,10 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 public class ShiroConfig {
@@ -57,21 +52,10 @@ public class ShiroConfig {
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/index");
-        // 未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        HashMap<String, javax.servlet.Filter> loginFilter = new HashMap<>();
+        loginFilter.put("loginFilter", new LoginFilter());
+        shiroFilterFactoryBean.setFilters(loginFilter);
 
-        //自定义拦截器
-        Map<String, Filter> map = new LinkedHashMap<>();
-        map.put("myFormAuthenticationFilter", myFormAuthenticationFilter());
-        shiroFilterFactoryBean.setFilters(map);
-
-        Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
-        filtersMap.put("kickout", kickoutSessionControlFilter());
-        shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 拦截器.
         List<SysPermissionInit> permissionInits = sysPermissionInitService.selectAll();
@@ -79,31 +63,37 @@ public class ShiroConfig {
         for(SysPermissionInit permissionInit : permissionInits){
             filterChainDefinitionMap.put(permissionInit.getUrl(), permissionInit.getPermissionInit());
         }
-
+        filterChainDefinitionMap.put("/**", "loginFilter");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
+
+        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        shiroFilterFactoryBean.setLoginUrl("/login");
+        // 登录成功后要跳转的链接
+        shiroFilterFactoryBean.setSuccessUrl("/index");
+        // 未授权界面;
+        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+
+        Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
+        filtersMap.put("kickout", kickoutSessionControlFilter());
+        shiroFilterFactoryBean.setFilters(filtersMap);
+
         System.out.println("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
     }
 
-//    @Bean
-//    public FilterRegistrationBean delegatingFilterProxy(){
-//        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-//        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
-//        proxy.setTargetFilterLifecycle(true);
-//        SessionFilter filter = new SessionFilter();
-//        filterRegistrationBean.setFilter(filter);
-//        proxy.setTargetBeanName("shiroFilter");
-//        System.out.println("delegatingFilterProxy拦截器工厂类注入成功");
-//        filterRegistrationBean.setFilter(proxy);
-//        return filterRegistrationBean;
-//    }
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
+        DelegatingFilterProxy proxy = new DelegatingFilterProxy("shiroFilter");
+        //  该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理
+        proxy.setTargetFilterLifecycle(true);
+        filterRegistration.setFilter(proxy);
 
-    @Bean("myFormAuthenticationFilter")
-    public MyFormAuthenticationFilter myFormAuthenticationFilter() {
-        System.out.println("myFormAuthenticationFilter类注入成功");
-        return new MyFormAuthenticationFilter();
+        filterRegistration.setEnabled(true);
+        //filterRegistration.addUrlPatterns("/*");// 可以自己灵活的定义很多，避免一些根本不需要被Shiro处理的请求被包含进来
+        return filterRegistration;
     }
-
 
     @Bean
     public SecurityManager securityManager() {
