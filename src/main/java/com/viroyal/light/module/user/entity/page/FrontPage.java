@@ -24,6 +24,8 @@ public class FrontPage<T> {
     //排序的字段
     private String sidx;
 
+    private int pageSize;
+
     //排序方式 asc升序  desc降序
     private String sord;
 
@@ -34,7 +36,7 @@ public class FrontPage<T> {
     public Page<T> getPagePlus(){
         Page<T> pagePlus = new Page<T>();
         pagePlus.setCurrent(this.page);
-        pagePlus.setSize(10);
+        pagePlus.setSize(pageSize);
         pagePlus.setAsc(this.sord.equals("asc"));
         pagePlus.setOrderByField(this.sidx);
         return pagePlus;

@@ -1,4 +1,4 @@
-package com.viroyal.light.module.user.shiro.filter;
+package com.viroyal.light.common.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.module.user.entity.SysUser;
@@ -14,6 +14,7 @@ import org.apache.shiro.web.util.WebUtils;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;

@@ -104,12 +104,12 @@
 					key : true,
 					hidden : true
 				}, {
-					name : 'nickname',
-					index : 'nickname',
+					name : 'username',
+					index : 'username',
 					width : 100,
 				}, {
-                    name : 'username',
-                    index : 'username',
+                    name : 'nickname',
+                    index : 'nickname',
                     width : 100,
                 },{
                     name : 'phone',

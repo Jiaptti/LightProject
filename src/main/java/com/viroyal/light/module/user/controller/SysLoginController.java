@@ -1,10 +1,11 @@
 package com.viroyal.light.module.user.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.viroyal.light.common.utils.ShiroUtils;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.viroyal.light.module.user.service.ISysRoleService;
 import com.viroyal.light.module.user.service.ISysUserService;
-import com.viroyal.light.module.user.shiro.ShiroService;
+import com.viroyal.light.common.shiro.ShiroService;
 import com.viroyal.light.common.utils.vcode.Captcha;
 import com.viroyal.light.common.utils.vcode.GifCaptcha;
 import org.apache.shiro.SecurityUtils;
@@ -130,7 +131,7 @@ public class SysLoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public String login(String username, String password){
+    public String login(String username, String password,HttpServletRequest request){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         SysUser user = null;
         try {

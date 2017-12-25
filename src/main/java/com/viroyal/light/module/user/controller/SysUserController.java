@@ -143,13 +143,37 @@ public class SysUserController {
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String getUserListWithPager(FrontPage<SysUser> page) {
+        page.setPageSize(10);
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
         String keyWords = page.getKeywords();
         if (keyWords != null && keyWords != "")
             wrapper.like("username", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
-        return JSON.toJSONString(customPage);
+        String pages = JSON.toJSONString(customPage);
+        System.out.print(pages);
+        return pages;
+    }
+
+    // 移动端用户列表分页json
+    @RequestMapping(value = "/getUserPage")
+    @RequiresPermissions("sys:user:list")
+    @ResponseBody
+    public String userPage(int pageSize, int pageId, String sidx, String sord, String keyWords) {
+        FrontPage<SysUser> page = new FrontPage<SysUser>();
+        page.setPage(pageId);
+        page.setPageSize(pageSize);
+        page.setSidx(sidx);
+        page.setSord(sord);
+
+        Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
+        if (keyWords != null && keyWords != "")
+            wrapper.like("username", keyWords);
+        Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
+        CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
+        String pages = JSON.toJSONString(customPage);
+        System.out.print(pages);
+        return pages;
     }
 
     //移动端查询用户列表

@@ -1,4 +1,4 @@
-package com.viroyal.light.module.user.shiro;
+package com.viroyal.light.common.shiro;
 
 import com.viroyal.light.module.user.entity.SysPermissionInit;
 import com.viroyal.light.module.user.service.ISysPermissionInitService;

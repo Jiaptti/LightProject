@@ -1,8 +1,10 @@
-package com.viroyal.light.module.user.shiro;
+package com.viroyal.light.common.shiro;
 
+import com.viroyal.light.common.filter.MyFormAuthenticationFilter;
+import com.viroyal.light.common.filter.SessionFilter;
 import com.viroyal.light.module.user.entity.SysPermissionInit;
 import com.viroyal.light.module.user.service.ISysPermissionInitService;
-import com.viroyal.light.module.user.shiro.filter.KickoutSessionControlFilter;
+import com.viroyal.light.common.filter.KickoutSessionControlFilter;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -14,11 +16,15 @@ import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +50,8 @@ public class ShiroConfig {
      * 3、部分过滤器可指定参数，如perms，roles
      *
      */
-    @Bean
-    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
+    @Bean("shiroFilter")
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
         // 必须设置 SecurityManager
@@ -59,33 +65,45 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
         //自定义拦截器
+        Map<String, Filter> map = new LinkedHashMap<>();
+        map.put("myFormAuthenticationFilter", myFormAuthenticationFilter());
+        shiroFilterFactoryBean.setFilters(map);
+
         Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
         filtersMap.put("kickout", kickoutSessionControlFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 拦截器.
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         List<SysPermissionInit> permissionInits = sysPermissionInitService.selectAll();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         for(SysPermissionInit permissionInit : permissionInits){
             filterChainDefinitionMap.put(permissionInit.getUrl(), permissionInit.getPermissionInit());
         }
-        // 配置不会被拦截的链接 顺序判断
-//        filterChainDefinitionMap.put("/static/**", "anon");
-//        filterChainDefinitionMap.put("/ajaxLogin", "anon");
-
-        // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-//        filterChainDefinitionMap.put("/logout", "logout");
-
-//        filterChainDefinitionMap.put("/add", "perms[权限添加]");
-
-        // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
-        // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-//        filterChainDefinitionMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         System.out.println("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
     }
+
+//    @Bean
+//    public FilterRegistrationBean delegatingFilterProxy(){
+//        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+//        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+//        proxy.setTargetFilterLifecycle(true);
+//        SessionFilter filter = new SessionFilter();
+//        filterRegistrationBean.setFilter(filter);
+//        proxy.setTargetBeanName("shiroFilter");
+//        System.out.println("delegatingFilterProxy拦截器工厂类注入成功");
+//        filterRegistrationBean.setFilter(proxy);
+//        return filterRegistrationBean;
+//    }
+
+    @Bean("myFormAuthenticationFilter")
+    public MyFormAuthenticationFilter myFormAuthenticationFilter() {
+        System.out.println("myFormAuthenticationFilter类注入成功");
+        return new MyFormAuthenticationFilter();
+    }
+
 
     @Bean
     public SecurityManager securityManager() {

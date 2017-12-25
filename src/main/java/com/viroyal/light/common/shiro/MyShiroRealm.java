@@ -1,4 +1,4 @@
-package com.viroyal.light.module.user.shiro;
+package com.viroyal.light.common.shiro;
 
 import com.viroyal.light.module.user.dao.SysPermissionMapper;
 import com.viroyal.light.module.user.dao.SysUserMapper;
@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 /***
@@ -71,13 +72,13 @@ public class MyShiroRealm extends AuthorizingRealm {
         ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
         opsForValue.increment(SHIRO_LOGIN_COUNT+name, 1);
         //计数大于5时，设置用户被锁定一小时
-//        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=10){
-//            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
-//            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
-//        }
-//        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
-//            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
-//        }
+        if(Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT+name))>=10){
+            opsForValue.set(SHIRO_IS_LOCK+name, "LOCK");
+            stringRedisTemplate.expire(SHIRO_IS_LOCK+name, 1, TimeUnit.HOURS);
+        }
+        if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK+name))){
+            throw new DisabledAccountException("由于密码输入错误次数大于5次，帐号已经禁止登录！");
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("username", name);
         //密码进行加密处理  明文为  password+name
