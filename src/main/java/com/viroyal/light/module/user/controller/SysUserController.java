@@ -80,7 +80,9 @@ public class SysUserController {
         SysUser user = sysUserService.selectById(Id);
         SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(Id));
         user.setRoleId(userRole.getRid());
-        user.setPswd(MyDES.decryptBasedDes(user.getPswd()));
+        String pswd = MyDES.decryptBasedDes(user.getPswd());
+        pswd = pswd.substring(0,pswd.indexOf(user.getUsername()));
+        user.setPswd(pswd);
         model.addAttribute("user", user);
         return "user/edit";
     }

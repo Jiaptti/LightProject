@@ -52,9 +52,11 @@ public class ShiroConfig {
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        HashMap<String, javax.servlet.Filter> loginFilter = new HashMap<>();
-        loginFilter.put("loginFilter", new LoginFilter());
-        shiroFilterFactoryBean.setFilters(loginFilter);
+        Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
+        filtersMap.put("kickout", kickoutSessionControlFilter());
+        filtersMap.put("loginFilter", new LoginFilter());
+        shiroFilterFactoryBean.setFilters(filtersMap);
+
 
 
         // 拦截器.
@@ -63,7 +65,6 @@ public class ShiroConfig {
         for(SysPermissionInit permissionInit : permissionInits){
             filterChainDefinitionMap.put(permissionInit.getUrl(), permissionInit.getPermissionInit());
         }
-        filterChainDefinitionMap.put("/**", "loginFilter");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
 
@@ -73,10 +74,6 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/index");
         // 未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-
-        Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
-        filtersMap.put("kickout", kickoutSessionControlFilter());
-        shiroFilterFactoryBean.setFilters(filtersMap);
 
         System.out.println("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
