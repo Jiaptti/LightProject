@@ -16,14 +16,13 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		Subject currentUser = SecurityUtils.getSubject();
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse response = (HttpServletResponse) resp;
-		System.out.print("currentUser.isAuthenticated() = " + currentUser.isAuthenticated()
-					+ " uri = " + request.getRequestURI());
-		if (!currentUser.isAuthenticated()) {
+//		HttpServletRequest request = (HttpServletRequest) req;
+//		HttpServletResponse response = (HttpServletResponse) resp;
+		System.out.print("currentUser.isAuthenticated() = " + currentUser.isAuthenticated());
+//		if (!currentUser.isAuthenticated()) {
 //			AjaxResponseWriter.write(req, res, ServiceStatusEnum.UNLOGIN, "请登录");
-			return;
-		}
+//			return;
+//		}
 		chain.doFilter(req, resp);
 	}
 

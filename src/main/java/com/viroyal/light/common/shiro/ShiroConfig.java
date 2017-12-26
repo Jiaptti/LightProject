@@ -57,8 +57,6 @@ public class ShiroConfig {
         filtersMap.put("loginFilter", new LoginFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
-
-
         // 拦截器.
         List<SysPermissionInit> permissionInits = sysPermissionInitService.selectAll();
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();

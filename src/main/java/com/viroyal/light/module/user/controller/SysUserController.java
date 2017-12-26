@@ -153,7 +153,6 @@ public class SysUserController {
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
         String pages = JSON.toJSONString(customPage);
-        System.out.print(pages);
         return pages;
     }
 
@@ -174,7 +173,6 @@ public class SysUserController {
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
         String pages = JSON.toJSONString(customPage);
-        System.out.print(pages);
         return pages;
     }
 
