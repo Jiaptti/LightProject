@@ -55,9 +55,9 @@
 
 	<!-- 查询用户的所有权限 -->
 	<select id="queryAllPerms" resultType="string">
-		select m.perms from sys_user_role ur
+		select p.perms from sys_user_role ur
 		LEFT JOIN sys_role_permission rm on ur.rid = rm.rid
-		LEFT JOIN sys_permission p on p.id = p.id
+		LEFT JOIN sys_permission p on p.id = rm.pid
 		where ur.uid = #{userId}
 	</select>
 

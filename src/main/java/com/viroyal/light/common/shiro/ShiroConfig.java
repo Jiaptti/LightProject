@@ -1,10 +1,11 @@
 package com.viroyal.light.common.shiro;
 
-import com.viroyal.light.common.filter.LoginFilter;
+import com.viroyal.light.common.filter.SessionFilter;
 import com.viroyal.light.module.user.entity.SysPermissionInit;
 import com.viroyal.light.module.user.service.ISysPermissionInitService;
 import com.viroyal.light.common.filter.KickoutSessionControlFilter;
 import org.apache.shiro.codec.Base64;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -13,6 +14,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -54,7 +56,7 @@ public class ShiroConfig {
 
         Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
         filtersMap.put("kickout", kickoutSessionControlFilter());
-        filtersMap.put("loginFilter", new LoginFilter());
+        filtersMap.put("sessionFilter", new SessionFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 拦截器.
@@ -195,5 +197,19 @@ public class ShiroConfig {
         //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
         cookieRememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
         return cookieRememberMeManager;
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(securityManager);
+        return advisor;
+    }
+
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
+        proxyCreator.setProxyTargetClass(true);
+        return proxyCreator;
     }
 }
