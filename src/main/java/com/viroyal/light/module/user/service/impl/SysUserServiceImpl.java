@@ -141,7 +141,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional
     @Override
     public void logout(Serializable sessionId) {
-        SysUser user =  sysUserMapper.selectById(sessionId);
+        SysUser user = sysUserMapper.selectById(sessionId);
         user.setLastLoginTime(new Date());
         sysUserMapper.update(user);
     }

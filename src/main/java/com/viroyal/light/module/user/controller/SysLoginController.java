@@ -1,6 +1,7 @@
 package com.viroyal.light.module.user.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.ShiroUtils;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.viroyal.light.module.user.service.ISysRoleService;
@@ -73,7 +74,6 @@ public class SysLoginController {
     @RequestMapping(value="/kickouting")
     @ResponseBody
     public String kickouting() {
-
         return "/kickout";
     }
 
@@ -91,9 +91,11 @@ public class SysLoginController {
             SysUser user = (SysUser)SecurityUtils.getSubject().getPrincipal();
             sysUserService.logout(user.getId());
             SecurityUtils.getSubject().logout();
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGOUT_SUCCESS);
         } catch (Exception e) {
-            resultMap.put("status", 500);
-            resultMap.put("message", e.getMessage());
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGOUT_FAILURE + " : " + e.getMessage());
             System.err.println(e.getMessage());
         }
         return resultMap;
@@ -105,31 +107,32 @@ public class SysLoginController {
     public Map<String, Object> submitLogin(String username, String password,String vcode , Boolean rememberMe , Model model){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         if(vcode==null||vcode==""){
-            resultMap.put("status", "500");
-            resultMap.put("message", "验证码不能为空！");
+            resultMap.put(BaseConstant.STATUS, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NULL_VERIFICATION_CODR);
             return resultMap;
         }
-        Session session = SecurityUtils.getSubject().getSession();
+        Session session = ShiroUtils.getSession();
         vcode = vcode.toLowerCase();
         String v = (String) session.getAttribute("_code");
         if(!vcode.equals(v)){
-            resultMap.put("status", "500");
-            resultMap.put("message", "验证码错误！");
+            resultMap.put(BaseConstant.STATUS, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.ERROR_VERIFICATION_CODR);
             return resultMap;
         }
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
             SecurityUtils.getSubject().login(token);
-            resultMap.put("status", "200");
-            resultMap.put("message", "登录成功");
+            ShiroUtils.setSessionAttribute(BaseConstant.SESSION_ATTRIBUTE, ShiroUtils.getUserId());
+            resultMap.put(BaseConstant.STATUS, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_SUCCESS);
         } catch (Exception e){
-            resultMap.put("status", "500");
-            resultMap.put("message", e.getMessage());
+            resultMap.put(BaseConstant.STATUS, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + e.getMessage());
         }
         return resultMap;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     @ResponseBody
     public String login(String username, String password,HttpServletRequest request){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
@@ -137,15 +140,16 @@ public class SysLoginController {
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             SecurityUtils.getSubject().login(token);
-            user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+            user = ShiroUtils.getUserEntity();
             user.setPswd(null);
-            resultMap.put("code", 200);
-            resultMap.put("user",user);
+            resultMap.put(BaseConstant.CODE, 200);
+            resultMap.put(BaseConstant.USER, user);
             if(user != null){
                 String roleName = sysRoleService.getUserRoleName(user.getId());
                 resultMap.put("roleName", roleName);
             }
-            resultMap.put("message","login in");
+            ShiroUtils.setSessionAttribute(BaseConstant.SESSION_ATTRIBUTE, user.getId());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_SUCCESS);
         } catch (Exception e){
             String errorMessage = "";
             if(e instanceof AuthenticationException){
@@ -153,9 +157,8 @@ public class SysLoginController {
             } else {
                 errorMessage = e.getMessage();
             }
-            resultMap.put("code", 500);
-            resultMap.put("user",user);
-            resultMap.put("message","error = " + errorMessage);
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + errorMessage);
         }
         return JSON.toJSONString(resultMap);
     }

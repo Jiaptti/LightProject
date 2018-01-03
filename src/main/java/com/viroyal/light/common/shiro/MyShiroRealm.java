@@ -138,6 +138,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         }
         //添加所有权限
         info.setStringPermissions(permsSet);
+        Logger.getLogger(getClass()).info("权限添加成功："+ permsSet);
         return info;
     }
 }

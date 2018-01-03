@@ -82,13 +82,4 @@ public class JacksonHelper {
 	private static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
 		return mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);   
 	}
-	
-	public static void main(String[] args) {
-		String s = "{\"ss\":\"12\",\"dd\":\"33\",\"tt\":23}";
-		@SuppressWarnings("unchecked")
-		Map<String, Object> map = fromJson(s, Map.class);
-		for (Entry<String, Object> entry : map.entrySet()) {
-			System.out.println(entry);
-		}
-	}
 }

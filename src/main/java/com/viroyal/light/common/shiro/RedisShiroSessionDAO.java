@@ -1,6 +1,6 @@
-package io.renren.modules.sys.shiro;
+package com.viroyal.light.common.shiro;
 
-import io.renren.common.utils.RedisKeys;
+import com.viroyal.light.common.utils.RedisKeys;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;

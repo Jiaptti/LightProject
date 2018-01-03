@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.google.gson.Gson;
+import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.MyDES;
 import com.viroyal.light.module.user.entity.page.CustomPage;
 import com.viroyal.light.module.user.entity.page.FrontPage;
@@ -63,13 +64,13 @@ public class SysUserController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysUser user = sysUserService.selectById(id);
         if(user == null) {
-            resultMap.put("code", 500);
-            resultMap.put("user", user);
-            resultMap.put("message","no result");
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.USER, user);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_RESULT);
         } else {
-            resultMap.put("code", 200);
-            resultMap.put("user", user);
-            resultMap.put("message","success");
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.USER, user);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         }
         return JSON.toJSONString(resultMap);
     }
@@ -83,7 +84,7 @@ public class SysUserController {
         String pswd = MyDES.decryptBasedDes(user.getPswd());
         pswd = pswd.substring(0,pswd.indexOf(user.getUsername()));
         user.setPswd(pswd);
-        model.addAttribute("user", user);
+        model.addAttribute(BaseConstant.USER, user);
         return "user/edit";
     }
 
@@ -102,13 +103,13 @@ public class SysUserController {
     public String save(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try{
-            resultMap.put("code", 200);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             sysUserService.save(user);
-            resultMap.put("message", "save success!");
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } catch (Exception e){
             e.printStackTrace();
-            resultMap.put("code", 500);
-            resultMap.put("message", "error = " + e.getMessage());
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }
@@ -129,13 +130,13 @@ public class SysUserController {
     public String update(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try{
-            resultMap.put("code", 200);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             sysUserService.update(user);
-            resultMap.put("message", "update success!");
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } catch (Exception e){
             e.printStackTrace();
-            resultMap.put("code", 500);
-            resultMap.put("message", "failure error = " + e.getMessage());
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }
@@ -184,13 +185,13 @@ public class SysUserController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<SysUser> userList = sysUserService.getAllUser();
         if (userList.size() > 0) {
-            resultMap.put("code", 200);
-            resultMap.put("message", "成功");
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } else {
-            resultMap.put("code", 500);
-            resultMap.put("message", "失败");
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
         }
-        resultMap.put("list", userList);
+        resultMap.put(BaseConstant.USER_LIST, userList);
         return JSON.toJSONString(resultMap);
     }
 
@@ -202,11 +203,11 @@ public class SysUserController {
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if(sysUserService.deleteBatch(ids) > 0){
-            resultMap.put("status", "200");
-            resultMap.put("message", "delete success！");
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } else {
-            resultMap.put("code", "500");
-            resultMap.put("message", "delete failure");
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE);
         }
         return JSON.toJSONString(resultMap);
     }
@@ -237,11 +238,11 @@ public class SysUserController {
             for (String sessionId : ids) {
                 sysUserService.kickout(sessionId);
             }
-            resultMap.put("flag", true);
-            resultMap.put("msg", "强制踢出成功！");
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.KICKOUT_SUCCESS);
         } catch (Exception e) {
-            resultMap.put("flag", false);
-            resultMap.put("msg", e.getMessage());
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.KICKOUT_FAILURE + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }

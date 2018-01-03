@@ -1,4 +1,4 @@
-package io.renren.common.utils;
+package com.viroyal.light.common.utils;
 
 /**
  * Redis所有Keys

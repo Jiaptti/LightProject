@@ -1,6 +1,5 @@
 package com.viroyal.light.common.shiro;
 
-import com.viroyal.light.common.filter.SessionFilter;
 import com.viroyal.light.module.user.entity.SysPermissionInit;
 import com.viroyal.light.module.user.service.ISysPermissionInitService;
 import com.viroyal.light.common.filter.KickoutSessionControlFilter;
@@ -56,7 +55,6 @@ public class ShiroConfig {
 
         Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
         filtersMap.put("kickout", kickoutSessionControlFilter());
-        filtersMap.put("sessionFilter", new SessionFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 拦截器.
@@ -88,7 +86,6 @@ public class ShiroConfig {
         filterRegistration.setFilter(proxy);
 
         filterRegistration.setEnabled(true);
-        //filterRegistration.addUrlPatterns("/*");// 可以自己灵活的定义很多，避免一些根本不需要被Shiro处理的请求被包含进来
         return filterRegistration;
     }
 
@@ -197,19 +194,5 @@ public class ShiroConfig {
         //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
         cookieRememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
         return cookieRememberMeManager;
-    }
-
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-        advisor.setSecurityManager(securityManager);
-        return advisor;
-    }
-
-    @Bean
-    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-        DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
-        proxyCreator.setProxyTargetClass(true);
-        return proxyCreator;
     }
 }

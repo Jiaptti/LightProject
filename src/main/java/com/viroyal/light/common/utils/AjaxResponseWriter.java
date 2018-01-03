@@ -19,20 +19,19 @@ public class AjaxResponseWriter {
 	 * 写回数据到前端
 	 * @param request
 	 * @param response
-	 * @param status {@link ServiceStatusEnum}
 	 * @param message 返回的描述信息
 	 * @throws IOException
 	 */
-	public static void write(HttpServletRequest request, HttpServletResponse response, ServiceStatusEnum status, String message) throws IOException{
+	public static void write(HttpServletRequest request, HttpServletResponse response, int code, String message) throws IOException{
 		String contentType = "application/json";
 		response.setContentType(contentType);
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
 		
-		Map<String, String> map = Maps.newLinkedHashMap();
-		map.put("code", status.code);
-		map.put("message", message);
+		Map<String, Object> map = Maps.newLinkedHashMap();
+		map.put(BaseConstant.CODE, code);
+		map.put(BaseConstant.MESSAGE, message);
 		String result = JacksonHelper.toJson(map);
 		PrintWriter out = response.getWriter();
 		try{

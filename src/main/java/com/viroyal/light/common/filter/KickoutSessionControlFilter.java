@@ -1,7 +1,10 @@
 package com.viroyal.light.common.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.viroyal.light.common.utils.AjaxResponseWriter;
+import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.user.entity.SysUser;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
@@ -18,10 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 1.读取当前登录用户名，获取在缓存中的sessionId队列
@@ -76,15 +76,24 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         Subject subject = getSubject(servletRequest, servletResponse);
-        if(!subject.isAuthenticated() && !subject.isRemembered()){
-            //如果没有登录，直接进行之后的流程
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        HttpServletResponse res = (HttpServletResponse) servletResponse;
+        System.out.print("uri = " + req.getRequestURI());
+//        if (StringUtils.contains(req.getRequestURI(), "login")
+//                || StringUtils.contains(req.getRequestURI(), "logout")) {
+//            return true;
+//        } else {
+        if (!subject.isAuthenticated()) {
+                //如果没有登录，直接进行之后的流程
+//                    AjaxResponseWriter.write(req, res, BaseConstant.ERROR_CODE, "请刷新界面重新登陆");
             return true;
         }
+//        }
         SysUser user = (SysUser) subject.getPrincipal();
         Session session = subject.getSession();
 
         //读取缓存   没有就存入
-        Deque<Serializable> deque = cache.get(user.getNickname());
+        Deque<Serializable> deque = cache.get(user.getUsername());
 
         //如果此用户没有session队列，也就是还没有登录过，缓存中没有
         //就new一个空队列，不然deque对象为空，会报空指针
@@ -97,7 +106,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
             //将sessionId存入队列
             deque.push(session.getId());
             //将用户的sessionId队列缓存
-            cache.put(user.getNickname(), deque);
+            cache.put(user.getUsername(), deque);
         }
 
 
@@ -112,7 +121,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
                 sessionId = deque.removeLast();
             }
             //踢出后再更新下缓存队列
-            cache.put(user.getNickname(), deque);
+            cache.put(user.getUsername(), deque);
 
             try {
                 //获取被踢出的sessionId的session对象
@@ -139,10 +148,8 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
             Map<String, String> resultMap = new HashMap<String, String>();
             //判断是不是Ajax请求
             if ("XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) servletRequest).getHeader("X-Requested-With"))) {
-                resultMap.put("user_status", "300");
-                resultMap.put("message", "您已经在其他地方登录，请重新登录！");
                 //输出json串
-                out(servletResponse, resultMap);
+                AjaxResponseWriter.write(req, res, BaseConstant.ERROR_CODE, "您已经在其他地方登录，请重新登录！");
             }else{
                 //重定向
                 WebUtils.issueRedirect(servletRequest, servletResponse, kickoutUrl);
