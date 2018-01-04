@@ -76,19 +76,18 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         Subject subject = getSubject(servletRequest, servletResponse);
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
-        HttpServletResponse res = (HttpServletResponse) servletResponse;
-        System.out.print(" uri = " + req.getRequestURI() + " subject.isAuthenticated() = " + subject.isAuthenticated());
-//        if (StringUtils.contains(req.getRequestURI(), "login")
-//                || StringUtils.contains(req.getRequestURI(), "logout")) {
-//            return true;
-//        } else {
-        if (!subject.isAuthenticated()) {
-                //如果没有登录，直接进行之后的流程
-//                    AjaxResponseWriter.write(req, res, BaseConstant.ERROR_CODE, "请刷新界面重新登陆");
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String value = request.getHeader("User-Agent");
+        if((!StringUtils.isEmpty(value) && value.contains("Android"))
+                && !subject.isAuthenticated()){
+            //App端口
+            AjaxResponseWriter.write(request, response, BaseConstant.ERROR_CODE, "请刷新界面重新登陆");
+            return false;
+        } else if(!subject.isAuthenticated()){
+            //如果没有登录，直接进行之后的流程
             return true;
         }
-//        }
         SysUser user = (SysUser) subject.getPrincipal();
         Session session = subject.getSession();
 
@@ -149,7 +148,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
             //判断是不是Ajax请求
             if ("XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) servletRequest).getHeader("X-Requested-With"))) {
                 //输出json串
-                AjaxResponseWriter.write(req, res, BaseConstant.ERROR_CODE, "您已经在其他地方登录，请重新登录！");
+                AjaxResponseWriter.write(request, response, BaseConstant.ERROR_CODE, "您已经在其他地方登录，请重新登录！");
             }else{
                 //重定向
                 WebUtils.issueRedirect(servletRequest, servletResponse, kickoutUrl);
