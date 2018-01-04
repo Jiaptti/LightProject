@@ -27,6 +27,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      */
     List<SysUser> getAllUser();
 
+
+    /**
+     * 删除用户
+     * @param userId  用户ID数组
+     */
     int deleteBatch(Object[] userId);
 
     /**
@@ -35,5 +40,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      */
     List<String> queryAllPerms(Long userId);
 
+
+
+    /**
+     * 更新用户
+     * @param user  用户
+     */
     void update(SysUser user);
 }

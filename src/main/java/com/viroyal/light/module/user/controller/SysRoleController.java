@@ -50,6 +50,7 @@ public class SysRoleController {
     @ResponseBody
     @RequiresPermissions("sys:role:list")
     public String getRoleListWithPager(FrontPage<SysRole> page) {
+        page.setPageSize(10);
         Wrapper<SysRole> wrapper = new EntityWrapper<SysRole>();
         String keyWords = page.getKeywords();
         if (keyWords != null && keyWords != "") wrapper.like("name", keyWords);

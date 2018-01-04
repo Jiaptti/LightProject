@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author jiaptti
- * @since 2017-12-24
+ * @since 2018-01-04
  */
 public interface SysLightStrategyMapper extends BaseMapper<SysLightStrategy> {
 

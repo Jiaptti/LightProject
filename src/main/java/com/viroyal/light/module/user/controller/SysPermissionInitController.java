@@ -65,9 +65,10 @@ public class SysPermissionInitController {
     }
 
     // 用初始权限表分页json
-    @RequestMapping(value = "getPermissionInitListWithPager")
+    @RequestMapping(value = "/getPermissionInitListWithPager")
     @ResponseBody
     public String getPermissionInitListWithPager(FrontPage<SysPermissionInit> page) {
+        page.setPageSize(10);
         Wrapper<SysPermissionInit> wrapper = new EntityWrapper<SysPermissionInit>();
         String keyWords = page.getKeywords();
         if (keyWords != null && keyWords != "")

@@ -48,6 +48,7 @@ public class SysPermissionController {
     @ResponseBody
     @RequiresPermissions("sys:permission:list")
     public String getPermissionListWithPager(FrontPage<SysPermission> page){
+        page.setPageSize(10);
         Wrapper<SysPermission> wrapper = new EntityWrapper<SysPermission>();
         String keyWords = page.getKeywords();
         if(keyWords != null &&!keyWords.equals("")){

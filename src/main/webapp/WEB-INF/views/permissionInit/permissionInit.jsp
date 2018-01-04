@@ -91,7 +91,7 @@
 			var config = {
 				title : '初始权限列表',
 				url : '/permissionInit/getPermissionInitListWithPager',
-				colNames : [ '主键', 'url地址', 'url权限' ],
+				colNames : [ '主键', 'url地址', 'url权限'],
 				colModel : [ {
 					name : 'id',
 					index : 'id',
@@ -105,8 +105,8 @@
 				}, {
 					name : 'permissionInit',
 					index : 'permissionInit',
-					width : 100
-				} ]
+					width : 60
+				}]
 			};
 			JucheapGrid.Load(config);
 			$("#btnSearch").bind("click", searchData);

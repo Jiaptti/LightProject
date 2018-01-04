@@ -9,6 +9,7 @@
 		<result column="r_status" property="rStatus" />
 		<result column="r_operation" property="rOperation" />
 		<result column="r_userid" property="rUserid" />
+		<result column="code" property="code" />
 	</resultMap>
 
 </mapper>

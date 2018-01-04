@@ -30,8 +30,10 @@ public class BaseConstant {
     public static final String SUCCESS_RESULT = "Success";
     //返回user的key
     public static final String USER = "user";
+    //返回city的key
+    public static final String CITY = "city";
     //返回userList的key
-    public static final String USER_LIST = "list";
+    public static final String VALUE_LIST = "list";
     //踢出成功
     public static final String KICKOUT_SUCCESS = "Kickout Success";
     //踢出失败

@@ -9,14 +9,13 @@
 		<result column="voltage" property="voltage" />
 		<result column="current" property="current" />
 		<result column="traffic_flow" property="trafficFlow" />
-		<result column="province" property="province" />
-		<result column="town" property="town" />
-		<result column="area" property="area" />
-		<result column="street" property="street" />
 		<result column="temperature" property="temperature" />
 		<result column="humidity" property="humidity" />
 		<result column="autoreport" property="autoreport" />
 		<result column="strategy" property="strategy" />
+		<result column="datetime" property="datetime" />
+		<result column="code" property="code" />
+		<result column="lightness" property="lightness" />
 	</resultMap>
 
 </mapper>

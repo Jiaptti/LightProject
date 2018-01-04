@@ -56,8 +56,8 @@
           	 },{
               text:'街道管理',
               items:[
-                  {id:'jdxx',text:'街道列表',href:'/street/streetPage'},
-                  {id:'jdxx',text:'街道信息',href:'/street/streetPage'}
+                  {id:'jdxx',text:'街道列表',href:'/location/streetPage'},
+                  {id:'jdxx',text:'街道信息',href:'/location/streetPage'}
               ]
           	}]
 	  	}];

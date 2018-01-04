@@ -191,7 +191,7 @@ public class SysUserController {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
         }
-        resultMap.put(BaseConstant.USER_LIST, userList);
+        resultMap.put(BaseConstant.VALUE_LIST, userList);
         return JSON.toJSONString(resultMap);
     }
 

@@ -78,7 +78,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
         Subject subject = getSubject(servletRequest, servletResponse);
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
-        System.out.print("uri = " + req.getRequestURI());
+        System.out.print(" uri = " + req.getRequestURI() + " subject.isAuthenticated() = " + subject.isAuthenticated());
 //        if (StringUtils.contains(req.getRequestURI(), "login")
 //                || StringUtils.contains(req.getRequestURI(), "logout")) {
 //            return true;

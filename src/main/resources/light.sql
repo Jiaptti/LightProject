@@ -197,11 +197,11 @@ CREATE TABLE IF NOT EXISTS `sys_light_info` (
   COMMENT '路灯信息',
   `status`                VARCHAR(1)          DEFAULT '1'
   COMMENT '1:正在使用，0:刚注册信息并没有投入使用',
-  `longitude`             FLOAT      NOT NULL
+  `longitude`             FLOAT      DEFAULT NULL
   COMMENT '经度',
-  `latitude`              FLOAT      NOT NULL
+  `latitude`              FLOAT      DEFAULT NULL
   COMMENT '纬度',
-  `street_id`             BIGINT(10) NOT NULL
+  `street_id`             BIGINT(10) DEFAULT NULL
   COMMENT '所属街道id',
   `voltage_threshold`     INT(11)             DEFAULT NULL
   COMMENT '电压报警阀值',

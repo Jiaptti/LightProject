@@ -8,6 +8,19 @@
 		<result column="code" property="code" />
 		<result column="info" property="info" />
 		<result column="status" property="status" />
+		<result column="longitude" property="longitude" />
+		<result column="latitude" property="latitude" />
+		<result column="street_id" property="streetId" />
+		<result column="voltage_threshold" property="voltageThreshold" />
+		<result column="current_threshold" property="currentThreshold" />
+		<result column="temperature_threshold" property="temperatureThreshold" />
+		<result column="humidity_threshold" property="humidityThreshold" />
+		<result column="lightness_threshold" property="lightnessThreshold" />
+		<result column="voltage_overload" property="voltageOverload" />
+		<result column="current_overload" property="currentOverload" />
+		<result column="temperature_overload" property="temperatureOverload" />
+		<result column="humidity_overload" property="humidityOverload" />
+		<result column="lightness_overload" property="lightnessOverload" />
 	</resultMap>
 
 </mapper>

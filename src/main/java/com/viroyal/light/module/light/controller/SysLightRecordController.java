@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </p>
  *
  * @author jiaptti
- * @since 2017-12-24
+ * @since 2018-01-04
  */
 @Controller
-@RequestMapping("/light/sysLightRecord")
+@RequestMapping("/module.light/sysLightRecord")
 public class SysLightRecordController {
 	
 }

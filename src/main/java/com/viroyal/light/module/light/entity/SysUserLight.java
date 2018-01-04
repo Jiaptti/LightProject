@@ -2,6 +2,7 @@ package com.viroyal.light.module.light.entity;
 
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author jiaptti
- * @since 2017-12-24
+ * @since 2018-01-04
  */
 @TableName("sys_user_light")
 public class SysUserLight extends Model<SysUserLight> {
@@ -24,11 +25,13 @@ public class SysUserLight extends Model<SysUserLight> {
     /**
      * 用户ID
      */
-	private Long uid;
+	@TableField("user_id")
+	private Long userId;
     /**
      * 路灯ID
      */
-	private Long lid;
+	@TableField("light_id")
+	private Long lightId;
 
 
 	public Long getId() {
@@ -39,20 +42,20 @@ public class SysUserLight extends Model<SysUserLight> {
 		this.id = id;
 	}
 
-	public Long getUid() {
-		return uid;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUid(Long uid) {
-		this.uid = uid;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public Long getLid() {
-		return lid;
+	public Long getLightId() {
+		return lightId;
 	}
 
-	public void setLid(Long lid) {
-		this.lid = lid;
+	public void setLightId(Long lightId) {
+		this.lightId = lightId;
 	}
 
 	@Override

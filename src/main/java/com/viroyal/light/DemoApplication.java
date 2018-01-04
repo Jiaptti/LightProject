@@ -8,6 +8,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 
 @MapperScan(basePackages = {"com.viroyal.light.module.light.dao",
+        "com.viroyal.light.module.location.dao",
         "com.viroyal.light.module.user.dao"})
 @SpringBootApplication
 public class DemoApplication extends SpringBootServletInitializer {
