@@ -1,9 +1,15 @@
 package com.viroyal.light.module.location.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysCity;
 import com.viroyal.light.module.location.service.ISysCityService;
+import com.viroyal.light.module.user.entity.page.CustomPage;
+import com.viroyal.light.module.user.entity.page.FrontPage;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -122,4 +128,33 @@ public class SysCityController {
         resultMap.put(BaseConstant.CITY, city);
         return JSON.toJSONString(resultMap);
     }
+
+
+    // 移动端关键字分页查询城市列表
+    @RequestMapping(value = "/getCityPage")
+    @RequiresPermissions("sys:city:list")
+    @ResponseBody
+    public String cityPage(int pageSize, int pageId, String sord, String keyWords) {
+        FrontPage<SysCity> page = new FrontPage<SysCity>();
+        if(pageId == 0){
+            pageId = 1;
+        }
+        if(pageSize == 0) {
+            pageSize = 5;
+        }
+        if(!StringUtils.isEmpty(sord)){
+            page.setSord(sord);
+        }
+        page.setPage(pageId);
+        page.setPageSize(pageSize);
+
+        Wrapper<SysCity> wrapper = new EntityWrapper<SysCity>();
+        if (!StringUtils.isEmpty(keyWords))
+            wrapper.like("city_name", keyWords);
+        Page<SysCity> pageList = sysCityService.selectPage(page.getPagePlus(), wrapper);
+        CustomPage<SysCity> customPage = new CustomPage<SysCity>(pageList);
+        String pages = JSON.toJSONString(customPage);
+        return pages;
+    }
+
 }

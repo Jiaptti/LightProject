@@ -79,7 +79,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String value = request.getHeader("User-Agent");
-        if((!StringUtils.isEmpty(value) && value.contains("Android"))
+        if((!StringUtils.isEmpty(value) && value.equalsIgnoreCase("Android"))
                 && !subject.isAuthenticated()){
             //App端口
             AjaxResponseWriter.write(request, response, BaseConstant.ERROR_CODE, "请刷新界面重新登陆");

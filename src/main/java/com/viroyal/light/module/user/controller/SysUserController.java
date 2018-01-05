@@ -14,6 +14,7 @@ import com.viroyal.light.module.user.entity.SysUserRole;
 import com.viroyal.light.module.user.entity.UserOnlineBo;
 import com.viroyal.light.module.user.service.ISysUserRoleService;
 import com.viroyal.light.module.user.service.ISysUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -149,7 +150,7 @@ public class SysUserController {
         page.setPageSize(10);
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
         String keyWords = page.getKeywords();
-        if (keyWords != null && keyWords != "")
+        if (!StringUtils.isEmpty(keyWords))
             wrapper.like("username", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
@@ -161,15 +162,22 @@ public class SysUserController {
     @RequestMapping(value = "/getUserPage")
     @RequiresPermissions("sys:user:list")
     @ResponseBody
-    public String userPage(int pageSize, int pageId, String sidx, String sord, String keyWords) {
+    public String userPage(int pageSize, int pageId, String sord, String keyWords) {
         FrontPage<SysUser> page = new FrontPage<SysUser>();
+        if(pageId == 0){
+            pageId = 1;
+        }
+        if(pageSize == 0) {
+            pageSize = 5;
+        }
+        if(!StringUtils.isEmpty(sord)){
+            page.setSord(sord);
+        }
         page.setPage(pageId);
         page.setPageSize(pageSize);
-        page.setSidx(sidx);
-        page.setSord(sord);
 
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
-        if (keyWords != null && keyWords != "")
+        if (!StringUtils.isEmpty(keyWords))
             wrapper.like("username", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);

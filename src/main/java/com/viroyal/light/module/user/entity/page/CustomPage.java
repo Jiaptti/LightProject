@@ -23,7 +23,7 @@ public class CustomPage<T> {
     private int records;
 
     //数据列表
-    private List<T> rows;
+    private List<T> list;
 
     //总页数
     private int total;
@@ -38,7 +38,7 @@ public class CustomPage<T> {
         this.page = page.getCurrent();
         this.pagesize = page.getSize();
         this.records = page.getTotal();
-        this.rows = page.getRecords();
+        this.list = page.getRecords();
         this.total = page.getPages();
         this.orderByField = page.getOrderByField();
         this.isAsc = page.isAsc();

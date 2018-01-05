@@ -36,6 +36,12 @@ public class SysArea extends Model<SysArea> {
 	@TableField("area_id")
 	private Integer areaId;
 
+	/**
+	 * 城市所属id
+	 */
+	@TableField(exist = false)
+	private Long cityId;
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;

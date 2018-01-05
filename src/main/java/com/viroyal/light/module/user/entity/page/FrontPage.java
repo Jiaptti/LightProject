@@ -37,6 +37,9 @@ public class FrontPage<T> {
         Page<T> pagePlus = new Page<T>();
         pagePlus.setCurrent(this.page);
         pagePlus.setSize(pageSize);
+        if(sord == null){
+            sord="asc";
+        }
         pagePlus.setAsc(this.sord.equals("asc"));
         pagePlus.setOrderByField(this.sidx);
         return pagePlus;
