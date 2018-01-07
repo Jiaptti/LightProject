@@ -12,10 +12,13 @@
 		<result column="temperature" property="temperature" />
 		<result column="humidity" property="humidity" />
 		<result column="autoreport" property="autoreport" />
-		<result column="strategy" property="strategy" />
 		<result column="datetime" property="datetime" />
-		<result column="code" property="code" />
+		<result column="infoId" property="info_id" />
 		<result column="lightness" property="lightness" />
 	</resultMap>
+
+	<select id="queryAll" resultMap="BaseResultMap">
+		select * from sys_light
+	</select>
 
 </mapper>

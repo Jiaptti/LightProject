@@ -12,5 +12,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2018-01-04
  */
 public interface SysAreaStreetMapper extends BaseMapper<SysAreaStreet> {
-
+    /**
+     * 更新街道与区的关联
+     * @param areaStreet 区和街道的关联
+     */
+    void updateAreaStreet(SysAreaStreet areaStreet);
 }

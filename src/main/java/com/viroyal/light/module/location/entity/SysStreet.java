@@ -36,6 +36,9 @@ public class SysStreet extends Model<SysStreet> {
 	@TableField("street_id")
 	private Integer streetId;
 
+	@TableField(exist = false)
+	private Long areaId;
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;

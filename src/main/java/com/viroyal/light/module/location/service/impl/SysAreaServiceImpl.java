@@ -62,7 +62,7 @@ public class SysAreaServiceImpl extends ServiceImpl<SysAreaMapper, SysArea> impl
         cityArea.setAreaId(area.getId());
 
         //更新城市和区关联
-        sysCityAreaMapper.update(cityArea,null);
+        sysCityAreaMapper.updateCityArea(cityArea);
     }
 
     @Override

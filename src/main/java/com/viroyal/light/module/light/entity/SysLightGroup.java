@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -16,6 +18,7 @@ import java.io.Serializable;
  * @author jiaptti
  * @since 2018-01-04
  */
+@Data
 @TableName("sys_light_group")
 public class SysLightGroup extends Model<SysLightGroup> {
 
@@ -28,11 +31,7 @@ public class SysLightGroup extends Model<SysLightGroup> {
      */
 	@TableField("group_id")
 	private Integer groupId;
-    /**
-     * 此组内的灯id
-     */
-	@TableField("light_id")
-	private Long lightId;
+
     /**
      * 组名
      */
@@ -53,63 +52,6 @@ public class SysLightGroup extends Model<SysLightGroup> {
      */
 	@TableField("create_time")
 	private Date createTime;
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
-	}
-
-	public Long getLightId() {
-		return lightId;
-	}
-
-	public void setLightId(Long lightId) {
-		this.lightId = lightId;
-	}
-
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-
-	public Long getCreateUserId() {
-		return createUserId;
-	}
-
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public Long getResponsibleId() {
-		return responsibleId;
-	}
-
-	public void setResponsibleId(Long responsibleId) {
-		this.responsibleId = responsibleId;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
 
 	@Override
 	protected Serializable pkVal() {

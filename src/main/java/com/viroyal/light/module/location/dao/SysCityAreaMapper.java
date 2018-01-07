@@ -12,5 +12,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2018-01-04
  */
 public interface SysCityAreaMapper extends BaseMapper<SysCityArea> {
-
+    /**
+     * 更新城市和区
+     * @param cityArea 城市区关联对象
+     */
+    void updateCityArea(SysCityArea cityArea);
 }

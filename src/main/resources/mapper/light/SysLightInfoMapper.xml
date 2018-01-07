@@ -10,7 +10,9 @@
 		<result column="status" property="status" />
 		<result column="longitude" property="longitude" />
 		<result column="latitude" property="latitude" />
+		<result column="strategy_id" property="strategyId" />
 		<result column="street_id" property="streetId" />
+		<result column="group_id" property="groupId" />
 		<result column="voltage_threshold" property="voltageThreshold" />
 		<result column="current_threshold" property="currentThreshold" />
 		<result column="temperature_threshold" property="temperatureThreshold" />
@@ -22,5 +24,144 @@
 		<result column="humidity_overload" property="humidityOverload" />
 		<result column="lightness_overload" property="lightnessOverload" />
 	</resultMap>
+
+	<!-- 获得所有路灯 -->
+	<select id="queryAll" resultMap="BaseResultMap">
+		select * from sys_light_info
+	</select>
+
+	<!-- 获得城市下的路灯 -->
+	<select id="queryByCity" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_light_info as info
+		left join sys_street as street on street.id = info.street_id
+		Left join sys_area_street as ast on ast.street_id = street.id
+		left join sys_city_area as ca on ca.area_id = ast.area_id
+		where ca.city_id = #{cityId}
+	</select>
+
+	<!-- 获得区下的路灯 -->
+	<select id="queryByArea" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_light_info as info
+		left join sys_street as street on street.id = info.street_id
+		Left join sys_area_street as ast on ast.street_id = street.id
+		where ast.area_id = #{areaId}
+	</select>
+
+	<!-- 获得街道下的路灯 -->
+	<select id="queryByStreet" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_light_info as info
+		left join sys_street as street on street.id = info.street_id
+		where street.id = #{streetId}
+	</select>
+
+	<!-- 获得组下的路灯 -->
+	<select id="queryByGroup" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_light_info as info
+		where info.group_id = #{groupId}
+	</select>
+
+	<!-- 获得维修员的路灯 -->
+	<select id="queryByUser" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_light_info as info
+		left join sys_user_light as ul on ul.light_id = info.id
+		where ul.user_id = #{userId}
+	</select>
+
+	<!-- 获得是否投入使用的路灯 -->
+	<select id="queryByStatus" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_light_info as info
+		where info.status = #{status}
+	</select>
+
+	<!-- 添加路灯 -->
+	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLightInfo"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_light_info
+		(
+		`id`,
+		`code`,
+		`info`,
+		`status`,
+		`longitude`,
+		`latitude`,
+		`strategy_id`,
+		`street_id`,
+		`group_id`,
+		`voltage_threshold`,
+		`current_threshold`,
+		`temperature_threshold`,
+		`humidity_threshold`,
+		`lightness_threshold`,
+		`voltage_overload`,
+		`current_overload`,
+		`temperature_overload`,
+		`humidity_overload`,
+		`lightness_overload`,
+		)
+		values
+		(
+		#{id},
+		#{code},
+		#{info},
+		#{status},
+		#{longitude},
+		#{latitude},
+		#{strategyId},
+		#{streetId},
+		#{groupId},
+		#{voltageThreshold},
+		#{currentThreshold},
+		#{temperatureThreshold},
+		#{humidityThreshold},
+		#{lightnessThreshold},
+		#{voltageOverload},
+		#{currentOverload},
+		#{temperatureOverload},
+		#{humidityOverload},
+		#{lightnessOverload}
+		)
+	</insert>
+
+	<!-- 更新路灯 -->
+	<update id="update" parameterType="com.viroyal.light.module.light.entity.SysLightInfo">
+		update sys_light_info
+		<set>
+			<if test="code != null">`code` = #{code}, </if>
+			<if test="info != null">`info` = #{info}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="strategyId != null">`strategy_id` = #{strategyId}, </if>
+			<if test="streetId != null">`street_id` = #{streetId}, </if>
+			<if test="groupId != null">`group_id` = #{groupId}, </if>
+			<if test="voltageThreshold != null">`voltage_threshold` = #{voltageThreshold}, </if>
+			<if test="currentThreshold != null">`current_threshold` = #{currentThreshold}, </if>
+			<if test="temperatureThreshold != null">`temperature_threshold` = #{temperatureThreshold}, </if>
+			<if test="humidityThreshold != null">`humidity_threshold` = #{humidityThreshold}, </if>
+			<if test="lightnessThreshold != null">`lightness_threshold` = #{lightnessThreshold}, </if>
+			<if test="currentOverload != null">`current_overload` = #{currentOverload}, </if>
+			<if test="temperatureOverload != null">`temperature_overload` = #{temperatureOverload}, </if>
+			<if test="humidityOverload != null">`humidity_overload` = #{humidityOverload}, </if>
+			<if test="lightnessOverload != null">`lightness_overload` = #{lightnessOverload} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteBatch">
+		delete from sys_light_info where id in
+		<foreach item="lightId" collection="array" open="(" separator="," close=")">
+			#{lightId}
+		</foreach>
+		;
+		delete from sys_user_light as ul where ul.light_id in
+		<foreach item="lightId" collection="array" open="(" separator="," close=")">
+			#{lightId}
+		</foreach>
+		;
+		delete from sys_light as light where light.info_id in
+		<foreach item="lightId" collection="array" open="(" separator="," close=")">
+			#{lightId}
+		</foreach>
+	</delete>
 
 </mapper>

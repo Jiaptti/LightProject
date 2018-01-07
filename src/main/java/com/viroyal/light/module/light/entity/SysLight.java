@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -16,6 +18,7 @@ import java.io.Serializable;
  * @author jiaptti
  * @since 2018-01-04
  */
+@Data
 @TableName("sys_light")
 public class SysLight extends Model<SysLight> {
 
@@ -52,116 +55,17 @@ public class SysLight extends Model<SysLight> {
      * 路灯自动上报周期
      */
 	private Long autoreport;
-    /**
-     * 引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间
-     */
-	private String strategy;
+
 	private Date datetime;
     /**
-     * 对应light_info的code
+     * 对应light_info的id
      */
-	private String code;
+    @TableField("info_id")
+	private Long infoId;
     /**
      * 亮度
      */
 	private Integer lightness;
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Long getVoltage() {
-		return voltage;
-	}
-
-	public void setVoltage(Long voltage) {
-		this.voltage = voltage;
-	}
-
-	public Long getCurrent() {
-		return current;
-	}
-
-	public void setCurrent(Long current) {
-		this.current = current;
-	}
-
-	public String getTrafficFlow() {
-		return trafficFlow;
-	}
-
-	public void setTrafficFlow(String trafficFlow) {
-		this.trafficFlow = trafficFlow;
-	}
-
-	public Long getTemperature() {
-		return temperature;
-	}
-
-	public void setTemperature(Long temperature) {
-		this.temperature = temperature;
-	}
-
-	public Long getHumidity() {
-		return humidity;
-	}
-
-	public void setHumidity(Long humidity) {
-		this.humidity = humidity;
-	}
-
-	public Long getAutoreport() {
-		return autoreport;
-	}
-
-	public void setAutoreport(Long autoreport) {
-		this.autoreport = autoreport;
-	}
-
-	public String getStrategy() {
-		return strategy;
-	}
-
-	public void setStrategy(String strategy) {
-		this.strategy = strategy;
-	}
-
-	public Date getDatetime() {
-		return datetime;
-	}
-
-	public void setDatetime(Date datetime) {
-		this.datetime = datetime;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Integer getLightness() {
-		return lightness;
-	}
-
-	public void setLightness(Integer lightness) {
-		this.lightness = lightness;
-	}
 
 	@Override
 	protected Serializable pkVal() {

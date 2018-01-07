@@ -12,5 +12,9 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-01-04
  */
 public interface ISysUserLightService extends IService<SysUserLight> {
-	
+    /**
+     * 将路灯指派给某个维修员
+     * @param userLight
+     */
+    void dispatchToUser(SysUserLight userLight);
 }

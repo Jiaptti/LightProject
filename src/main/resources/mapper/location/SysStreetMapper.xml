@@ -9,4 +9,63 @@
 		<result column="street_id" property="streetId" />
 	</resultMap>
 
+	<!-- 查询所有街道 -->
+	<select id="queryAll" resultMap="BaseResultMap">
+		select * from sys_street
+	</select>
+
+	<!-- 获得区下面所有的街道 -->
+	<select id="getStreetByAreaId" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_street as s
+		LEFT JOIN sys_area_street as sas on sas.street_id = s.id
+		where sas.area_id = #{areaId}
+	</select>
+
+	<!-- 获得城市下面所有的街道 -->
+	<select id="getStreetByCityId" parameterType="Long" resultMap="BaseResultMap">
+		select * from sys_street as s
+		LEFT JOIN sys_area_street as sas on sas.street_id = s.id
+		LEFT JOIN sys_city_area as ca on ca.area_id = sas.area_id
+		where ca.city_id = #{cityId}
+	</select>
+
+	<!-- 添加街道 -->
+	<insert id="save" parameterType="com.viroyal.light.module.location.entity.SysStreet"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_street
+		(
+		`id`,
+		`street_name`,
+		`street_id`
+		)
+		values
+		(
+		#{id},
+		#{streetName},
+		#{streetId}
+		)
+	</insert>
+
+	<!-- 通过id更新区信息 -->
+	<update id="update" parameterType="com.viroyal.light.module.location.entity.SysStreet">
+		update sys_street
+		<set>
+			<if test="streetName != null">`street_name` = #{streetName}, </if>
+			<if test="streetId != null">`street_id` = #{streetId}  </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 删除区并且关联删除城市区域表中的关联字段 -->
+	<delete id="deleteBatch">
+		delete from sys_street where id in
+		<foreach item="streetId" collection="array" open="(" separator="," close=")">
+			#{streetId}
+		</foreach>
+		;
+		delete from sys_area_street where sys_area_street.street_id in
+		<foreach item="areaId" collection="array" open="(" separator="," close=")">
+			#{streetId}
+		</foreach>
+	</delete>
 </mapper>

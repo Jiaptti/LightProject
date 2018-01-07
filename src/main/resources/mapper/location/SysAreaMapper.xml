@@ -23,7 +23,6 @@
 		where ca.city_id = #{cityId}
 	</select>
 
-
 	<!-- 添加区 -->
 	<insert id="save" parameterType="com.viroyal.light.module.location.entity.SysArea"
 			useGeneratedKeys="true" keyProperty="id">
@@ -63,6 +62,4 @@
 			#{areaId}
 		</foreach>
 	</delete>
-
-
-</mapper>
+ </mapper>
