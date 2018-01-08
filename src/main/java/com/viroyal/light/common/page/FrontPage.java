@@ -1,4 +1,4 @@
-package com.viroyal.light.module.user.entity.page;
+package com.viroyal.light.common.page;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import lombok.Data;

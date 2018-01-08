@@ -102,6 +102,23 @@ public class SysLoginController {
         return resultMap;
     }
 
+    @RequestMapping(value = "/userLogout",method =RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> userLogout(){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        try {
+            SysUser user = (SysUser)SecurityUtils.getSubject().getPrincipal();
+            sysUserService.logout(user.getId());
+            SecurityUtils.getSubject().logout();
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGOUT_SUCCESS);
+        } catch (Exception e) {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGOUT_FAILURE + " : " + e.getMessage());
+            System.err.println(e.getMessage());
+        }
+        return resultMap;
+    }
 
     @RequestMapping(value = "/ajaxLogin", method = RequestMethod.POST)
     @ResponseBody

@@ -1,7 +1,7 @@
 package com.viroyal.light.module.user.service;
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.viroyal.light.module.user.entity.page.FrontPage;
+import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.baomidou.mybatisplus.service.IService;
 import com.viroyal.light.module.user.entity.UserOnlineBo;

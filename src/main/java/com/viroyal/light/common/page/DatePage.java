@@ -1,4 +1,4 @@
-package com.viroyal.light.module.user.entity.page;
+package com.viroyal.light.common.page;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.List;
  * 所以这个由这个中间对象来转换
  */
 @Data
-public class CustomPage<T> {
+public class DatePage<T> {
     //当前页数
     private int page;
 
@@ -34,7 +34,7 @@ public class CustomPage<T> {
     //是否升序
     private boolean isAsc;
 
-    public CustomPage(Page<T> page){
+    public DatePage(Page<T> page){
         this.page = page.getCurrent();
         this.pagesize = page.getSize();
         this.records = page.getTotal();

@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysStreet;
 import com.viroyal.light.module.location.service.ISysStreetService;
-import com.viroyal.light.module.user.entity.page.CustomPage;
-import com.viroyal.light.module.user.entity.page.FrontPage;
+import com.viroyal.light.common.page.FrontPage;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -162,8 +162,7 @@ public class SysStreetController {
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("street_name", keyWords);
         Page<SysStreet> pageList = sysStreetService.selectPage(page.getPagePlus(), wrapper);
-        CustomPage<SysStreet> customPage = new CustomPage<SysStreet>(pageList);
-        String pages = JSON.toJSONString(customPage);
-        return pages;
+        DatePage<SysStreet> datePage = new DatePage<SysStreet>(pageList);
+        return JSON.toJSONString(datePage);
     }
 }

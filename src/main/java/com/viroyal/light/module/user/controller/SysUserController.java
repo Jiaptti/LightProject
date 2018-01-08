@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.google.gson.Gson;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.MyDES;
-import com.viroyal.light.module.user.entity.page.CustomPage;
-import com.viroyal.light.module.user.entity.page.FrontPage;
+import com.viroyal.light.common.page.CustomPage;
+import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.viroyal.light.module.user.entity.SysUserRole;
 import com.viroyal.light.module.user.entity.UserOnlineBo;
@@ -154,8 +154,7 @@ public class SysUserController {
             wrapper.like("username", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
-        String pages = JSON.toJSONString(customPage);
-        return pages;
+        return JSON.toJSONString(customPage);
     }
 
     // 移动端用户列表分页json
@@ -172,9 +171,8 @@ public class SysUserController {
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("username", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
-        CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
-        String pages = JSON.toJSONString(customPage);
-        return pages;
+        DatePage<SysUser> customPage = new DatePage<SysUser>(pageList);
+        return JSON.toJSONString(customPage);
     }
 
     //移动端查询用户列表

@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysCity;
 import com.viroyal.light.module.location.service.ISysCityService;
-import com.viroyal.light.module.user.entity.page.CustomPage;
-import com.viroyal.light.module.user.entity.page.FrontPage;
+import com.viroyal.light.common.page.FrontPage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,9 +144,8 @@ public class SysCityController {
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("city_name", keyWords);
         Page<SysCity> pageList = sysCityService.selectPage(page.getPagePlus(), wrapper);
-        CustomPage<SysCity> customPage = new CustomPage<SysCity>(pageList);
-        String pages = JSON.toJSONString(customPage);
-        return pages;
+        DatePage<SysCity> datePage = new DatePage<SysCity>(pageList);
+        return JSON.toJSONString(datePage);
     }
 
 }

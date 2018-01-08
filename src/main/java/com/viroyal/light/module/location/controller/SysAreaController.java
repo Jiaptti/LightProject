@@ -4,11 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysArea;
 import com.viroyal.light.module.location.service.ISysAreaService;
-import com.viroyal.light.module.user.entity.page.CustomPage;
-import com.viroyal.light.module.user.entity.page.FrontPage;
+import com.viroyal.light.common.page.CustomPage;
+import com.viroyal.light.common.page.FrontPage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,9 +162,8 @@ public class SysAreaController {
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("area_name", keyWords);
         Page<SysArea> pageList = sysAreaService.selectPage(page.getPagePlus(), wrapper);
-        CustomPage<SysArea> customPage = new CustomPage<SysArea>(pageList);
-        String pages = JSON.toJSONString(customPage);
-        return pages;
+        DatePage<SysArea> customPage = new DatePage<SysArea>(pageList);
+        return JSON.toJSONString(customPage);
     }
 
 }

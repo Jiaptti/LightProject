@@ -4,13 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.entity.SysUserLight;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import com.viroyal.light.module.light.service.ISysUserLightService;
-import com.viroyal.light.module.user.entity.page.CustomPage;
-import com.viroyal.light.module.user.entity.page.FrontPage;
+import com.viroyal.light.common.page.CustomPage;
+import com.viroyal.light.common.page.FrontPage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -280,8 +281,7 @@ public class SysLightInfoController {
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("code", keyWords);
         Page<SysLightInfo> pageList = sysLightInfoService.selectPage(page.getPagePlus(), wrapper);
-        CustomPage<SysLightInfo> customPage = new CustomPage<SysLightInfo>(pageList);
-        String pages = JSON.toJSONString(customPage);
-        return pages;
+        DatePage<SysLightInfo> datePage = new DatePage<SysLightInfo>(pageList);
+        return JSON.toJSONString(datePage);
     }
 }
