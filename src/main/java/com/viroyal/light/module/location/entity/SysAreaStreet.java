@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 区域街道关联实体类
  * </p>
  *
  * @author jiaptti

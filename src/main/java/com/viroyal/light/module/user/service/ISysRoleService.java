@@ -14,6 +14,7 @@ import java.util.List;
  * @since 2017-12-01
  */
 public interface ISysRoleService extends IService<SysRole> {
+
     List<SysRole> getRoleListById(Long id);
     String getUserRoleName(Long id);
     void saveRole(SysRole user);

@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 权限实体类
  * </p>
  *
  * @author jiaptti

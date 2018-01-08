@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 路灯组 实体类
  * </p>
  *
  * @author jiaptti

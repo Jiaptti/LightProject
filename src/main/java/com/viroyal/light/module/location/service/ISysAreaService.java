@@ -36,11 +36,13 @@ public interface ISysAreaService extends IService<SysArea> {
 
     /**
      * 获得所有区
+     * @return 区域列表
      */
     List<SysArea> queryAllArea();
 
     /**
      * 获得所有区
+     * @return 区域列表
      * @param cityId 城市id
      */
     List<SysArea> getAreaByCityId(Long cityId);

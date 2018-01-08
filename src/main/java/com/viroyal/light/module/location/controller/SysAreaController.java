@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.sun.istack.internal.Nullable;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysArea;
-import com.viroyal.light.module.location.entity.SysCity;
 import com.viroyal.light.module.location.service.ISysAreaService;
 import com.viroyal.light.module.user.entity.page.CustomPage;
 import com.viroyal.light.module.user.entity.page.FrontPage;
@@ -26,7 +24,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ *  区前端控制器
  * </p>
  *
  * @author jiaptti
@@ -48,12 +46,30 @@ public class SysAreaController {
         List<SysArea> areaList = sysAreaService.queryAllArea();
         if (areaList.size() > 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.VALUE_LIST, areaList);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } else {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
         }
-        resultMap.put(BaseConstant.VALUE_LIST, areaList);
+        return JSON.toJSONString(resultMap);
+    }
+
+    //移动端获得指定的区
+    @RequestMapping(value = "/getArea")
+    @ResponseBody
+    @RequiresPermissions("sys:area:list")
+    public String areaList(@RequestParam(value = "id")String id){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        SysArea area = sysAreaService.selectById(id);
+        if (area != null) {
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.AREA, area);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+        } else {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
+        }
         return JSON.toJSONString(resultMap);
     }
 

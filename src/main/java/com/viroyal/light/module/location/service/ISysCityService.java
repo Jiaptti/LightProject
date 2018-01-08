@@ -16,6 +16,7 @@ import java.util.List;
 public interface ISysCityService extends IService<SysCity> {
 	/**
 	 * 查询城市
+	 * @return 城市列表
 	 */
 	List<SysCity> queryAllCity();
 
@@ -27,6 +28,7 @@ public interface ISysCityService extends IService<SysCity> {
 
 	/**
 	 * 删除城市
+	 * @return 删除的城市条数
 	 * @param ids  城市id数组
 	 */
 	int deleteCityBatch(Object[] ids);

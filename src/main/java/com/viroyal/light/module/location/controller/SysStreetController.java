@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ *  街道前端控制器
  * </p>
  *
  * @author jiaptti
@@ -43,10 +43,10 @@ public class SysStreetController {
     @RequiresPermissions("sys:street:list")
     public String streetList(){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysStreet> areaList = sysStreetService.queryStreet();
-        if (areaList.size() > 0) {
+        List<SysStreet> streetList = sysStreetService.queryStreet();
+        if (streetList.size() > 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, areaList);
+            resultMap.put(BaseConstant.VALUE_LIST, streetList);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } else {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
@@ -62,10 +62,10 @@ public class SysStreetController {
     @RequiresPermissions("sys:street:info")
     public String getAreaStreet(String areaId){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysStreet> areaList = sysStreetService.getStreetByAreaId(Long.valueOf(areaId));
-        if (areaList.size() > 0) {
+        List<SysStreet> streetList = sysStreetService.getStreetByAreaId(Long.valueOf(areaId));
+        if (streetList.size() > 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, areaList);
+            resultMap.put(BaseConstant.VALUE_LIST, streetList);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } else {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
@@ -75,16 +75,16 @@ public class SysStreetController {
     }
 
 
-    //移动端获得区下的街道
+    //移动端获得城市下的街道
     @RequestMapping(value = "/getCityStreet")
     @ResponseBody
     @RequiresPermissions("sys:street:info")
     public String getCityStreet(String cityId){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysStreet> areaList = sysStreetService.getStreetByCityId(Long.valueOf(cityId));
-        if (areaList.size() > 0) {
+        List<SysStreet> streetList = sysStreetService.getStreetByCityId(Long.valueOf(cityId));
+        if (streetList.size() > 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, areaList);
+            resultMap.put(BaseConstant.VALUE_LIST, streetList);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } else {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);

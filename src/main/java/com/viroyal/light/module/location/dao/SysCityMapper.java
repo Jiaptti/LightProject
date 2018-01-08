@@ -16,6 +16,7 @@ import java.util.List;
 public interface SysCityMapper extends BaseMapper<SysCity> {
     /**
      * 查询城市
+     * @return 城市列表
      */
     List<SysCity> queryAll();
 
@@ -27,6 +28,7 @@ public interface SysCityMapper extends BaseMapper<SysCity> {
 
     /**
      * 删除城市
+     * @return 删除的城市记录
      * @param ids  城市id数组
      */
     int deleteBatch(Object[] ids);

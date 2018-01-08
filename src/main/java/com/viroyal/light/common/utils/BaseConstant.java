@@ -32,6 +32,10 @@ public class BaseConstant {
     public static final String USER = "user";
     //返回city的key
     public static final String CITY = "city";
+    //返回are的key
+    public static final String AREA = "area";
+    //返回lightInfo的key
+    public static final String LIGHT_INFO = "lightInfo";
     //返回userList的key
     public static final String VALUE_LIST = "list";
     //踢出成功

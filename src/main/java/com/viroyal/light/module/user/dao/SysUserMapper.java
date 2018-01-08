@@ -19,23 +19,27 @@ import java.util.List;
 public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 添加用户
+     * @param user 用户对象
      */
     void save(SysUser user);
 
     /**
      * 查询所有用户
+     * @return 用户列表
      */
     List<SysUser> getAllUser();
 
 
     /**
      * 删除用户
+     * @return 删除的用户数
      * @param userId  用户ID数组
      */
     int deleteBatch(Object[] userId);
 
     /**
      * 查询用户的所有权限
+     * @return 权限列表
      * @param userId  用户ID
      */
     List<String> queryAllPerms(Long userId);

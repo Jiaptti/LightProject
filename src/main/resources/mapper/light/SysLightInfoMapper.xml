@@ -96,7 +96,7 @@
 		`current_overload`,
 		`temperature_overload`,
 		`humidity_overload`,
-		`lightness_overload`,
+		`lightness_overload`
 		)
 		values
 		(
@@ -153,12 +153,12 @@
 			#{lightId}
 		</foreach>
 		;
-		delete from sys_user_light as ul where ul.light_id in
+		delete from sys_user_light where light_id in
 		<foreach item="lightId" collection="array" open="(" separator="," close=")">
 			#{lightId}
 		</foreach>
 		;
-		delete from sys_light as light where light.info_id in
+		delete from sys_light where info_id in
 		<foreach item="lightId" collection="array" open="(" separator="," close=")">
 			#{lightId}
 		</foreach>

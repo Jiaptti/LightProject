@@ -2,7 +2,6 @@ package com.viroyal.light.module.light.service.impl;
 
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.dao.SysLightInfoMapper;
-import com.viroyal.light.module.light.entity.SysUserLight;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,6 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
 
     @Autowired
     SysLightInfoMapper sysLightInfoMapper;
-
-    @Autowired
-    SysUserLight sysUserLight;
 
     @Override
     public List<SysLightInfo> queryAllLight() {
@@ -59,7 +55,7 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
     }
 
     @Override
-    public List<SysLightInfo> queryByStatus(String status) {
+    public List<SysLightInfo> queryByStatus(Long status) {
         return sysLightInfoMapper.queryByStatus(status);
     }
 

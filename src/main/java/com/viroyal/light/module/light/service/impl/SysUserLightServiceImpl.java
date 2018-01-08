@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,13 +32,13 @@ public class SysUserLightServiceImpl extends ServiceImpl<SysUserLightMapper, Sys
     @Override
     public void dispatchToUser(SysUserLight userLight) {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
-        map.put("userId", userLight.getUserId());
-        SysUserLight sysUserLight = (SysUserLight) userLightMapper.selectByMap(map);
-        if(sysUserLight == null){
+        map.put("light_id", userLight.getLightId());
+        List<SysUserLight> userLightList = userLightMapper.selectByMap(map);
+        if(userLightList.size() == 0){
             userLightMapper.insert(userLight);
         } else {
             Wrapper<SysUserLight> wrapper = new EntityWrapper<SysUserLight>();
-            wrapper.eq("user_id", userLight.getUserId());
+            wrapper.eq("light_id", userLight.getLightId());
             userLightMapper.update(userLight, wrapper);
         }
     }

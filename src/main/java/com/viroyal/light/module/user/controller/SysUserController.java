@@ -164,17 +164,9 @@ public class SysUserController {
     @ResponseBody
     public String userPage(int pageSize, int pageId, String sord, String keyWords) {
         FrontPage<SysUser> page = new FrontPage<SysUser>();
-        if(pageId == 0){
-            pageId = 1;
-        }
-        if(pageSize == 0) {
-            pageSize = 5;
-        }
-        if(!StringUtils.isEmpty(sord)){
-            page.setSord(sord);
-        }
         page.setPage(pageId);
         page.setPageSize(pageSize);
+        page.setSord(sord);
 
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
         if (!StringUtils.isEmpty(keyWords))

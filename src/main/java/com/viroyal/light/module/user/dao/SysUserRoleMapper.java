@@ -18,8 +18,21 @@ import java.util.Map;
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
     /**
      * 根据用户ID，获取角色ID列表
+     * @param userId 用户id
+     * @return SysUserRole 对象
      */
     SysUserRole queryRoleIdList(Long userId);
+
+
+    /**
+     * 添加用户角色关系
+     * @param map 用户对象map
+     */
     void save(Map<String, Object> map);
+
+    /**
+     * 更新用户角色关系
+     * @param userRole 用户角色对象
+     */
     void updateUserRole(SysUserRole userRole);
 }

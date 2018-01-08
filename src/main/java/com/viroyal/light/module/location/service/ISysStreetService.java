@@ -34,17 +34,20 @@ public interface ISysStreetService extends IService<SysStreet> {
 
     /**
      * 查询所有街道
+     * @return 街道列表
      */
     List<SysStreet> queryStreet();
 
     /**
      * 查询区下的所有街道
+     * @return 街道列表
      * @param id 区id
      */
     List<SysStreet> getStreetByAreaId(Long id);
 
     /**
      * 查询城市下的所有街道
+     * @return 街道列表
      * @param id 城市id
      */
     List<SysStreet> getStreetByCityId(Long id);

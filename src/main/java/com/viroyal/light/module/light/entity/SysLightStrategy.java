@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 路灯决策实体类
  * </p>
  *
  * @author jiaptti

@@ -136,17 +136,9 @@ public class SysCityController {
     @ResponseBody
     public String cityPage(int pageSize, int pageId, String sord, String keyWords) {
         FrontPage<SysCity> page = new FrontPage<SysCity>();
-        if(pageId == 0){
-            pageId = 1;
-        }
-        if(pageSize == 0) {
-            pageSize = 5;
-        }
-        if(!StringUtils.isEmpty(sord)){
-            page.setSord(sord);
-        }
         page.setPage(pageId);
         page.setPageSize(pageSize);
+        page.setSord(sord);
 
         Wrapper<SysCity> wrapper = new EntityWrapper<SysCity>();
         if (!StringUtils.isEmpty(keyWords))

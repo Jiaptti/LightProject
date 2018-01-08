@@ -9,6 +9,7 @@ import com.viroyal.light.module.user.service.ISysUserService;
 import com.viroyal.light.common.shiro.ShiroService;
 import com.viroyal.light.common.utils.vcode.Captcha;
 import com.viroyal.light.common.utils.vcode.GifCaptcha;
+import io.swagger.annotations.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -134,7 +135,7 @@ public class SysLoginController {
 
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     @ResponseBody
-    public String login(String username, String password,HttpServletRequest request){
+    public String login(String username, String password){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         SysUser user = null;
         try {
@@ -165,7 +166,8 @@ public class SysLoginController {
 
     /**
      * 获取验证码（Gif版本）
-     * @param response
+     * @param response 响应
+     * @param request 请求
      */
     @RequestMapping(value="/getGifCode",method=RequestMethod.GET)
     public void getGifCode(HttpServletResponse response, HttpServletRequest request){

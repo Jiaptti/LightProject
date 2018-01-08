@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 路灯信息实体类
  * </p>
  *
  * @author jiaptti

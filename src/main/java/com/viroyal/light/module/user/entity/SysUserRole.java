@@ -9,10 +9,10 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * <p>
- * 
- * </p>
  *
+ * <p>
+ *  用户角色实现类
+ * </p>
  * @author jiaptti
  * @since 2017-12-01
  */

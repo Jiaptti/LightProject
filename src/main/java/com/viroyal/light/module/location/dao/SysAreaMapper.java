@@ -36,11 +36,13 @@ public interface SysAreaMapper extends BaseMapper<SysArea> {
 
     /**
      * 获得所有区
+     * @return 区列表
      */
     List<SysArea> queryAll();
 
     /**
      * 获得所有区
+     * @return 区列表
      * @param cityId 城市id
      */
     List<SysArea> getAreaByCityId(Long cityId);

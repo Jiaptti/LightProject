@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 角色权限实体类
  * </p>
  *
  * @author jiaptti
