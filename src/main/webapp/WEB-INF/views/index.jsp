@@ -28,6 +28,7 @@
 						class="nav-item-inner nav-storage">首页</div></li>
 			</ul>
 		</div>
+		<%--<input type="button", id="cors" value="CORS跨域请求"/>--%>
 		<ul id="J_NavContent" class="dl-tab-conten">
 		</ul>
 	</div>
@@ -65,6 +66,16 @@
         modulesConfig : config
       });
     });
+//	$(function () {
+//		$("#cors").click(function () {
+//			$.ajax({
+//				url:"http://localhost:8080/user/cors",
+//				success:function (data) {
+//					alert(data);
+//                }
+//			})
+//		});
+//    });
   </script>
  </body>
 </html>

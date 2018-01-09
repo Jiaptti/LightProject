@@ -99,14 +99,19 @@ public class SysAreaController {
     @RequiresPermissions("sys:area:save")
     public String saveArea(SysArea area){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysAreaService.saveArea(area);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
+        if(area.getCityId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_AREA_CITY_ERROR);
+        } else {
+            try{
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysAreaService.saveArea(area);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            }
         }
         return JSON.toJSONString(resultMap);
     }
@@ -136,14 +141,19 @@ public class SysAreaController {
     @RequiresPermissions("sys:area:update")
     public String updateArea(SysArea area){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysAreaService.updateArea(area);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
+        if(area.getCityId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_AREA_CITY_ERROR);
+        } else {
+            try{
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysAreaService.updateArea(area);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            }
         }
         return JSON.toJSONString(resultMap);
     }

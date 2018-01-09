@@ -8,8 +8,6 @@ public class BaseConstant {
     public static final int ERROR_CODE = 500;
 
 
-
-
     //消息
     public static final String MESSAGE = "message";
     //code
@@ -56,4 +54,10 @@ public class BaseConstant {
     public static final String LOGOUT_SUCCESS = "登出成功";
     //登出失败
     public static final String LOGOUT_FAILURE = "登出失败";
+
+
+    //添加用户错误
+    public static final String SAVE_USER_ROLE_ERROR = "请添加用户角色ID";
+    //添加区错误
+    public static final String SAVE_AREA_CITY_ERROR = "请添加城市ID";
 }

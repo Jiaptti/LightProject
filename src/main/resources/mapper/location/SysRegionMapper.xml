@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.viroyal.light.module.location.dao.SysRegionMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.viroyal.light.module.location.entity.SysRegion">
+		<id column="id" property="id" />
+		<result column="common_region_id" property="commonRegionId" />
+		<result column="region_name" property="regionName" />
+		<result column="up_region_id" property="upRegionId" />
+		<result column="region_desc" property="regionDesc" />
+		<result column="postalcode" property="postalcode" />
+	</resultMap>
+
+	<!-- 查询所有城市 -->
+	<select id="queryAllCity" resultMap="BaseResultMap">
+		select region.id, region.common_region_id, region.region_name, region.postalcode  from sys_region as region
+		where region.region_name like '%市'
+	</select>
+
+	<!-- 查询所有区 -->
+	<select id="queryAllArea" resultMap="BaseResultMap">
+		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode  from sys_region as region
+		where region.region_name like '%区'
+	</select>
+
+	<!-- 查询所有街道 -->
+	<select id="queryAllStreet" resultMap="BaseResultMap">
+		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode  from sys_region as region
+		where region.region_name like '%街道'
+	</select>
+
+	<!-- 通过区查询街道 -->
+	<select id="queryStreetByArea" parameterType="Long" resultMap="BaseResultMap">
+		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode  from sys_region as region
+		where region.up_regionn_id = #{areaId}
+	</select>
+
+	<!-- 添加地区 -->
+	<insert id="save" parameterType="com.viroyal.light.module.location.entity.SysRegion"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_region
+		(
+		`id`,
+		`common_region_id`,
+		`region_name`,
+		`up_region_id`,
+		`region_desc`,
+		`postalcode`
+		)
+		values
+		(
+		#{id},
+		#{commonRegionId},
+		#{regionName},
+		#{upRegionId},
+		#{regionDesc},
+		#{postalcode}
+		)
+	</insert>
+
+	<!-- 通过id更新区信息 -->
+	<update id="update" parameterType="com.viroyal.light.module.location.entity.SysRegion">
+		update sys_area
+		<set>
+			<if test="commonRegionId != null">`common_region_id` = #{commonRegionId}, </if>
+			<if test="upRegionId != null">`up_region_id` = #{upRegionId},  </if>
+			<if test="regionName != null">`region_name` = #{regionName},  </if>
+			<if test="regionDesc != null">`region_desc` = #{regionDesc},  </if>
+			<if test="postalcode != null">`postalcode` = #{postalcode}  </if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

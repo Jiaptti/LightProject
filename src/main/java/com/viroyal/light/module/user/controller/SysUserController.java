@@ -103,18 +103,22 @@ public class SysUserController {
     @ResponseBody
     public String save(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysUserService.save(user);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
+        if(user.getRoleId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_USER_ROLE_ERROR);
+        } else {
+            try{
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysUserService.save(user);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            }
         }
         return JSON.toJSONString(resultMap);
     }
-
 
     // 更新用户
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -130,14 +134,19 @@ public class SysUserController {
     @ResponseBody
     public String update(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysUserService.update(user);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
+        if(user.getRoleId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_USER_ROLE_ERROR);
+        } else{
+            try{
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysUserService.update(user);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
+            }
         }
         return JSON.toJSONString(resultMap);
     }
@@ -161,13 +170,14 @@ public class SysUserController {
     @RequestMapping(value = "/getUserPage")
     @RequiresPermissions("sys:user:list")
     @ResponseBody
-    public String userPage(int pageSize, int pageId, String sord, String keyWords) {
+    public String userPage(int pageSize, int pageId, String sort, String keyWords) {
         FrontPage<SysUser> page = new FrontPage<SysUser>();
         page.setPage(pageId);
         page.setPageSize(pageSize);
-        page.setSord(sord);
+        page.setSord(sort);
 
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
+        wrapper.setSqlSelect("id,username,nickname,phone,email");
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("username", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);

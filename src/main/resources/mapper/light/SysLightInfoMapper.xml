@@ -73,6 +73,16 @@
 		where info.status = #{status}
 	</select>
 
+
+	<!-- 通过各种条件查询路灯 -->
+	<select id="queryByStatus" parameterType="Map" resultMap="BaseResultMap">
+		select * from sys_light_info as info
+		left join sys_region as region on
+		<if test="cityId != null">  </if>
+		region.common_region_id = info.street_id where 1=1
+		<if test="cityId != null"> region.common_region_id =  </if>
+	</select>
+
 	<!-- 添加路灯 -->
 	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLightInfo"
 			useGeneratedKeys="true" keyProperty="id">

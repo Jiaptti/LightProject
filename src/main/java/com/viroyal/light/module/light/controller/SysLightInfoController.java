@@ -9,8 +9,6 @@ import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.entity.SysUserLight;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
-import com.viroyal.light.module.light.service.ISysUserLightService;
-import com.viroyal.light.common.page.CustomPage;
 import com.viroyal.light.common.page.FrontPage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -39,9 +37,6 @@ public class SysLightInfoController {
 
     @Autowired
     ISysLightInfoService sysLightInfoService;
-
-    @Autowired
-    ISysUserLightService sysUserLightService;
 
 
     //移动端获得路灯列表
@@ -202,24 +197,6 @@ public class SysLightInfoController {
         try{
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             sysLightInfoService.saveLightInfo(lightInfo);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
-    }
-
-    //移动指派路灯由谁负责
-    @RequestMapping(value = "/dispatch", method = RequestMethod.POST)
-    @ResponseBody
-    @RequiresPermissions("sys:lightInfo:info")
-    public String dispatchLight(SysUserLight userLight){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysUserLightService.dispatchToUser(userLight);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } catch (Exception e){
             e.printStackTrace();
