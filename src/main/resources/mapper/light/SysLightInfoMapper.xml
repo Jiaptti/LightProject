@@ -77,10 +77,11 @@
 	<!-- 通过各种条件查询路灯 -->
 	<select id="queryByStatus" parameterType="Map" resultMap="BaseResultMap">
 		select * from sys_light_info as info
-		left join sys_region as region on
-		<if test="cityId != null">  </if>
-		region.common_region_id = info.street_id where 1=1
-		<if test="cityId != null"> region.common_region_id =  </if>
+		left join sys_region as r on r.common_region_id = info.street_id
+		where 1 = 1
+		<if test="cityId != null"> and r.common_region_id like '#{city_id}%' and r.region_desc = '街道'</if>
+		<if test="areaId != null"> and r.common_region_id like '#{area_id}%' and r.region_name like '%区'</if>
+
 	</select>
 
 	<!-- 添加路灯 -->
