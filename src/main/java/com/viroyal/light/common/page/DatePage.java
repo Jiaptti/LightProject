@@ -1,6 +1,7 @@
 package com.viroyal.light.common.page;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.module.light.entity.SysLightInfo;
 import lombok.Data;
 
 import java.util.List;

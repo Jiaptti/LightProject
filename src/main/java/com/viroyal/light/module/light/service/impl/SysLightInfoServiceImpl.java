@@ -1,14 +1,21 @@
 package com.viroyal.light.module.light.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.viroyal.light.common.page.DatePage;
+import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.dao.SysLightInfoMapper;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -75,5 +82,35 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
     @Override
     public void updateLightInfo(SysLightInfo lightInfo) {
         sysLightInfoMapper.update(lightInfo);
+    }
+
+
+    @Override
+    public DatePage<SysLightInfo> queryWithCondition(Map<String, Object> params) {
+        FrontPage<SysLightInfo> page = new FrontPage<SysLightInfo>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if(entry.getKey().toString().equals("pageId")){
+                page.setPageSize(Integer.parseInt(entry.getValue().toString()));
+            } else if(entry.getKey().toString().equals("pageSize")){
+                page.setPageSize(Integer.parseInt(entry.getValue().toString()));
+            } else if(entry.getKey().toString().contains("sort")){
+                page.setSort(entry.getValue().toString());
+            } else if(entry.getKey().toString().contains("keyWords")){
+                page.setKeywords(entry.getValue().toString());
+            } else {
+                params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
+                if(entry.getKey().equals("cityId")){
+                    params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
+                }
+            }
+        }
+        Wrapper<SysLightInfo> wrapper = new EntityWrapper<SysLightInfo>();
+        page.setData(sysLightInfoMapper.queryWithCondition(params));
+        if (!StringUtils.isEmpty(page.getKeywords()))
+            wrapper.like("code", page.getKeywords());
+
+        Page<SysLightInfo> pageList =  selectPage(page.getPagePlus(),wrapper);
+        DatePage<SysLightInfo> datePage = new DatePage<SysLightInfo>(pageList);
+        return datePage;
     }
 }

@@ -50,6 +50,11 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	 */
 	@TableField("strategy_id")
 	private String strategyId;
+	/**
+	 * 所属用户id
+	 */
+	@TableField("user_id")
+	private Long userId;
     /**
      * 所属街道id
      */

@@ -3,6 +3,8 @@ package com.viroyal.light.common.page;
 import com.baomidou.mybatisplus.plugins.Page;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 用来接收页面传过来的查询字段   对象
  *
@@ -14,6 +16,8 @@ public class FrontPage<T> {
 
     //时间戳（毫秒）
     private String nd;
+
+    private List<T> data;
 
     //每页显示条数
     private int rows;
@@ -27,7 +31,7 @@ public class FrontPage<T> {
     private int pageSize;
 
     //排序方式 asc升序  desc降序
-    private String sord;
+    private String sort;
 
     //搜索条件
     private String keywords;
@@ -37,10 +41,12 @@ public class FrontPage<T> {
         Page<T> pagePlus = new Page<T>();
         pagePlus.setCurrent(this.page);
         pagePlus.setSize(pageSize);
-        if(sord == null){
-            sord="asc";
+        pagePlus.setRecords(data);
+        System.out.print("data = " + data);
+        if(sort == null){
+            sort="asc";
         }
-        pagePlus.setAsc(this.sord.equals("asc"));
+        pagePlus.setAsc(this.sort.equals("asc"));
         pagePlus.setOrderByField(this.sidx);
         return pagePlus;
     }

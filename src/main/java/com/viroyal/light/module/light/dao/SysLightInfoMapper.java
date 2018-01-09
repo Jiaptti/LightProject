@@ -4,6 +4,7 @@ import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -79,4 +80,11 @@ public interface SysLightInfoMapper extends BaseMapper<SysLightInfo> {
      * @param lightInfo 路灯
      */
     void update(SysLightInfo lightInfo);
+
+    /**
+     * 通过条件查询路灯
+     * @param params 条件参数
+     * @return 路灯信息列表
+     */
+    List<SysLightInfo> queryWithCondition(Map<String, Object> params);
 }

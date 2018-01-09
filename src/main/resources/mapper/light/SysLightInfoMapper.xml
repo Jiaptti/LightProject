@@ -11,6 +11,7 @@
 		<result column="longitude" property="longitude" />
 		<result column="latitude" property="latitude" />
 		<result column="strategy_id" property="strategyId" />
+		<result column="user_id" property="userId" />
 		<result column="street_id" property="streetId" />
 		<result column="group_id" property="groupId" />
 		<result column="voltage_threshold" property="voltageThreshold" />
@@ -31,27 +32,23 @@
 	</select>
 
 	<!-- 获得城市下的路灯 -->
-	<select id="queryByCity" parameterType="Long" resultMap="BaseResultMap">
+	<select id="queryWithCondition" parameterType="Long" resultMap="BaseResultMap">
 		select * from sys_light_info as info
-		left join sys_street as street on street.id = info.street_id
-		Left join sys_area_street as ast on ast.street_id = street.id
-		left join sys_city_area as ca on ca.area_id = ast.area_id
-		where ca.city_id = #{cityId}
+		left join sys_region as r on r.common_region_id = info.street_id
+		where r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道'
 	</select>
 
 	<!-- 获得区下的路灯 -->
 	<select id="queryByArea" parameterType="Long" resultMap="BaseResultMap">
 		select * from sys_light_info as info
-		left join sys_street as street on street.id = info.street_id
-		Left join sys_area_street as ast on ast.street_id = street.id
-		where ast.area_id = #{areaId}
+		left join sys_region as r on r.common_region_id = info.street_id
+		where r.up_region_id = #{areaId}
 	</select>
 
 	<!-- 获得街道下的路灯 -->
 	<select id="queryByStreet" parameterType="Long" resultMap="BaseResultMap">
 		select * from sys_light_info as info
-		left join sys_street as street on street.id = info.street_id
-		where street.id = #{streetId}
+		where info.street_id = #{streetId}
 	</select>
 
 	<!-- 获得组下的路灯 -->
@@ -63,8 +60,7 @@
 	<!-- 获得维修员的路灯 -->
 	<select id="queryByUser" parameterType="Long" resultMap="BaseResultMap">
 		select * from sys_light_info as info
-		left join sys_user_light as ul on ul.light_id = info.id
-		where ul.user_id = #{userId}
+		where info.user_id = #{userId}
 	</select>
 
 	<!-- 获得是否投入使用的路灯 -->
@@ -79,9 +75,11 @@
 		select * from sys_light_info as info
 		left join sys_region as r on r.common_region_id = info.street_id
 		where 1 = 1
-		<if test="cityId != null"> and r.common_region_id like '#{city_id}%' and r.region_desc = '街道'</if>
-		<if test="areaId != null"> and r.common_region_id like '#{area_id}%' and r.region_name like '%区'</if>
-
+		<if test="cityId != null"> and r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道'</if>
+		<if test="areaId != null"> and r.up_region_id = #{areaId}</if>
+		<if test="streetId != null"> and info.street_id = #{streetId}</if>
+		<if test="userId != null"> and info.user_id = #{userId}</if>
+		<if test="groupId != null"> and info.group_id = #{groupId}</if>
 	</select>
 
 	<!-- 添加路灯 -->
@@ -96,6 +94,7 @@
 		`longitude`,
 		`latitude`,
 		`strategy_id`,
+		`user_id`,
 		`street_id`,
 		`group_id`,
 		`voltage_threshold`,
@@ -118,6 +117,7 @@
 		#{longitude},
 		#{latitude},
 		#{strategyId},
+		#{userId},
 		#{streetId},
 		#{groupId},
 		#{voltageThreshold},
@@ -143,6 +143,7 @@
 			<if test="longitude != null">`longitude` = #{longitude}, </if>
 			<if test="latitude != null">`latitude` = #{latitude}, </if>
 			<if test="strategyId != null">`strategy_id` = #{strategyId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="streetId != null">`street_id` = #{streetId}, </if>
 			<if test="groupId != null">`group_id` = #{groupId}, </if>
 			<if test="voltageThreshold != null">`voltage_threshold` = #{voltageThreshold}, </if>

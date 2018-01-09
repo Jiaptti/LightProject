@@ -14,10 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -187,7 +184,6 @@ public class SysLightInfoController {
         return JSON.toJSONString(resultMap);
     }
 
-
     //移动端添加街道
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
@@ -248,9 +244,9 @@ public class SysLightInfoController {
     @RequestMapping(value = "/getLightInfoPage")
     @RequiresPermissions("sys:lightInfo:list")
     @ResponseBody
-    public String areaPage(int pageSize, int pageId, String sord,String keyWords) {
+    public String areaPage(int pageSize, int pageId, String sort,String keyWords) {
         FrontPage<SysLightInfo> page = new FrontPage<SysLightInfo>();
-        page.setSord(sord);
+        page.setSort(sort);
         page.setPage(pageId);
         page.setPageSize(pageSize);
 
@@ -259,6 +255,16 @@ public class SysLightInfoController {
             wrapper.like("code", keyWords);
         Page<SysLightInfo> pageList = sysLightInfoService.selectPage(page.getPagePlus(), wrapper);
         DatePage<SysLightInfo> datePage = new DatePage<SysLightInfo>(pageList);
+        return JSON.toJSONString(datePage);
+    }
+
+
+    //移动端各种条件查询
+    @RequestMapping(value = "/queryWithCondition", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:lightInfo:list")
+    public String queryWithCondition(@RequestParam Map<String, Object> params){
+        DatePage<SysLightInfo> datePage = sysLightInfoService.queryWithCondition(params);
         return JSON.toJSONString(datePage);
     }
 }

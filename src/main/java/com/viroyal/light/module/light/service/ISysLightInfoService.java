@@ -1,9 +1,11 @@
 package com.viroyal.light.module.light.service;
 
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -61,6 +63,14 @@ public interface ISysLightInfoService extends IService<SysLightInfo> {
      * @return 路灯信息列表
      */
     List<SysLightInfo> queryByStatus(Long status);
+
+
+    /**
+     * 通过各种条件查询
+     * @param params 条件参数
+     * @return 路灯信息列表
+     */
+    DatePage<SysLightInfo> queryWithCondition(Map<String, Object> params);
 
     /**
      * 增加路灯

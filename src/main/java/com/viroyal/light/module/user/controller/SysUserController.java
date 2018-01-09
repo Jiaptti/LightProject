@@ -174,7 +174,7 @@ public class SysUserController {
         FrontPage<SysUser> page = new FrontPage<SysUser>();
         page.setPage(pageId);
         page.setPageSize(pageSize);
-        page.setSord(sort);
+        page.setSort(sort);
 
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
         wrapper.setSqlSelect("id,username,nickname,phone,email");
