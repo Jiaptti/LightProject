@@ -32,7 +32,7 @@
 	</select>
 
 	<!-- 获得城市下的路灯 -->
-	<select id="queryWithCondition" parameterType="Long" resultMap="BaseResultMap">
+	<select id="queryByCity" parameterType="Long" resultMap="BaseResultMap">
 		select * from sys_light_info as info
 		left join sys_region as r on r.common_region_id = info.street_id
 		where r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道'
@@ -71,15 +71,42 @@
 
 
 	<!-- 通过各种条件查询路灯 -->
-	<select id="queryByStatus" parameterType="Map" resultMap="BaseResultMap">
+	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select * from sys_light_info as info
-		left join sys_region as r on r.common_region_id = info.street_id
+		left join sys_region as r on r.common_region_id=info.street_id
 		where 1 = 1
+		<if test="areaId != null"> and r.up_region_id = #{areaId} </if>
 		<if test="cityId != null"> and r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道'</if>
-		<if test="areaId != null"> and r.up_region_id = #{areaId}</if>
-		<if test="streetId != null"> and info.street_id = #{streetId}</if>
+		<if test="streetId != null"> and info.street_id = #{streetId} </if>
 		<if test="userId != null"> and info.user_id = #{userId}</if>
 		<if test="groupId != null"> and info.group_id = #{groupId}</if>
+		<if test="code != null"> and info.code like CONCAT('%', #{code}, '%')</if>
+		<if test="status != null"> and info.status = #{status}</if>
+		<if test="longitude != null"> and info.longitude = #{longitude}</if>
+		<if test="latitude != null"> and info.latitude = #{latitude}</if>
+		<if test="strategyId != null"> and info.strategy_id = #{strategyId}</if>
+		<if test="voltageThresholdGt != null"> and info.voltage_threshold &gt;= #{voltageThresholdGt}</if>
+		<if test="voltageThresholdLt != null"> and info.voltage_threshold @lt;= #{voltageThresholdLt} </if>
+		<if test="currentThresholdGt != null"> and info.current_threshold @gt;= #{currentThresholdGt} </if>
+		<if test="currentThresholdLt != null"> and info.current_threshold @lt;= #{currentThresholdLt} </if>
+		<if test="temperatureThresholdGt != null"> and info.temperature_threshold @gt;= #{temperatureThresholdGt} </if>
+		<if test="temperatureThresholdLt != null"> and info.temperature_threshold @lt;= #{temperatureThresholdLt} </if>
+		<if test="humidityThresholdGt != null"> and info.humidity_threshold @gt;= #{humidityThresholdGt} </if>
+		<if test="humidityThresholdLt != null"> and info.humidity_threshold @lt;= #{humidityThresholdLt} </if>
+		<if test="lightnessThresholdGt != null"> and info.lightness_threshold @gt;= #{lightnessThresholdGt} </if>
+		<if test="lightnessThresholdLt != null"> and info.lightness_threshold @lt;= #{lightnessThresholdLt} </if>
+		<if test="voltageOverloadGt != null"> and info.voltage_overload @gt;= #{voltageOverloadGt} </if>
+		<if test="voltageOverloadLt != null"> and info.voltage_overload @lt;= #{voltageOverloadLt} </if>
+		<if test="currentOverloadGt != null"> and info.current_overload @gt;= #{currentOverloadGt} </if>
+		<if test="currentOverloadLt != null"> and info.current_overload @lt;= #{currentOverloadLt} </if>
+		<if test="temperatureOverloadGt != null"> and info.temperature_overload @gt;= #{temperatureOverloadGt} </if>
+		<if test="temperatureOverloadLt != null"> and info.temperature_overload @lt;= #{temperatureOverloadLt} </if>
+		<if test="humidityOverloadGt != null"> and info.humidity_overload @gt;= #{humidityOverloadGt} </if>
+		<if test="humidityOverloadLt != null"> and info.humidity_overload @lt;= #{humidityOverloadLt} </if>
+		<if test="lightnessOverloadGt != null"> and info.lightness_overload @gt;= #{lightnessOverloadGt} </if>
+		<if test="lightnessOverloadLt != null"> and info.lightness_overload @lt;= #{lightnessOverloadLt} </if>
+		<if test="sort == 'asc' "> order by info.id asc </if>
+		<if test="sort == 'desc' ">order by info.id desc </if>
 	</select>
 
 	<!-- 添加路灯 -->
@@ -160,7 +187,7 @@
 	</update>
 
 	<delete id="deleteBatch">
-		delete from sys_light_info where id in
+		delete from sys_light_info as info where info.id in
 		<foreach item="lightId" collection="array" open="(" separator="," close=")">
 			#{lightId}
 		</foreach>
@@ -170,7 +197,7 @@
 			#{lightId}
 		</foreach>
 		;
-		delete from sys_light where info_id in
+		delete from sys_light as light where light.info_id in
 		<foreach item="lightId" collection="array" open="(" separator="," close=")">
 			#{lightId}
 		</foreach>

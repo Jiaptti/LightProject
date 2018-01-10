@@ -42,7 +42,6 @@ public class FrontPage<T> {
         pagePlus.setCurrent(this.page);
         pagePlus.setSize(pageSize);
         pagePlus.setRecords(data);
-        System.out.print("data = " + data);
         if(sort == null){
             sort="asc";
         }

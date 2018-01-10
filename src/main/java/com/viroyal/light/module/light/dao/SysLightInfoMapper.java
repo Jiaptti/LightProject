@@ -1,7 +1,9 @@
 package com.viroyal.light.module.light.dao;
 
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 import java.util.Map;
@@ -86,5 +88,5 @@ public interface SysLightInfoMapper extends BaseMapper<SysLightInfo> {
      * @param params 条件参数
      * @return 路灯信息列表
      */
-    List<SysLightInfo> queryWithCondition(Map<String, Object> params);
+    List<SysLightInfo> queryWithCondition(Map<String, Object> params, RowBounds rowBounds);
 }

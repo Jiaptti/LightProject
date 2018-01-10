@@ -37,6 +37,21 @@
 		where region.up_region_id like CONCAT(#{areaId}, '%')  and region.region_desc = '街道'
 	</select>
 
+	<!-- 通过条件查询街道 -->
+	<select id="queryWithCondition" parameterType="Long" resultMap="BaseResultMap">
+		select DISTINCT r.id, r.common_region_id, r.region_name, r.region_desc,
+		r.up_region_id, r.postalcode
+		from sys_region as r
+		left join sys_light_info as i
+		on i.street_id = r.common_region_id
+		where 1 = 1 and r.region_desc = '街道'
+		<if test="cityId != null"> and r.common_region_id like CONCAT(#{cityId}, '%')  </if>
+		<if test="areaId != null"> and r.up_region_id = #{areaId}</if>
+		<if test="userId != null"> and i.user_id = #{userId}</if>
+		<if test="sort == 'asc' "> order by r.id asc </if>
+		<if test="sort == 'desc' ">order by r.id desc </if>
+	</select>
+
 	<!-- 添加地区 -->
 	<insert id="save" parameterType="com.viroyal.light.module.location.entity.SysRegion"
 			useGeneratedKeys="true" keyProperty="id">

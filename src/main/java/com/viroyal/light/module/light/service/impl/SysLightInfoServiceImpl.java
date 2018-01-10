@@ -10,6 +10,7 @@ import com.viroyal.light.module.light.dao.SysLightInfoMapper;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,27 +91,20 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
         FrontPage<SysLightInfo> page = new FrontPage<SysLightInfo>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             if(entry.getKey().toString().equals("pageId")){
-                page.setPageSize(Integer.parseInt(entry.getValue().toString()));
+                page.setPage(Integer.parseInt(entry.getValue().toString()));
             } else if(entry.getKey().toString().equals("pageSize")){
                 page.setPageSize(Integer.parseInt(entry.getValue().toString()));
-            } else if(entry.getKey().toString().contains("sort")){
-                page.setSort(entry.getValue().toString());
-            } else if(entry.getKey().toString().contains("keyWords")){
-                page.setKeywords(entry.getValue().toString());
             } else {
-                params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
-                if(entry.getKey().equals("cityId")){
-                    params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
+                if(!entry.getKey().toString().equals("code") && !entry.getKey().toString().equals("sort")){
+                    params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
+                    if(entry.getKey().equals("cityId")){
+                        params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
+                    }
                 }
             }
         }
-        Wrapper<SysLightInfo> wrapper = new EntityWrapper<SysLightInfo>();
-        page.setData(sysLightInfoMapper.queryWithCondition(params));
-        if (!StringUtils.isEmpty(page.getKeywords()))
-            wrapper.like("code", page.getKeywords());
-
-        Page<SysLightInfo> pageList =  selectPage(page.getPagePlus(),wrapper);
-        DatePage<SysLightInfo> datePage = new DatePage<SysLightInfo>(pageList);
-        return datePage;
+        RowBounds rowBounds = new RowBounds(page.getPage() - 1, page.getPageSize());
+        page.setData(sysLightInfoMapper.queryWithCondition(params, rowBounds));
+        return new DatePage<SysLightInfo>(page.getPagePlus());
     }
 }

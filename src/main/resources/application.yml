@@ -1,7 +1,7 @@
 spring:
     # 环境 dev|test|pro
     profiles:
-        active: pro
+        active: test
     # jackson时间格式化
     jackson:
         time-zone: GMT+8
@@ -36,6 +36,13 @@ viroyal:
     redis:
         open: true  # 是否开启redis缓存  true开启   false关闭
     shiro:
-        redis: true # true表示shiro session存到redis里，需要开启redis，才会生效【分布式场景】
+        redis: true
+        # true表示shiro session存到redis里，需要开启redis，才会生效【分布式场景】
 
-#        redis-server.exe redis.windows.conf
+                #        redis-server.exe redis.windows.conf
+logging:
+  level:
+    com.viroyal.viroyal.module.light.controller: 'off'
+    com.viroyal.viroyal.module.user.controller: 'off'
+    com.viroyal.viroyal.module.location.controller: 'off'
+

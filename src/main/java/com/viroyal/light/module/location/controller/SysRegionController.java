@@ -1,6 +1,7 @@
 package com.viroyal.light.module.location.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.viroyal.light.module.location.service.ISysRegionService;
@@ -156,6 +157,15 @@ public class SysRegionController {
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
         }
         return JSON.toJSONString(resultMap);
+    }
+
+    //移动端各种条件查询
+    @RequestMapping(value = "/queryWithCondition", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:region:list")
+    public String queryWithCondition(@RequestParam Map<String, Object> params){
+        DatePage<SysRegion> datePage = sysRegionService.queryWithCondition(params);
+        return JSON.toJSONString(datePage);
     }
 
 }
