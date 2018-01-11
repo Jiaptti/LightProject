@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2018-01-09 19:42:37
+Date: 2018-01-11 20:04:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -102,7 +102,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=13
+AUTO_INCREMENT=14
 
 ;
 
@@ -178,7 +178,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=31
+AUTO_INCREMENT=23
 
 ;
 
@@ -186,7 +186,7 @@ AUTO_INCREMENT=31
 -- Records of sys_permission
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_permission` VALUES ('1', '/user/user.jsp', '用户列表', 'sys:user:list,sys:user:info'), ('2', '/user/edit.jsp', '用户添加', 'sys:user:save,sys:role:select'), ('3', '/user/edit.jsp', '用户删除', 'sys:user:delete'), ('4', '/user/edit.jsp', '用户更新', 'sys:user:update,sys:role:select'), ('5', '', '用户Session踢出', 'sys:user:kickout'), ('6', '', '用户激活&禁止', 'sys:user:status'), ('7', '/role/role.jsp', '角色列表', 'sys:role:list,sys:role:info'), ('8', '/role/edit.jsp', '角色删除', 'sys:role:delete'), ('9', '/role/edit.jsp', '角色添加', 'sys:role:save'), ('10', '/role/edit.jsp', '角色更新', 'sys:role:update'), ('11', '/permission/permission.jsp', '权限列表', 'sys:permission:list,sys:permission:info'), ('12', '/permission/edit.jsp', '权限添加', 'sys:permission:save'), ('13', '/permission/edit.jsp', '权限删除', 'sys:permission:delete'), ('14', '/permission/edit.jsp', '权限更新', 'sys:permission:update'), ('15', '/city/city.jsp', '城市列表', 'sys:city:list,sys:city:info'), ('16', '/city/edit.jsp', '城市添加', 'sys:city:save'), ('17', '/city/edit.jsp', '城市删除', 'sys:city:delete'), ('18', '/city/edit.jsp', '城市更新', 'sys:city:update'), ('19', '/area/area.jsp', '区列表', 'sys:area:list,sys:area:info'), ('20', '/area/edit.jsp', '区添加', 'sys:area:save'), ('21', '/area/edit.jsp', '区删除', 'sys:area:delete'), ('22', '/area/edit.jsp', '区更新', 'sys:area:update'), ('23', '/street/street.jsp', '街道列表', 'sys:street:list,sys:street:info'), ('24', '/street/edit.jsp', '街道添加', 'sys:street:save'), ('25', '/street/edit.jsp', '街道删除', 'sys:street:delete'), ('26', '/street/edit.jsp', '街道更新', 'sys:street:update'), ('27', '/lightinfo/lightinfo.jsp', '路灯信息列表', 'sys:lightInfo:list,sys:lightInfo:info'), ('28', '/lightinfo/edit.jsp', '路灯信息添加', 'sys:lightInfo:save'), ('29', '/lightinfo/edit.jsp', '路灯信息删除', 'sys:lightInfo:delete'), ('30', '/lightinfo/edit.jsp', '路灯信息更新', 'sys:lightInfo:update');
+INSERT INTO `sys_permission` VALUES ('1', '/user/user.jsp', '用户列表', 'sys:user:list,sys:user:info'), ('2', '/user/edit.jsp', '用户添加', 'sys:user:save,sys:role:select'), ('3', '/user/edit.jsp', '用户删除', 'sys:user:delete'), ('4', '/user/edit.jsp', '用户更新', 'sys:user:update,sys:role:select'), ('5', '', '用户Session踢出', 'sys:user:kickout'), ('6', '', '用户激活&禁止', 'sys:user:status'), ('7', '/role/role.jsp', '角色列表', 'sys:role:list,sys:role:info'), ('8', '/role/edit.jsp', '角色删除', 'sys:role:delete'), ('9', '/role/edit.jsp', '角色添加', 'sys:role:save'), ('10', '/role/edit.jsp', '角色更新', 'sys:role:update'), ('11', '/permission/permission.jsp', '权限列表', 'sys:permission:list,sys:permission:info'), ('12', '/permission/edit.jsp', '权限添加', 'sys:permission:save'), ('13', '/permission/edit.jsp', '权限删除', 'sys:permission:delete'), ('14', '/permission/edit.jsp', '权限更新', 'sys:permission:update'), ('15', '/lightinfo/lightinfo.jsp', '路灯信息列表', 'sys:lightInfo:list,sys:lightInfo:info'), ('16', '/lightinfo/edit.jsp', '路灯信息添加', 'sys:lightInfo:save'), ('17', '/lightinfo/edit.jsp', '路灯信息删除', 'sys:lightInfo:delete'), ('18', '/lightinfo/edit.jsp', '路灯信息更新', 'sys:lightInfo:update'), ('19', '/region/region.jsp', '地区列表', 'sys:region:list,sys:region:info'), ('20', '/region/edit.jsp', '地区添加', 'sys:region.save'), ('21', '/region/edit.jsp', '地区删除', 'sys:region:delete'), ('22', '/region/edit.jsp', '地区更新', 'sys:region:update');
 COMMIT;
 
 -- ----------------------------
@@ -228,7 +228,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=22
+AUTO_INCREMENT=19
 
 ;
 
@@ -274,7 +274,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=20
+AUTO_INCREMENT=44
 
 ;
 
@@ -282,7 +282,7 @@ AUTO_INCREMENT=20
 -- Records of sys_role_permission
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_permission` VALUES ('1', '1', '1'), ('2', '1', '2'), ('3', '1', '3'), ('4', '1', '4'), ('5', '1', '5'), ('6', '1', '6'), ('7', '1', '7'), ('8', '1', '8'), ('9', '1', '9'), ('10', '1', '10'), ('11', '1', '11'), ('12', '1', '12'), ('13', '1', '13'), ('14', '1', '14'), ('15', '2', '2'), ('16', '2', '3'), ('17', '2', '4'), ('18', '2', '5'), ('19', '3', '6');
+INSERT INTO `sys_role_permission` VALUES ('1', '1', '1'), ('2', '1', '2'), ('3', '1', '3'), ('4', '1', '4'), ('5', '1', '5'), ('6', '1', '6'), ('7', '1', '7'), ('8', '1', '8'), ('9', '1', '9'), ('10', '1', '10'), ('11', '1', '11'), ('12', '1', '12'), ('13', '1', '13'), ('14', '1', '14'), ('15', '2', '2'), ('16', '2', '3'), ('17', '2', '4'), ('18', '2', '5'), ('20', '1', '15'), ('21', '1', '16'), ('22', '1', '17'), ('23', '1', '18'), ('24', '1', '19'), ('25', '1', '20'), ('26', '1', '21'), ('27', '1', '22'), ('28', '3', '15'), ('29', '3', '16'), ('30', '3', '17'), ('31', '3', '18'), ('32', '3', '19'), ('33', '3', '20'), ('34', '3', '21'), ('35', '3', '22'), ('36', '2', '15'), ('37', '2', '16'), ('38', '2', '17'), ('39', '2', '18'), ('40', '2', '19'), ('41', '2', '20'), ('42', '2', '21'), ('43', '2', '22');
 COMMIT;
 
 -- ----------------------------
@@ -314,7 +314,7 @@ AUTO_INCREMENT=28
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES ('1', 'admin', 'admin', 'l9a0lajfwQ3VRSh4jUUJSQ==', '15255257895', 'admin@qq.com', '2016-06-16 11:15:33', '2018-01-08 15:27:58', '1', null, null, null), ('2', '张三', 'zhang', 'eC/MmhASeJBCbfh7W0YU1A==', '13316998986', '123@123.com', '2017-12-24 19:37:40', null, '1', '1', null, null), ('3', '李四', 'lisi', 'bR28UodwBWRDm+buWIaZbg==', '15575590909', '321@123.com', '2017-12-24 19:38:06', null, '1', '1', null, null), ('4', '王五', 'wangwu', 'Yb7Dc8/cPeCL8NwOjnYSRA==', '13317979888', '456@123.com', '2017-12-24 19:38:30', null, '1', '1', null, null), ('20', '罗总', 'luo', '7NjQPajcVm2j1j8LIfaQew==', '15575889999', '123@123.com', '2017-12-25 10:33:48', '2018-01-03 18:07:51', '1', '1', null, null), ('21', '权哥', 'quan', '7NjQPajcVm1dzbZMJvVcRA==', '15475878981', '132@123.com', '2017-12-25 10:34:26', null, '1', '1', null, null), ('22', '老司机', 'laosiji', '7NjQPajcVm1PC6tJMaodpQxtrQrzzUma', '15585858585', '123@123.com', '2017-12-25 10:34:55', '2017-12-25 10:36:52', '1', '1', null, null), ('25', '赵总', 'zxb', '7NjQPajcVm3rcjWOTacgxQ==', '13816214814', '460837364@qq.com', '2017-12-26 11:11:50', '2018-01-03 10:43:37', '1', '20', null, null), ('26', '哈哈哈哈哈', 'sunyy', '8AetwF4m3o3Y4JDqkLIeLA==', '13145678961', '2222@11.COM', '2017-12-27 13:59:21', '2018-01-03 16:17:03', '1', '1', '2018-01-03 15:09:37', '1'), ('27', '武因生', '武因生', '7NjQPajcVm05iEcgH3wDZ/3531yNGT4C', '15821361405', 'wys484112@163.com', '2017-12-28 00:00:00', '2017-12-28 19:45:58', '1', null, null, null);
+INSERT INTO `sys_user` VALUES ('1', 'admin', 'admin', 'l9a0lajfwQ3VRSh4jUUJSQ==', '15255257895', 'admin@qq.com', '2016-06-16 11:15:33', '2018-01-11 16:17:35', '1', null, null, null), ('2', '张三', 'zhang', 'eC/MmhASeJBCbfh7W0YU1A==', '13316998986', '123@123.com', '2017-12-24 19:37:40', null, '1', '1', null, null), ('3', '李四', 'lisi', 'bR28UodwBWRDm+buWIaZbg==', '15575590909', '321@123.com', '2017-12-24 19:38:06', null, '1', '1', null, null), ('4', '王五', 'wangwu', 'Yb7Dc8/cPeCL8NwOjnYSRA==', '13317979888', '456@123.com', '2017-12-24 19:38:30', null, '1', '1', null, null), ('20', '罗总', 'luo', '7NjQPajcVm2j1j8LIfaQew==', '15575889999', '123@123.com', '2017-12-25 10:33:48', '2018-01-03 18:07:51', '1', '1', null, null), ('21', '权哥', 'quan', '7NjQPajcVm1dzbZMJvVcRA==', '15475878981', '132@123.com', '2017-12-25 10:34:26', null, '1', '1', null, null), ('22', '老司机', 'laosiji', '7NjQPajcVm1PC6tJMaodpQxtrQrzzUma', '15585858585', '123@123.com', '2017-12-25 10:34:55', '2017-12-25 10:36:52', '1', '1', null, null), ('25', '赵总', 'zxb', '7NjQPajcVm3rcjWOTacgxQ==', '13816214814', '460837364@qq.com', '2017-12-26 11:11:50', '2018-01-03 10:43:37', '1', '20', null, null), ('26', '哈哈哈哈哈', 'sunyy', '8AetwF4m3o3Y4JDqkLIeLA==', '13145678961', '2222@11.COM', '2017-12-27 13:59:21', '2018-01-03 16:17:03', '1', '1', '2018-01-03 15:09:37', '1'), ('27', '武因生', '武因生', '7NjQPajcVm05iEcgH3wDZ/3531yNGT4C', '15821361405', 'wys484112@163.com', '2017-12-28 00:00:00', '2017-12-28 19:45:58', '1', null, null, null);
 COMMIT;
 
 -- ----------------------------
@@ -353,7 +353,7 @@ ALTER TABLE `sys_light_group` AUTO_INCREMENT=13;
 -- ----------------------------
 -- Auto increment value for sys_light_info
 -- ----------------------------
-ALTER TABLE `sys_light_info` AUTO_INCREMENT=13;
+ALTER TABLE `sys_light_info` AUTO_INCREMENT=14;
 
 -- ----------------------------
 -- Auto increment value for sys_light_record
@@ -368,7 +368,7 @@ ALTER TABLE `sys_light_strategy` AUTO_INCREMENT=5;
 -- ----------------------------
 -- Auto increment value for sys_permission
 -- ----------------------------
-ALTER TABLE `sys_permission` AUTO_INCREMENT=31;
+ALTER TABLE `sys_permission` AUTO_INCREMENT=23;
 
 -- ----------------------------
 -- Auto increment value for sys_permission_init
@@ -378,7 +378,7 @@ ALTER TABLE `sys_permission_init` AUTO_INCREMENT=15;
 -- ----------------------------
 -- Auto increment value for sys_region
 -- ----------------------------
-ALTER TABLE `sys_region` AUTO_INCREMENT=22;
+ALTER TABLE `sys_region` AUTO_INCREMENT=19;
 
 -- ----------------------------
 -- Auto increment value for sys_role
@@ -388,7 +388,7 @@ ALTER TABLE `sys_role` AUTO_INCREMENT=4;
 -- ----------------------------
 -- Auto increment value for sys_role_permission
 -- ----------------------------
-ALTER TABLE `sys_role_permission` AUTO_INCREMENT=20;
+ALTER TABLE `sys_role_permission` AUTO_INCREMENT=44;
 
 -- ----------------------------
 -- Auto increment value for sys_user
