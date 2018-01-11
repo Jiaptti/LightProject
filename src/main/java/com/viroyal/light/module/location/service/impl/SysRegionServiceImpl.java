@@ -47,6 +47,11 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
         return sysRegionMapper.queryStreetByArea(areaId);
     }
 
+    @Override
+    public List<SysRegion> queryAreaByCity(Long cityId) {
+        return sysRegionMapper.queryAreaByCity(cityId);
+    }
+
     @Transactional
     @Override
     public void save(SysRegion sysRegion) {

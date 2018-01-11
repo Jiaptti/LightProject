@@ -5,17 +5,16 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.CustomPage;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.viroyal.light.module.user.service.ISysPermissionService;
+import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ import java.util.Map;
  * @author jiaptti
  * @since 2017-12-01
  */
+@Api("SysPermissionController相关api")
 @Controller
 @RequestMapping(value = "/permission")
 public class SysPermissionController {
@@ -37,14 +37,14 @@ public class SysPermissionController {
     ISysPermissionService sysPermissionService;
 
     // 跳转到用户管理页面
-    @RequestMapping(value = "/permissionPage")
+    @RequestMapping(value = "/permissionPage", method = RequestMethod.GET)
     public String permissionPage(String edit, Model model){
         // edit判断是否编辑成功
         model.addAttribute("edit", edit);
         return "permission/permission";
     }
 
-    @RequestMapping(value = "/getPermissionListWithPager")
+    @RequestMapping(value = "/getPermissionListWithPager", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:permission:list")
     public String getPermissionListWithPager(FrontPage<SysPermission> page){
@@ -59,7 +59,7 @@ public class SysPermissionController {
         return JSON.toJSONString(customPage);
     }
 
-    @RequestMapping(value = "/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:permission:list")
     public String permissionList(){
@@ -68,7 +68,7 @@ public class SysPermissionController {
         return JSON.toJSONString(resultMap);
     }
 
-    @RequestMapping(value = "/editPage/{Id}")
+    @RequestMapping(value = "/editPage/{Id}", method = RequestMethod.GET)
     public String editPage(@PathVariable("Id") String id, Model model){
         if(!id.equals("add")){
             SysPermission permission = sysPermissionService.selectById(id);
@@ -78,7 +78,7 @@ public class SysPermissionController {
     }
 
     // 增加和修改
-    @RequestMapping(value = "/edit")
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(SysPermission permission, Model model) {
         if (sysPermissionService.insertOrUpdate(permission)) {
             return "forward:permissionPage?edit=true";
@@ -88,7 +88,7 @@ public class SysPermissionController {
     }
 
     // 刪除
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     @ResponseBody
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -102,4 +102,31 @@ public class SysPermissionController {
         }
         return JSON.toJSONString(resultMap);
     }
+
+    @ApiOperation("通过条件查询权限")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="pageId",
+                    dataType="Int",required=true,value="第几页"),
+            @ApiImplicitParam(paramType="query",name="pageSize",
+                    dataType="Int",required=true,value="多少条"),
+            @ApiImplicitParam(paramType="query",name="userId",
+                    dataType="Int",required=false,value="用户id"),
+            @ApiImplicitParam(paramType="query",name="areaId",
+                    dataType="Int",required=false,value="区id"),
+            @ApiImplicitParam(paramType="query",name="userId",
+                    dataType="Int",required=false,value="用户id"),
+            @ApiImplicitParam(paramType="query",name="sort",
+                    dataType="String",required=false,value="排序方式"),
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "queryWithCondition", method = RequestMethod.POST)
+    @RequiresPermissions("sys:permission:list")
+    public String queryWithCondition(@RequestParam Map<String, Object> params){
+        DatePage<SysPermission> datePage = sysPermissionService.queryWithCondition(params);
+        return JSON.toJSONString(datePage);
+    }
+
 }

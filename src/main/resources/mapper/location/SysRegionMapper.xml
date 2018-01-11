@@ -30,6 +30,12 @@
 		where region.region_name like '%街道'
 	</select>
 
+	<!-- 通过城市查询区 -->
+	<select id="queryAreaByCity" parameterType="Long" resultMap="BaseResultMap">
+		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode  from sys_region as region
+		where region.region_name like '%区' and region.up_region_id = #{cityId}
+	</select>
+
 	<!-- 通过区查询街道 -->
 	<select id="queryStreetByArea" parameterType="Long" resultMap="BaseResultMap">
 		select region.id, region.common_region_id, region.region_name
@@ -38,7 +44,7 @@
 	</select>
 
 	<!-- 通过条件查询街道 -->
-	<select id="queryWithCondition" parameterType="Long" resultMap="BaseResultMap">
+	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select DISTINCT r.id, r.common_region_id, r.region_name, r.region_desc,
 		r.up_region_id, r.postalcode
 		from sys_region as r

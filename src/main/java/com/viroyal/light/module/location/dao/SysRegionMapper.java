@@ -43,6 +43,14 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
     List<SysRegion> queryStreetByArea(Long areaId);
 
     /**
+     * 通过城市查询所有区
+     * @param cityId 区Id
+     * @return  区列表
+     */
+    List<SysRegion> queryAreaByCity(Long cityId);
+
+
+    /**
      * 存储地区
      * @param sysRegion 地区对象
      */

@@ -40,7 +40,12 @@ public interface ISysRegionService extends IService<SysRegion> {
      * @return  街道列表
      */
     List<SysRegion> queryStreetByArea(Long areaId);
-
+    /**
+     * 通过城市查询所有区
+     * @param cityId 区Id
+     * @return  区列表
+     */
+    List<SysRegion> queryAreaByCity(Long cityId);
     /**
      * 存储地区
      * @param sysRegion 地区对象
@@ -63,7 +68,7 @@ public interface ISysRegionService extends IService<SysRegion> {
      * 通过条件查询查询所有街道
      * @param param  参数可以是cityId,areaId,userId的组合
      *               eg:cityId=xx&areaId=xx
-     * @return 街道列表
+     * @return 分页后的街道列表
      */
     DatePage<SysRegion> queryWithCondition(Map<String, Object> param);
 }

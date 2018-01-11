@@ -5,6 +5,7 @@ import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.viroyal.light.module.location.service.ISysRegionService;
+import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import java.util.Map;
  * @author jiaptti
  * @since 2018-01-09
  */
+@Api("SysRegionController相关api")
 @Controller
 @RequestMapping("/region")
 public class SysRegionController {
@@ -32,7 +34,11 @@ public class SysRegionController {
     ISysRegionService sysRegionService;
 
 
-    //移动端获得城市列表
+    @ApiOperation("获得城市列表")
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
     @RequestMapping(value = "/cityList", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:region:list")
@@ -51,7 +57,11 @@ public class SysRegionController {
     }
 
 
-    //移动端获得城市列表
+    @ApiOperation("获得区列表")
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
     @RequestMapping(value = "/areaList", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:region:list")
@@ -69,7 +79,11 @@ public class SysRegionController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端获得城市列表
+    @ApiOperation("获得街道列表")
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
     @RequestMapping(value = "/streetList", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:region:list")
@@ -87,8 +101,12 @@ public class SysRegionController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端添加城市
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @ApiOperation("添加地区")
+    @ApiResponses({
+            @ApiResponse(code=200,message="添加成功"),
+            @ApiResponse(code=500,message="添加失败")
+    })
+    @RequestMapping(value = "/regionSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:region:save")
     public String saveRegion(SysRegion region){
@@ -105,8 +123,12 @@ public class SysRegionController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端删除城市
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @ApiOperation("删除地区")
+    @ApiResponses({
+            @ApiResponse(code=200,message="删除成功"),
+            @ApiResponse(code=500,message="删除失败")
+    })
+    @RequestMapping(value = "/regionDelete", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:region:delete")
     public String deleteRegion(@RequestParam(value = "ids[]") String[] ids){
@@ -123,8 +145,12 @@ public class SysRegionController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端更新城市
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation("更新地区")
+    @ApiResponses({
+            @ApiResponse(code=200,message="更新成功"),
+            @ApiResponse(code=500,message="更新失败")
+    })
+    @RequestMapping(value = "/regionUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:region:update")
     public String updateRegion(SysRegion region){
@@ -141,7 +167,14 @@ public class SysRegionController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端获得单个城市
+    @ApiOperation("通过区id查询街道")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="areaId",dataType="String",required=true,value="地区id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
     @RequestMapping(value = "/getAreaStreet", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:region:list")
@@ -159,7 +192,51 @@ public class SysRegionController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端各种条件查询
+    @ApiOperation("通过城市id查询区")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="cityId",dataType="String",required=true,value="城市id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/getAreaByCity", method = RequestMethod.GET)
+    @ResponseBody
+    @RequiresPermissions("sys:region:list")
+    public String getAreaByCity(@RequestParam("cityId") String cityId){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        List<SysRegion> streetList = sysRegionService.queryAreaByCity(Long.parseLong(cityId));
+        if (streetList.size() > 0) {
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.VALUE_LIST, streetList);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+        } else {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    @ApiOperation("通过条件查询所有街道(可以随意搭配，也可以单独使用，也可以一个不用),sort进行排序asc升序desc降序，pageId,pageSize为必填项" +
+            "param参数接口填一个1就行，请求的时候，不需要带")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="pageId",
+                    dataType="Int",required=true,value="第几页"),
+            @ApiImplicitParam(paramType="query",name="pageSize",
+                    dataType="Int",required=true,value="多少条"),
+            @ApiImplicitParam(paramType="query",name="cityId",
+                    dataType="Int",required=false,value="城市id"),
+            @ApiImplicitParam(paramType="query",name="areaId",
+                    dataType="Int",required=false,value="区id"),
+            @ApiImplicitParam(paramType="query",name="userId",
+                    dataType="Int",required=false,value="用户id"),
+            @ApiImplicitParam(paramType="query",name="sort",
+                    dataType="String",required=false,value="排序方式"),
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
     @RequestMapping(value = "/queryWithCondition", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:region:list")
@@ -167,5 +244,4 @@ public class SysRegionController {
         DatePage<SysRegion> datePage = sysRegionService.queryWithCondition(params);
         return JSON.toJSONString(datePage);
     }
-
 }

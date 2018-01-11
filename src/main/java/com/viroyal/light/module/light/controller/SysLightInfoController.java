@@ -10,6 +10,7 @@ import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.entity.SysUserLight;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import com.viroyal.light.common.page.FrontPage;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.Map;
  * @author jiaptti
  * @since 2018-01-04
  */
+@Api("SysLightInfoController相关api")
 @Controller
 @RequestMapping(value = "/lightInfo")
 public class SysLightInfoController {
@@ -36,8 +38,12 @@ public class SysLightInfoController {
     ISysLightInfoService sysLightInfoService;
 
 
-    //移动端获得路灯列表
-    @RequestMapping(value = "/list")
+    @ApiOperation("移动端查询所有路灯")
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/lightInfoList", method=RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String lightInfoList(){
@@ -55,8 +61,15 @@ public class SysLightInfoController {
     }
 
 
-    //移动端获得城市下的所有路灯
-    @RequestMapping(value = "/queryCityLight")
+    @ApiOperation("移动端通过城市id查询所有街道")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="cityId",dataType="String",required=true,value="城市id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/queryCityLight", method =RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String queryCityLight(@RequestParam("cityId") String cityId){
@@ -74,8 +87,15 @@ public class SysLightInfoController {
     }
 
 
-    //移动端获得区下的所有路灯
-    @RequestMapping(value = "/queryAreaLight")
+    @ApiOperation("移动端通过区id查询所有街道")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="areaId",dataType="String",required=true,value="区id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/queryAreaLight", method =RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String queryAreaLight(@RequestParam("areaId") String areaId){
@@ -92,8 +112,15 @@ public class SysLightInfoController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端获得街道下的所有路灯
-    @RequestMapping(value = "/queryStreetLight")
+    @ApiOperation("移动端通过街道id查询所有街道")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="streetId",dataType="String",required=true,value="街道id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/queryStreetLight", method =RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String queryByStreet( String streetId){
@@ -111,8 +138,15 @@ public class SysLightInfoController {
     }
 
 
-    //移动端获得指定组下的所有路灯
-    @RequestMapping(value = "/queryGroupLight")
+    @ApiOperation("移动端通过组id查询所有街道")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="groupId",dataType="String",required=true,value="组id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/queryGroupLight", method =RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String queryByGroup(@RequestParam("groupId") String groupId){
@@ -130,8 +164,15 @@ public class SysLightInfoController {
     }
 
 
-    //移动端获得指定维修员负责的所有路灯
-    @RequestMapping(value = "/queryUserLight")
+    @ApiOperation("移动端获得指定维修员负责的所有路灯")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="userId",dataType="String",required=true,value="维修员id(即userId)")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/queryUserLight", method =RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String queryByUser(@RequestParam("userId") String userId){
@@ -148,8 +189,15 @@ public class SysLightInfoController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端获得是否启用的路灯
-    @RequestMapping(value = "/queryStatusLight")
+    @ApiOperation("移动端获得是否启用的路灯")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="status",dataType="String",required=true, value="1表示启用，0表示没启用")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/queryStatusLight", method =RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String queryByStatus(@RequestParam("status") String status){
@@ -166,8 +214,15 @@ public class SysLightInfoController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端获得单个路灯
-    @RequestMapping(value = "/getLightInfo")
+    @ApiOperation("移动端通过id获得指定路灯")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query",name="id",dataType="String",required=true,value="路灯id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/getLightInfo", method =RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:info")
     public String getLightInfo(@RequestParam("id") String id){
@@ -184,8 +239,12 @@ public class SysLightInfoController {
         return JSON.toJSONString(resultMap);
     }
 
-    //移动端添加街道
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @ApiOperation("移动端添加路灯")
+    @ApiResponses({
+            @ApiResponse(code=200,message="添加成功"),
+            @ApiResponse(code=500,message="添加失败")
+    })
+    @RequestMapping(value = "/lightInfoSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:save")
     public String saveStreet(SysLightInfo lightInfo){
@@ -203,8 +262,12 @@ public class SysLightInfoController {
     }
 
 
-    //删除街道
-    @RequestMapping(value = "/delete")
+    @ApiOperation("移动端删除路灯")
+    @ApiResponses({
+            @ApiResponse(code=200,message="删除成功"),
+            @ApiResponse(code=500,message="删除失败")
+    })
+    @RequestMapping(value = "/lightInfoDelete", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:delete")
     public String deleteLightInfo(@RequestParam(value = "ids[]") String[] ids){
@@ -222,8 +285,12 @@ public class SysLightInfoController {
     }
 
 
-    //移动端更新街道
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation("移动端更新路灯")
+    @ApiResponses({
+            @ApiResponse(code=200,message="更新成功"),
+            @ApiResponse(code=500,message="更新失败")
+    })
+    @RequestMapping(value = "/lightInfoUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:update")
     public String updateLightInfo(SysLightInfo lightInfo){
@@ -240,26 +307,67 @@ public class SysLightInfoController {
         return JSON.toJSONString(resultMap);
     }
 
-    // 移动端关键字分页查询街道列表
-    @RequestMapping(value = "/getLightInfoPage")
-    @RequiresPermissions("sys:lightInfo:list")
-    @ResponseBody
-    public String areaPage(int pageSize, int pageId, String sort,String keyWords) {
-        FrontPage<SysLightInfo> page = new FrontPage<SysLightInfo>();
-        page.setSort(sort);
-        page.setPage(pageId);
-        page.setPageSize(pageSize);
+//    // 移动端关键字分页查询街道列表
+//    @RequestMapping(value = "/getLightInfoPage")
+//    @RequiresPermissions("sys:lightInfo:list")
+//    @ResponseBody
+//    public String areaPage(int pageSize, int pageId, String sort,String keyWords) {
+//        FrontPage<SysLightInfo> page = new FrontPage<SysLightInfo>();
+//        page.setSort(sort);
+//        page.setPage(pageId);
+//        page.setPageSize(pageSize);
+//
+//        Wrapper<SysLightInfo> wrapper = new EntityWrapper<SysLightInfo>();
+//        if (!StringUtils.isEmpty(keyWords))
+//            wrapper.like("code", keyWords);
+//        Page<SysLightInfo> pageList = sysLightInfoService.selectPage(page.getPagePlus(), wrapper);
+//        DatePage<SysLightInfo> datePage = new DatePage<SysLightInfo>(pageList);
+//        return JSON.toJSONString(datePage);
+//    }
 
-        Wrapper<SysLightInfo> wrapper = new EntityWrapper<SysLightInfo>();
-        if (!StringUtils.isEmpty(keyWords))
-            wrapper.like("code", keyWords);
-        Page<SysLightInfo> pageList = sysLightInfoService.selectPage(page.getPagePlus(), wrapper);
-        DatePage<SysLightInfo> datePage = new DatePage<SysLightInfo>(pageList);
-        return JSON.toJSONString(datePage);
-    }
 
-
-    //移动端各种条件查询
+    @ApiOperation("移动端通过条件查询所有路灯(标记required的就是必填)pageId,pageSize为必填项,param参数接口填一个1就行，请求的时候不需要带")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="pageId", dataType="Int", required=true,value="第几页"),
+            @ApiImplicitParam(name="pageSize", dataType="Int", required=true,value="多少条"),
+            @ApiImplicitParam(name="areaId", dataType="Long", value="区Id"),
+            @ApiImplicitParam(name="cityId", dataType="Long", value="城市Id"),
+            @ApiImplicitParam(name="streetId", dataType="Long", value="街道Id"),
+            @ApiImplicitParam(name="userId", dataType="Long", value="用户Id"),
+            @ApiImplicitParam(name="groupId", dataType="Long", value="组Id"),
+            @ApiImplicitParam(name="code", dataType="String", value="路灯编号(模糊查询)"),
+            @ApiImplicitParam(name="status", dataType="String", value="是否启用(1表示启用，0表示没启用)"),
+            @ApiImplicitParam(name="longitude", dataType="Float", value="经度"),
+            @ApiImplicitParam(name="latitude", dataType="Float", value="维度"),
+            @ApiImplicitParam(name="strategyId", dataType="Float", value="决策id，具体看sys_strategy表"),
+            @ApiImplicitParam(name="voltageThresholdGt", dataType="Int", value="电压报警阀值(这里表示大于)"),
+            @ApiImplicitParam(name="voltageThresholdLt", dataType="Int", value="电压报警阀值(这里表示小于)"),
+            @ApiImplicitParam(name="currentThresholdGt", dataType="Int", value="电流报警阀值(这里表示大于)"),
+            @ApiImplicitParam(name="currentThresholdLt", dataType="Int", value="电流报警阀值(这里表示小于)"),
+            @ApiImplicitParam(name="temperatureThresholdGt", dataType="Int", value="温度报警阀值(这里表示大于)"),
+            @ApiImplicitParam(name="temperatureThresholdLt", dataType="Int", value="温度报警阀值(这里表示小于)"),
+            @ApiImplicitParam(name="humidityThresholdGt", dataType="Int", value="湿度报警阀值(这里表示大于)"),
+            @ApiImplicitParam(name="humidityThresholdLt", dataType="Int", value="湿度报警阀值(这里表示小于)"),
+            @ApiImplicitParam(name="lightnessThresholdGt", dataType="Int", value="亮度报警阀值(这里表示大于)"),
+            @ApiImplicitParam(name="lightnessThresholdLt", dataType="Int", value="亮度报警阀值(这里表示小于)"),
+            @ApiImplicitParam(name="voltageOverloadGt", dataType="Int", value="电压过载阀值(这里表示大于)"),
+            @ApiImplicitParam(name="voltageOverloadLt", dataType="Int", value="电压过载阀值(这里表示小于)"),
+            @ApiImplicitParam(name="currentOverloadGt", dataType="Int", value="电流过载阀值(这里表示大于)"),
+            @ApiImplicitParam(name="currentOverloadLt", dataType="Int", value="电流过载阀值(这里表示小于)"),
+            @ApiImplicitParam(name="temperatureOverloadGt", dataType="Int", value="温度过载阀值(这里表示大于)"),
+            @ApiImplicitParam(name="temperatureOverloadLt", dataType="Int", value="温度过载阀值(这里表示小于)"),
+            @ApiImplicitParam(name="humidityOverloadGt", dataType="Int", value="湿度过载阀值(这里表示大于)"),
+            @ApiImplicitParam(name="humidityOverloadLt", dataType="Int", value="湿度过载阀值(这里表示小于)"),
+            @ApiImplicitParam(name="lightnessOverloadGt", dataType="Int", value="亮度过载阀值(这里表示大于)"),
+            @ApiImplicitParam(name="lightnessOverloadLt", dataType="Int", value="亮度过载阀值(这里表示小于)"),
+            @ApiImplicitParam(name="lightnessOverloadGt", dataType="Int", value="亮度过载阀值(这里表示大于)"),
+            @ApiImplicitParam(name="lightnessOverloadLt", dataType="Int", value="亮度过载阀值(这里表示小于)"),
+            @ApiImplicitParam(name="sort", dataType="String" ,value="排序方式(asc升序，desc降序)")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
     @RequestMapping(value = "/queryWithCondition", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")

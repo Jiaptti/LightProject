@@ -14,6 +14,7 @@ import com.viroyal.light.module.user.entity.SysUserRole;
 import com.viroyal.light.module.user.entity.UserOnlineBo;
 import com.viroyal.light.module.user.service.ISysUserRoleService;
 import com.viroyal.light.module.user.service.ISysUserService;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.util.*;
  * @author jiaptti
  * @since 2017-12-01
  */
+@Api("用户Controller相关api")
 @Controller
 @RequestMapping(value = "/user")
 public class SysUserController {
@@ -44,7 +46,7 @@ public class SysUserController {
 
 
     // 跳转到用户管理页面
-    @RequestMapping(value = "/userPage")
+    @RequestMapping(value = "/userPage",method = RequestMethod.GET)
     public String userPage(String edit, Model model) {
         // edit判断是否编辑成功
         model.addAttribute("edit", edit);
@@ -52,13 +54,18 @@ public class SysUserController {
     }
 
     //跳转到用户添加页面
-    @RequestMapping(value = "/forward/save")
+    @RequestMapping(value = "/forward/save", method = RequestMethod.GET)
     public String save() {
         return "user/edit";
     }
 
 
-    @RequestMapping(value = "/getUser")
+    @ApiOperation("移动端通过id获得用户")
+    @ApiResponses({
+            @ApiResponse(code=200,message="Success"),
+            @ApiResponse(code=500,message="No Result")
+    })
+    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:user:info")
     public String getUser(@RequestParam("id") String id){
@@ -77,7 +84,7 @@ public class SysUserController {
     }
 
     // 跳轉到編輯頁面edit
-    @RequestMapping(value = "/editPage/{Id}")
+    @RequestMapping(value = "/editPage/{Id}", method = RequestMethod.GET)
     public String editPage(@PathVariable("Id") String Id, Model model) {
         SysUser user = sysUserService.selectById(Id);
         SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(Id));
@@ -97,8 +104,12 @@ public class SysUserController {
         return "forward:userPage?edit=true";
     }
 
-    //移动端添加用户
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation("移动端添加用户")
+    @ApiResponses({
+            @ApiResponse(code=200,message="添加成功"),
+            @ApiResponse(code=500,message="添加失败")
+    })
+    @RequestMapping(value = "/userAdd", method = RequestMethod.POST)
     @RequiresPermissions("sys:user:save")
     @ResponseBody
     public String save(SysUser user){
@@ -128,8 +139,12 @@ public class SysUserController {
         return "forward:userPage?edit=true";
     }
 
-    //移动端添加用户
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation("移动端更新用户")
+    @ApiResponses({
+            @ApiResponse(code=200,message="更新成功"),
+            @ApiResponse(code=500,message="更新失败")
+    })
+    @RequestMapping(value = "/userUpdate", method = RequestMethod.POST)
     @RequiresPermissions("sys:user:update")
     @ResponseBody
     public String update(SysUser user){
@@ -151,8 +166,8 @@ public class SysUserController {
         return JSON.toJSONString(resultMap);
     }
 
-    // 用户列表分页json
-    @RequestMapping(value = "/getUserListWithPager")
+
+    @RequestMapping(value = "/getUserListWithPager", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String getUserListWithPager(FrontPage<SysUser> page) {
@@ -166,8 +181,18 @@ public class SysUserController {
         return JSON.toJSONString(customPage);
     }
 
-    // 移动端用户列表分页json
-    @RequestMapping(value = "/getUserPage")
+    @ApiOperation("移动端分页查询用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="pageSize",dataType="Int",required=true,value="页面条数"),
+            @ApiImplicitParam(name="pageId",dataType="Int",required=true,value="第几页"),
+            @ApiImplicitParam(name="sort",dataType="String",required=true,value="排序方式asc/desc(可以后面什么都不带默认升序)"),
+            @ApiImplicitParam(name="keyWords",dataType="String",required=true,value="通过姓名模糊查询的关键字(可以后面什么都不带表示查询全部)")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/getUserPage", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String userPage(int pageSize, int pageId, String sort, String keyWords) {
@@ -179,14 +204,18 @@ public class SysUserController {
         Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
         wrapper.setSqlSelect("id,username,nickname,phone,email");
         if (!StringUtils.isEmpty(keyWords))
-            wrapper.like("username", keyWords);
+            wrapper.like("nickname", keyWords);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         DatePage<SysUser> customPage = new DatePage<SysUser>(pageList);
         return JSON.toJSONString(customPage);
     }
 
-    //移动端查询用户列表
-    @RequestMapping(value = "/list")
+    @ApiOperation("移动端查询用户列表")
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/userList", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String getUserList() {
@@ -203,11 +232,14 @@ public class SysUserController {
         return JSON.toJSONString(resultMap);
     }
 
-    // 刪除用户
-    @RequestMapping(value = "/delete")
+    @ApiOperation("移动端删除用户")
+    @ApiResponses({
+            @ApiResponse(code=200,message="删除成功"),
+            @ApiResponse(code=500,message="删除失败")
+    })
+    @RequestMapping(value = "/userDelete", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:user:delete")
-    @Transactional
     public String delete(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if(sysUserService.deleteBatch(ids) > 0){
@@ -227,7 +259,7 @@ public class SysUserController {
     }
 
     // 在线用户列表json
-    @RequestMapping(value = "/onlineUsers")
+    @RequestMapping(value = "/onlineUsers", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:user:list")
     public String OnlineUsers(FrontPage<UserOnlineBo> frontPage) {
@@ -237,7 +269,7 @@ public class SysUserController {
     }
 
     // 强制踢出用户
-    @RequestMapping(value = "/kickout")
+    @RequestMapping(value = "/kickout", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:user:kickout")
     public String kickout(@RequestParam(value = "ids[]") String[] ids) {

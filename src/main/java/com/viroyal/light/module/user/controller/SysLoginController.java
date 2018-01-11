@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Api("SysLoginController相关api")
 @Controller
 public class SysLoginController {
 
@@ -40,31 +41,31 @@ public class SysLoginController {
     ISysUserService sysUserService;
 
     //首页
-    @RequestMapping(value="/index")
+    @RequestMapping(value="/index", method =RequestMethod.GET)
     public String index() {
         return "/index";
     }
 
     //登录
-    @RequestMapping(value="/login")
+    @RequestMapping(value="/login", method =RequestMethod.GET)
     public String login() {
         return "/login";
     }
 
     //权限测试用
-    @RequestMapping(value="/add")
+    @RequestMapping(value="/add", method =RequestMethod.GET)
     public String add() {
         return "/add";
     }
 
     //未授权跳转的页面
-    @RequestMapping(value="/403")
+    @RequestMapping(value="/403", method =RequestMethod.GET)
     public String noPermissions() {
         return "/403";
     }
 
     //更新权限
-    @RequestMapping(value="/updatePermission")
+    @RequestMapping(value="/updatePermission", method =RequestMethod.GET)
     @ResponseBody
     public String updatePermission() {
         shiroService.updatePermission();
@@ -72,17 +73,18 @@ public class SysLoginController {
     }
 
     //踢出用户
-    @RequestMapping(value="/kickouting")
+    @RequestMapping(value="/kickouting", method =RequestMethod.GET)
     @ResponseBody
     public String kickouting() {
         return "/kickout";
     }
 
     //被踢出后跳转的页面
-    @RequestMapping(value="/kickout")
+    @RequestMapping(value="/kickout", method =RequestMethod.GET)
     public String kickout() {
         return "/kickout";
     }
+
 
     @RequestMapping(value = "/logout",method =RequestMethod.GET)
     @ResponseBody
@@ -102,7 +104,12 @@ public class SysLoginController {
         return resultMap;
     }
 
-    @RequestMapping(value = "/userLogout",method =RequestMethod.GET)
+    @ApiOperation("移动端登出接口")
+    @ApiResponses({
+            @ApiResponse(code=200,message="登出成功"),
+            @ApiResponse(code=500,message="登出失败")
+    })
+    @RequestMapping(value = "/userLogout", method =RequestMethod.GET)
     @ResponseBody
     public Map<String,Object> userLogout(){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
@@ -119,6 +126,7 @@ public class SysLoginController {
         }
         return resultMap;
     }
+
 
     @RequestMapping(value = "/ajaxLogin", method = RequestMethod.POST)
     @ResponseBody
@@ -150,6 +158,12 @@ public class SysLoginController {
         return resultMap;
     }
 
+
+    @ApiOperation("移动端登录接口")
+    @ApiResponses({
+            @ApiResponse(code=200,message="登录成功"),
+            @ApiResponse(code=500,message="登录失败")
+    })
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     @ResponseBody
     public String login(String username, String password){

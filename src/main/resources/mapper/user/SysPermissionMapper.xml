@@ -17,9 +17,20 @@
 		where ur.uid = #{userId}
 	</select>
 
-	<select id="getAllPermission" resultType="com.viroyal.light.module.user.entity.SysPermission">
+	<select id="getAllPermission" resultMap="BaseResultMap">
 		select * from sys_permission
 	</select>
 
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select DISTINCT p.id, p.`name`, p.perms from sys_permission as p
+		left join sys_role_permission as rp on p.id = rp.pid
+		left join sys_user_role as ur on ur.rid = rp.rid
+		where 1 = 1
+		<if test="userId != null"> and ur.uid = #{userId}</if>
+		<if test="roleId != null"> and ur.rid = #{roleId}</if>
+		<if test="permName != null"> and p.`name` like CONCAT('%', #{permName}, '%')</if>
+		<if test="sort == 'asc' "> order by p.id asc </if>
+		<if test="sort == 'desc' "> order by p.id desc </if>
+	</select>
 
 </mapper>

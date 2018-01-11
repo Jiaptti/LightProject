@@ -5,11 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @MapperScan(basePackages = {"com.viroyal.light.module.light.dao",
         "com.viroyal.light.module.location.dao",
         "com.viroyal.light.module.user.dao"})
+@EnableSwagger2
 @SpringBootApplication
 public class DemoApplication extends SpringBootServletInitializer {
 

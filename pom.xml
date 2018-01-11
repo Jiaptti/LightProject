@@ -212,6 +212,14 @@
             <version>2.6.1</version>
         </dependency>
 
+        <!-- logback依赖 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
