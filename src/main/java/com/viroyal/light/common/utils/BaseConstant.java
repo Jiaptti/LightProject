@@ -56,8 +56,18 @@ public class BaseConstant {
     public static final String LOGOUT_FAILURE = "登出失败";
 
 
-    //添加用户错误
+    //用户角色id错误
     public static final String SAVE_USER_ROLE_ERROR = "请添加用户角色ID";
+    //用户已经存在
+    public static final String USER_EXIST = "用户已经存在";
+    //用户id错误
+    public static final String NO_USER_ID = "没有更新的用户id";
+    //用户不存在错误
+    public static final String USER_ACCOUNT = "帐号或密码不正确，请确认用户名密码";
+    //权限id错误
+    public static final String NO_PERMISSION_ID = "没有更新的权限id";
+    //地区id错误
+    public static final String NO_REGION_ID = "没有更新的地区id";
     //添加区错误
     public static final String SAVE_AREA_CITY_ERROR = "请添加城市ID";
 }

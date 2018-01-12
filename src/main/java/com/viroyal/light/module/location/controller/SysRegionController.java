@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -110,7 +111,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:save")
     public String saveRegion(SysRegion region){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         try{
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             sysRegionService.save(region);
@@ -140,7 +141,7 @@ public class SysRegionController {
         } catch (Exception e){
             e.printStackTrace();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }
@@ -155,21 +156,26 @@ public class SysRegionController {
     @RequiresPermissions("sys:region:update")
     public String updateRegion(SysRegion region){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysRegionService.update(region);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
+        if(region.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_REGION_ID);
+        } else {
+            try{
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysRegionService.update(region);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            }
         }
         return JSON.toJSONString(resultMap);
     }
 
     @ApiOperation("通过区id查询街道")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query",name="areaId",dataType="String",required=true,value="地区id")
+            @ApiImplicitParam(paramType="query",name="areaId",dataType="Int",required=true,value="地区id")
     })
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),
@@ -180,7 +186,7 @@ public class SysRegionController {
     @RequiresPermissions("sys:region:list")
     public String getAreaStreet(@RequestParam("areaId") String areaId){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysRegion> streetList = sysRegionService.queryStreetByArea(Long.valueOf(areaId.substring(0,3)));
+        List<SysRegion> streetList = sysRegionService.queryStreetByArea(Long.valueOf(areaId));
         if (streetList.size() > 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.VALUE_LIST, streetList);

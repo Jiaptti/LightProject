@@ -35,29 +35,29 @@ public class SysUser extends Model<SysUser> {
     /**
      * 用户昵称
      */
-	@ApiModelProperty("用户昵称(必填)")
+	@ApiModelProperty("用户昵称(添加时候必填，更新不用)")
 	private String nickname;
 
 	/**
 	 * 用户姓名
 	 */
-	@ApiModelProperty("用户姓名(必填)")
+	@ApiModelProperty("用户姓名(添加时候必填，更新不用)")
 	private String username;
 
 	/**
 	 * 手机号码
 	 */
-	@ApiModelProperty("手机号码(必填)")
+	@ApiModelProperty("手机号码(添加时候必填，更新不用)")
 	private String phone;
     /**
      * 邮箱
      */
-	@ApiModelProperty("邮箱(选填)")
+	@ApiModelProperty("邮箱(添加时候必填，更新不用)")
 	private String email;
     /**
      * 密码
      */
-	@ApiModelProperty("密码(必填)，记得加密")
+	@ApiModelProperty("密码(添加时候必填，更新不用)，记得加密")
 	private String pswd;
     /**
      * 创建时间
@@ -76,10 +76,10 @@ public class SysUser extends Model<SysUser> {
     /**
      * 1:有效，0:禁止登录
      */
-	@ApiModelProperty("用户状态(1:有效，0:禁止登录,必填)")
+	@ApiModelProperty("用户状态(1:有效，0:禁止登录,添加时候必填，更新选填)")
 	private String status;
 
-	@ApiModelProperty("创建用户的id(是谁创建了这个用户，添加的时候，看数据库自己的id号,因为是你创建)")
+	@ApiModelProperty("创建用户的id(是谁创建了这个用户，添加的时候，看数据库自己的id号,因为是你创建)(添加时候必填，更新不用)")
 	@TableField("create_name_id")
 	private String createNameId;
 
@@ -87,7 +87,7 @@ public class SysUser extends Model<SysUser> {
 	@TableField("last_update_time")
 	private Date lastUpdateTime;
 
-	@ApiModelProperty("最后更新用户id(对用户进行更新的时候添加，看数据库自己的id号,因为是你更新了)")
+	@ApiModelProperty("最后更新用户id(对用户进行更新的时候添加，看数据库自己的id号,因为是你更新了)(添加时候必填，更新不用)")
 	@TableField("last_update_name_id")
 	private String lastUpdateNameId;
 
@@ -97,6 +97,13 @@ public class SysUser extends Model<SysUser> {
 	@ApiModelProperty("角色ID(必填，1表示管理员，2表示用户，3表示维修员，更新时候带上表示修改)")
 	@TableField(exist = false)
 	private Long roleId;
+
+	/**
+	 * 是否可见
+	 */
+	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
+	@TableField("flag")
+	private int flag;
 
 
 	@Override

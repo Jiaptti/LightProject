@@ -2,13 +2,16 @@ package com.viroyal.light.module.user.service.impl;
 
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
+import com.viroyal.light.module.user.dao.SysRolePermissionMapper;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.viroyal.light.module.user.dao.SysPermissionMapper;
+import com.viroyal.light.module.user.entity.SysRolePermission;
 import com.viroyal.light.module.user.service.ISysPermissionService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,14 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Autowired
     SysPermissionMapper sysPermissionMapper;
 
+    @Autowired
+    SysRolePermissionMapper sysRolePermissionMapper;
+
+    @Override
+    public List<SysPermission> queryAll() {
+        return sysPermissionMapper.queryAll();
+    }
+
     @Override
     public DatePage<SysPermission> queryWithCondition(Map<String, Object> params) {
         FrontPage<SysPermission> page = new FrontPage<SysPermission>();
@@ -44,5 +55,31 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         RowBounds rowBounds = new RowBounds(page.getPage() - 1, page.getPageSize());
         page.setData(sysPermissionMapper.queryWithCondition(params, rowBounds));
         return new DatePage<SysPermission>(page.getPagePlus());
+    }
+
+    @Transactional
+    @Override
+    public void savePermission(SysPermission permission) {
+        //添加权限
+        sysPermissionMapper.save(permission);
+
+        //设置权限角色关系
+        SysRolePermission rolePermission = new SysRolePermission();
+        rolePermission.setPid(permission.getId());
+        rolePermission.setRid(1L);
+
+        sysRolePermissionMapper.insert(rolePermission);
+    }
+
+    @Transactional
+    @Override
+    public void update(SysPermission permission) {
+        sysPermissionMapper.update(permission);
+    }
+
+    @Transactional
+    @Override
+    public void deleteBatch(String[] ids) {
+        sysPermissionMapper.deleteBatch(ids);
     }
 }

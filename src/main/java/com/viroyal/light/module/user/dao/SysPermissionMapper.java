@@ -20,6 +20,9 @@ import java.util.Map;
 @Mapper
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
+
+    List<SysPermission> queryAll();
+
     /**
      *通过各种条件查询权限
      * @param params 条件
@@ -28,4 +31,24 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     List<SysPermission> queryWithCondition(Map<String,Object> params, RowBounds rowBounds);
 
+
+    /**
+     * 添加权限
+     * @param permission 权限对象
+     */
+    void save(SysPermission permission);
+
+
+    /**
+     * 更新权限
+     * @param permission 权限对象
+     */
+    void update(SysPermission permission);
+
+    /**
+     * 删除权限
+     * @return 删除的权限数
+     * @param permissionId  权限ID数组
+     */
+    void deleteBatch(Object[] permissionId);
 }

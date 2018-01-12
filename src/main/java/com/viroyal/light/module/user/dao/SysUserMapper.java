@@ -35,7 +35,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return 删除的用户数
      * @param userId  用户ID数组
      */
-    int deleteBatch(Object[] userId);
+    void deleteBatch(Object[] userId);
 
     /**
      * 查询用户的所有权限
@@ -44,7 +44,12 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      */
     List<String> queryAllPerms(Long userId);
 
-
+    /**
+     * 查询账号是否存在
+     * @return 用户条数
+     * @param username  账号
+     */
+    int getUser(String username);
 
     /**
      * 更新用户

@@ -33,20 +33,20 @@ public class SysRegion extends Model<SysRegion> {
     /**
      * 地区编号
      */
-	@ApiModelProperty("地区id,参考数据库规律添加(必填)")
+	@ApiModelProperty("地区id,参考数据库规律添加(添加时候必填，更新不用)")
 	@TableField("common_region_id")
 	private String commonRegionId;
 
     /**
      * 地区名
      */
-	@ApiModelProperty("地区名,参考数据库规律添加(必填)")
+	@ApiModelProperty("地区名,参考数据库规律添加(添加时候必填，更新不用)")
 	@TableField("region_name")
 	private String regionName;
     /**
      * 地区上级编号
      */
-	@ApiModelProperty("地区上级id,参考数据库规律添加(必填)")
+	@ApiModelProperty("地区上级id,参考数据库规律添加(添加时候必填，更新不用)")
 	@TableField("up_region_id")
 	private String upRegionId;
     /**
@@ -58,7 +58,7 @@ public class SysRegion extends Model<SysRegion> {
     /**
      * 邮编
      */
-	@ApiModelProperty("邮编(选填)")
+	@ApiModelProperty("邮编(添加时候必填，更新不用)")
 	private String postalcode;
 
 

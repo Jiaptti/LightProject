@@ -92,7 +92,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             user = userList.get(0);
         }
         if (null == user) {
-            throw new AccountException("帐号或密码不正确！");
+            throw new AccountException("帐号或密码不正确，请确认用户名密码");
         }else if("0".equals(user.getStatus())){
             /**
              * 如果用户的status为禁用。那么就抛出<code>DisabledAccountException</code>

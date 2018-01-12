@@ -71,6 +71,8 @@ public class SysUserController {
     public String getUser(@RequestParam("id") String id){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysUser user = sysUserService.selectById(id);
+        SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(id));
+        user.setRoleId(userRole.getRid());
         if(user == null) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.USER, user);
@@ -114,7 +116,12 @@ public class SysUserController {
     @ResponseBody
     public String save(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> params = new LinkedHashMap<String, Object>();
+        params.put("username", user.getUsername());
         if(user.getRoleId() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.USER_EXIST);
+        } else if(sysUserService.getUser(user.getUsername()) > 0){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_USER_ROLE_ERROR);
         } else {
@@ -149,7 +156,10 @@ public class SysUserController {
     @ResponseBody
     public String update(SysUser user){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(user.getRoleId() == null){
+        if(user.getId() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_USER_ID);
+        } else if(user.getRoleId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_USER_ROLE_ERROR);
         } else{
@@ -176,6 +186,8 @@ public class SysUserController {
         String keyWords = page.getKeywords();
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("username", keyWords);
+
+        wrapper.eq("flag", 1);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
         return JSON.toJSONString(customPage);
@@ -205,6 +217,8 @@ public class SysUserController {
         wrapper.setSqlSelect("id,username,nickname,phone,email");
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("nickname", keyWords);
+
+        wrapper.eq("flag", 1);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         DatePage<SysUser> customPage = new DatePage<SysUser>(pageList);
         return JSON.toJSONString(customPage);
@@ -223,12 +237,12 @@ public class SysUserController {
         List<SysUser> userList = sysUserService.getAllUser();
         if (userList.size() > 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.VALUE_LIST, userList);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } else {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
         }
-        resultMap.put(BaseConstant.VALUE_LIST, userList);
         return JSON.toJSONString(resultMap);
     }
 
@@ -240,20 +254,22 @@ public class SysUserController {
     @RequestMapping(value = "/userDelete", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:user:delete")
-    public String delete(@RequestParam(value = "ids[]") String[] ids) {
+    public String userBatchUpdate(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(sysUserService.deleteBatch(ids) > 0){
+        try{
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            sysUserService.deleteBatch(ids);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
+        } catch (Exception e){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE);
         }
         return JSON.toJSONString(resultMap);
     }
 
+
     // 跳转到在线用户管理页面
-    @RequestMapping(value = "/onlineUserPage")
+    @RequestMapping(value = "/onlineUserPage", method = RequestMethod.GET)
     public String onlineUserPage() {
         return "/user/onlineUser";
     }

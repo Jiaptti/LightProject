@@ -250,7 +250,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional
     @Override
-    public int deleteBatch(String[] userId) {
-        return sysUserMapper.deleteBatch(userId);
+    public void deleteBatch(String[] userId) {
+        sysUserMapper.deleteBatch(userId);
+    }
+
+    @Override
+    public int getUser(String username) {
+        return sysUserMapper.getUser(username);
     }
 }
+

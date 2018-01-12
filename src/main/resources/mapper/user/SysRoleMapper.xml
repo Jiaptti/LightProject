@@ -22,18 +22,29 @@
 		where ur.uid = #{id}
 	</select>
 
-	<insert id="save" parameterType="com.viroyal.light.module.user.entity.SysRole"
-			useGeneratedKeys="true" keyProperty="id">
-		insert into sys_role (`id`, `name`, `type`,) values (#{id},#{name},#{type},)
-	</insert>
-
 	<update id="update" parameterType="com.viroyal.light.module.user.entity.SysRole">
 		update sys_role
 		<set>
 			<if test="name != null">`name` = #{name}, </if>
-			<if test="type != null">`type` = #{username}, </if>
+			<if test="type != null">`type` = #{username}</if>
 		</set>
 		where id = #{id}
 	</update>
+
+	<insert id="save" parameterType="com.viroyal.light.module.user.entity.SysUser"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role
+		(
+		`id`,
+		`name`,
+		`type`
+		)
+		values
+		(
+		#{id},
+		#{name},
+		#{type}
+		)
+	</insert>
 
 </mapper>

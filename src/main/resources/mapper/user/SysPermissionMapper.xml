@@ -10,27 +10,76 @@
 		<result column="perms" property="perms" />
 	</resultMap>
 
-	<select id="getUserPermissions" parameterType="Long" resultType="com.viroyal.light.module.user.entity.SysPermission">
+	<!-- 查询所有权限 -->
+	<select id="queryAll" resultMap="BaseResultMap">
+		select * from sys_permission and flag = 1
+	</select>
+
+	<select id="getUserPermissions" parameterType="Long" resultMap="BaseResultMap">
 		select p.name from sys_permission p
 		LEFT JOIN sys_role_permission as rp on p.id = rp.pid
 		LEFT JOIN sys_user_role as ur on ur.rid = rp.rid
-		where ur.uid = #{userId}
+		where ur.uid = #{userId} and p.flag = 1
 	</select>
 
 	<select id="getAllPermission" resultMap="BaseResultMap">
-		select * from sys_permission
+		select * from sys_permission and flag = 1
 	</select>
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select DISTINCT p.id, p.`name`, p.perms from sys_permission as p
 		left join sys_role_permission as rp on p.id = rp.pid
 		left join sys_user_role as ur on ur.rid = rp.rid
-		where 1 = 1
+		where 1 = 1 and p.flag = 1
 		<if test="userId != null"> and ur.uid = #{userId}</if>
 		<if test="roleId != null"> and ur.rid = #{roleId}</if>
 		<if test="permName != null"> and p.`name` like CONCAT('%', #{permName}, '%')</if>
 		<if test="sort == 'asc' "> order by p.id asc </if>
 		<if test="sort == 'desc' "> order by p.id desc </if>
 	</select>
+
+	<!-- 添加权限 -->
+	<insert id="save" parameterType="com.viroyal.light.module.user.entity.SysPermission"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_permission
+		(
+		`id`,
+		`url`,
+		`name`,
+		`perms`
+		)
+		values
+		(
+		#{id},
+		#{url},
+		#{name},
+		#{perms}
+		)
+	</insert>
+
+	<!-- 更新区权限 -->
+	<update id="update" parameterType="com.viroyal.light.module.user.entity.SysPermission">
+		update sys_permission
+		<set>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="name != null">`name` = #{name},  </if>
+			<if test="perms != null">`perms` = #{perms} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<!-- 删除(隐藏)权限和关联 -->
+	<delete id="deleteBatch">
+		update sys_permission set flag = 0 where id in
+		<foreach item="permissionId" collection="array" open="(" separator="," close=")">
+			${permissionId}
+		</foreach>
+		;
+		update sys_role_permission set flag = 0 where pid in
+		<foreach item="permissionId" collection="array" open="(" separator="," close=")">
+			${permissionId}
+		</foreach>
+	</delete>
 
 </mapper>

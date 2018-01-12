@@ -16,10 +16,37 @@ import java.util.Map;
  * @since 2017-12-01
  */
 public interface ISysPermissionService extends IService<SysPermission> {
+
+    /**
+     * 查询所有权限
+     * @return 权限列表
+     */
+    List<SysPermission> queryAll();
+
     /**
      *通过各种条件查询权限
      * @param params 条件
      * @return 权限列表
      */
     DatePage<SysPermission> queryWithCondition(Map<String,Object> params);
+
+
+    /**
+     * 添加权限
+     * @param permission 权限对象
+     */
+    void savePermission(SysPermission permission);
+
+
+    /**
+     * 更新权限
+     * @param permission 权限对象
+     */
+    void update(SysPermission permission);
+
+    /**
+     * 通过id删除权限
+     * @param permissionId 权限对象id
+     */
+    void deleteBatch(String[] permissionId);
 }

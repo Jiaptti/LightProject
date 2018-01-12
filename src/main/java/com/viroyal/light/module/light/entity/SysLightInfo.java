@@ -32,17 +32,17 @@ public class SysLightInfo extends Model<SysLightInfo> {
     /**
      * 路灯编码
      */
-	@ApiModelProperty("路灯编码(必填)")
+	@ApiModelProperty("路灯编码(添加时候必填，更新选填)")
 	private String code;
     /**
      * 路灯信息
      */
-	@ApiModelProperty("路灯信息(必填)")
+	@ApiModelProperty("路灯信息(添加时候必填，更新选填)")
 	private String info;
     /**
      * 1:正在使用，0:刚注册信息并没有投入使用
      */
-	@ApiModelProperty("是否启用( 1:正在使用，0:刚注册信息并没有投入使用)(必填)")
+	@ApiModelProperty("是否启用( 1:正在使用，0:刚注册信息并没有投入使用)(添加时候必填，更新选填)")
 	private String status;
     /**
      * 经度
@@ -57,19 +57,19 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	/**
 	 * 引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间
 	 */
-	@ApiModelProperty("策略id(引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间),详细看sys_strategy表(必填)")
+	@ApiModelProperty("策略id(引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间),详细看sys_strategy表(添加时候必填，更新选填)")
 	@TableField("strategy_id")
 	private String strategyId;
 	/**
 	 * 所属用户id
 	 */
-	@ApiModelProperty("所属维修员id(即用户id,看数据库谁是维修员)(必填)")
+	@ApiModelProperty("所属维修员id(即用户id,看数据库谁是维修员)(添加时候必填，更新选填)")
 	@TableField("user_id")
 	private Long userId;
     /**
      * 所属街道id
      */
-	@ApiModelProperty("所属街道id(即sys_region表中的desc为街道的common_region_id)(必填)")
+	@ApiModelProperty("所属街道id(即sys_region表中的desc为街道的common_region_id)(添加时候必填，更新选填)")
 	@TableField("street_id")
 	private Long streetId;
 	/**

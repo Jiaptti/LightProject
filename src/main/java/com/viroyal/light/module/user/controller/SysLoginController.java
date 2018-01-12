@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.ShiroUtils;
 import com.viroyal.light.module.user.entity.SysUser;
+import com.viroyal.light.module.user.entity.SysUserRole;
 import com.viroyal.light.module.user.service.ISysRoleService;
+import com.viroyal.light.module.user.service.ISysUserRoleService;
 import com.viroyal.light.module.user.service.ISysUserService;
 import com.viroyal.light.common.shiro.ShiroService;
 import com.viroyal.light.common.utils.vcode.Captcha;
@@ -39,6 +41,9 @@ public class SysLoginController {
 
     @Autowired
     ISysUserService sysUserService;
+
+    @Autowired
+    ISysUserRoleService sysUserRoleService;
 
     //首页
     @RequestMapping(value="/index", method =RequestMethod.GET)
@@ -169,28 +174,30 @@ public class SysLoginController {
     public String login(String username, String password){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         SysUser user = null;
-        try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            SecurityUtils.getSubject().login(token);
-            user = ShiroUtils.getUserEntity();
-            user.setPswd(null);
-            resultMap.put(BaseConstant.CODE, 200);
-            resultMap.put(BaseConstant.USER, user);
-            if(user != null){
-                String roleName = sysRoleService.getUserRoleName(user.getId());
-                resultMap.put("roleName", roleName);
-            }
-            ShiroUtils.setSessionAttribute(BaseConstant.SESSION_ATTRIBUTE, user.getId());
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_SUCCESS);
-        } catch (Exception e){
-            String errorMessage = "";
-            if(e instanceof AuthenticationException){
-                errorMessage = "登录请求失败，请查看访问格式";
-            } else {
-                errorMessage = e.getMessage();
-            }
+        if(user.getFlag() == 0){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + errorMessage);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + BaseConstant.USER_ACCOUNT);
+        } else {
+            try {
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                SecurityUtils.getSubject().login(token);
+                user = ShiroUtils.getUserEntity();
+                user.setPswd(null);
+                resultMap.put(BaseConstant.CODE, 200);
+                resultMap.put(BaseConstant.USER, user);
+                SysUserRole userRole = sysUserRoleService.getUserRole(user.getId());
+                user.setRoleId(userRole.getRid());
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_SUCCESS);
+            } catch (Exception e){
+                String errorMessage = "";
+                if(e instanceof AuthenticationException){
+                    errorMessage = "登录请求失败，请查看访问格式";
+                } else {
+                    errorMessage = e.getMessage();
+                }
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + errorMessage);
+            }
         }
         return JSON.toJSONString(resultMap);
     }

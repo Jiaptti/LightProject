@@ -42,6 +42,9 @@ public interface ISysUserService extends IService<SysUser> {
     //app更新
     void update(SysUser user);
 
-    //删除用户
-    int deleteBatch(String[] userId);
+    //批量删除用户
+    void deleteBatch(String[] userId);
+
+    //查询账号是否存在
+    int getUser(String username);
 }

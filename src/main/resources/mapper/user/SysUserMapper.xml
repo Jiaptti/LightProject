@@ -18,8 +18,14 @@
 		<result column="last_update_name_id" property="lastUpdateNameId" />
 	</resultMap>
 
+	<!-- 查询所有用户 -->
 	<select id="getAllUser" resultType="com.viroyal.light.module.user.entity.SysUser">
-		select u.id, u.nickname, u.username, u.phone, u.email from sys_user as u
+		select u.id, u.nickname, u.username, u.phone, u.email from sys_user as u and u.flag = 1
+	</select>
+
+	<!-- 查询账号是否存在 -->
+	<select id="getUser" parameterType="String" resultType="Int">
+		select count(*) from sys_user as u where u.username = #{userName}
 	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.user.entity.SysUser"
@@ -58,9 +64,10 @@
 		select p.perms from sys_user_role ur
 		LEFT JOIN sys_role_permission rm on ur.rid = rm.rid
 		LEFT JOIN sys_permission p on p.id = rm.pid
-		where ur.uid = #{userId}
+		where ur.uid = #{userId} and p.flag = 1
 	</select>
 
+	<!-- 更新用户 -->
 	<update id="update" parameterType="com.viroyal.light.module.user.entity.SysUser">
 		update sys_user
 		<set>
@@ -76,15 +83,30 @@
 		where id = #{id}
 	</update>
 
-	<delete id="deleteBatch">
-		delete from sys_user where id in
+	<!--<delete id="deleteBatch">-->
+		<!--delete from sys_user where id in-->
+		<!--<foreach item="userId" collection="array" open="(" separator="," close=")">-->
+			<!--#{userId}-->
+		<!--</foreach>-->
+		<!--;-->
+		<!--delete from sys_user_role where uid in-->
+		<!--<foreach item="userId" collection="array" open="(" separator="," close=")">-->
+			<!--#{userId}-->
+		<!--</foreach>-->
+	<!--</delete>-->
+
+	<!-- 删除(隐藏)用户 -->
+	<update id="deleteBatch"  parameterType="java.util.List">
+		update sys_user set flag = 0
+			where id in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
-			#{userId}
+			${userId}
 		</foreach>
 		;
-		delete from sys_user_role where uid in
+		update sys_user_role set flag = 0
+		where uid in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
-			#{userId}
+			${userId}
 		</foreach>
-	</delete>
+	</update>
 </mapper>
