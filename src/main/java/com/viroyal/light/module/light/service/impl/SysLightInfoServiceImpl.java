@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
+import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.dao.SysLightInfoMapper;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
@@ -95,7 +96,7 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
             } else if(entry.getKey().toString().equals("pageSize")){
                 page.setPageSize(Integer.parseInt(entry.getValue().toString()));
             } else {
-                if(!entry.getKey().toString().equals("code") && !entry.getKey().toString().equals("sort")){
+                if(NumberUtils.isNumber(entry.getValue().toString())){
                     params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
                     if(entry.getKey().equals("cityId")){
                         params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));

@@ -1,5 +1,6 @@
 package com.viroyal.light.module.user.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.user.dao.SysRolePermissionMapper;
@@ -41,6 +42,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public DatePage<SysPermission> queryWithCondition(Map<String, Object> params) {
         FrontPage<SysPermission> page = new FrontPage<SysPermission>();
+        Page<SysPermission> p = new Page<SysPermission>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             if(entry.getKey().toString().equals("pageId")){
                 page.setPage(Integer.parseInt(entry.getValue().toString()));
@@ -52,7 +54,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 }
             }
         }
-        RowBounds rowBounds = new RowBounds(page.getPage() - 1, page.getPageSize());
+
+        int start = 0;
+        if(page.getPage() > 1){
+            start = (page.getPage() - 1) * page.getPageSize();
+        }
+        RowBounds rowBounds = new RowBounds(start, page.getPageSize());
         page.setData(sysPermissionMapper.queryWithCondition(params, rowBounds));
         return new DatePage<SysPermission>(page.getPagePlus());
     }

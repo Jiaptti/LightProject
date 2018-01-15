@@ -22,8 +22,8 @@ import java.io.Serializable;
  * @author jiaptti
  * @since 2017-12-01
  */
-@Data
 @ApiModel(value="用户信息")
+@Data
 @TableName("sys_user")
 public class SysUser extends Model<SysUser> {
 

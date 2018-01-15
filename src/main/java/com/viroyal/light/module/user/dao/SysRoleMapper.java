@@ -16,11 +16,22 @@ import java.util.List;
  */
 @Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
-    List<SysRole> getRoleListById(Long id);
 
-    String getUserRoleName(Long id);
-
+    /**
+     * 添加角色
+     * @param role 角色对象
+     */
     void save(SysRole role);
 
+    /**
+     * 更新角色
+     * @param role 角色对象
+     */
     void update(SysRole role);
+
+    /**
+     * 删除角色
+     * @param ids 角色对象id数组
+     */
+    void deleteBatch(Object[] ids);
 }

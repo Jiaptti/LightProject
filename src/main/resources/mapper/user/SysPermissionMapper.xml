@@ -8,11 +8,12 @@
 		<result column="url" property="url" />
 		<result column="name" property="name" />
 		<result column="perms" property="perms" />
+		<result column="flag" property="flag" />
 	</resultMap>
 
 	<!-- 查询所有权限 -->
 	<select id="queryAll" resultMap="BaseResultMap">
-		select * from sys_permission and flag = 1
+		select * from sys_permission where flag = 1
 	</select>
 
 	<select id="getUserPermissions" parameterType="Long" resultMap="BaseResultMap">
@@ -20,10 +21,6 @@
 		LEFT JOIN sys_role_permission as rp on p.id = rp.pid
 		LEFT JOIN sys_user_role as ur on ur.rid = rp.rid
 		where ur.uid = #{userId} and p.flag = 1
-	</select>
-
-	<select id="getAllPermission" resultMap="BaseResultMap">
-		select * from sys_permission and flag = 1
 	</select>
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">

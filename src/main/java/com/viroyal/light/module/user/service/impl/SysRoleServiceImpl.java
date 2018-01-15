@@ -24,15 +24,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     SysRoleMapper sysRoleMapper;
 
-    @Override
-    public List<SysRole> getRoleListById(Long id) {
-        return sysRoleMapper.getRoleListById(id);
-    }
-
-    @Override
-    public String getUserRoleName(Long id) {
-        return sysRoleMapper.getUserRoleName(id);
-    }
+//    @Override
+//    public List<SysRole> getRoleListById(Long id) {
+//        return sysRoleMapper.getRoleListById(id);
+//    }
+//
+//    @Override
+//    public String getUserRoleName(Long id) {
+//        return sysRoleMapper.getUserRoleName(id);
+//    }
 
     @Transactional
     @Override

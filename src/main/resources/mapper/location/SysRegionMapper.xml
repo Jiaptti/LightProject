@@ -10,6 +10,7 @@
 		<result column="up_region_id" property="upRegionId" />
 		<result column="region_desc" property="regionDesc" />
 		<result column="postalcode" property="postalcode" />
+		<result column="flag" property="flag" />
 	</resultMap>
 
 	<!-- 查询所有城市 -->
@@ -98,11 +99,11 @@
 		where id = #{id}
 	</update>
 
-	<delete id="deleteBatch">
+	<update id="deleteBatch">
 		update sys_region set flag = 0 where id in
 		<foreach item="regionId" collection="array" open="(" separator="," close=")">
 			${regionId}
 		</foreach>
-	</delete>
+	</update>
 
 </mapper>

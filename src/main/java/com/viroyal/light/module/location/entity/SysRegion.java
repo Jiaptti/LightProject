@@ -19,8 +19,8 @@ import java.io.Serializable;
  * @author jiaptti
  * @since 2018-01-09
  */
-@Data
 @ApiModel(value="地区信息")
+@Data
 @TableName("sys_region")
 public class SysRegion extends Model<SysRegion> {
 
@@ -61,6 +61,12 @@ public class SysRegion extends Model<SysRegion> {
 	@ApiModelProperty("邮编(添加时候必填，更新不用)")
 	private String postalcode;
 
+	/**
+	 * 是否可见
+	 */
+	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
+	@TableField("flag")
+	private int flag;
 
 	@Override
 	protected Serializable pkVal() {

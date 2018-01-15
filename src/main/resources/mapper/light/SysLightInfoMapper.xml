@@ -24,6 +24,7 @@
 		<result column="temperature_overload" property="temperatureOverload" />
 		<result column="humidity_overload" property="humidityOverload" />
 		<result column="lightness_overload" property="lightnessOverload" />
+		<result column="flag" property="flag" />
 	</resultMap>
 
 	<!-- 获得所有路灯 -->
@@ -74,10 +75,13 @@
 	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select * from sys_light_info as info
 		left join sys_region as r on r.common_region_id=info.street_id
-		where 1 = 1
+		left join sys_region as sr on r.up_region_id = sr.common_region_id
+		where 1 = 1 and info.flag = 1
 		<if test="areaId != null"> and r.up_region_id = #{areaId} </if>
+		<if test="areaName != null"> and sr.region_name like CONCAT(#{areaName}, '%')</if>
 		<if test="cityId != null"> and r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道'</if>
 		<if test="streetId != null"> and info.street_id = #{streetId} </if>
+		<if test="streetName != null"> and r.region_name like CONCAT(#{streetName}, '%')</if>
 		<if test="userId != null"> and info.user_id = #{userId}</if>
 		<if test="groupId != null"> and info.group_id = #{groupId}</if>
 		<if test="code != null"> and info.code like CONCAT('%', #{code}, '%')</if>

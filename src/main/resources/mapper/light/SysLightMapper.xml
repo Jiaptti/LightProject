@@ -15,6 +15,7 @@
 		<result column="datetime" property="datetime" />
 		<result column="infoId" property="info_id" />
 		<result column="lightness" property="lightness" />
+		<result column="flag" property="flag" />
 	</resultMap>
 
 	<select id="queryAll" resultMap="BaseResultMap">

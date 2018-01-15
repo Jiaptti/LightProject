@@ -6,6 +6,10 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -16,6 +20,8 @@ import java.io.Serializable;
  * @author jiaptti
  * @since 2018-01-04
  */
+@ApiModel(value="地区信息")
+@Data
 @TableName("sys_light_record")
 public class SysLightRecord extends Model<SysLightRecord> {
 
@@ -43,59 +49,19 @@ public class SysLightRecord extends Model<SysLightRecord> {
      */
 	@TableField("r_userid")
 	private Long rUserid;
+
     /**
      * 对应sys_light_info里的code
      */
+	@ApiModelProperty("对应sys_light_info里的code(添加时候必填，更新不用)")
 	private String code;
 
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getRDate() {
-		return rDate;
-	}
-
-	public void setRDate(Date rDate) {
-		this.rDate = rDate;
-	}
-
-	public String getRStatus() {
-		return rStatus;
-	}
-
-	public void setRStatus(String rStatus) {
-		this.rStatus = rStatus;
-	}
-
-	public String getROperation() {
-		return rOperation;
-	}
-
-	public void setROperation(String rOperation) {
-		this.rOperation = rOperation;
-	}
-
-	public Long getRUserid() {
-		return rUserid;
-	}
-
-	public void setRUserid(Long rUserid) {
-		this.rUserid = rUserid;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
+	/**
+	 * 是否可见
+	 */
+	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
+	@TableField("flag")
+	private int flag;
 
 	@Override
 	protected Serializable pkVal() {

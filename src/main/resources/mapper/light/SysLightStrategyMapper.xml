@@ -10,6 +10,7 @@
 		<result column="open_time" property="openTime" />
 		<result column="close_time" property="closeTime" />
 		<result column="type" property="type" />
+		<result column="flag" property="flag" />
 	</resultMap>
 
 </mapper>

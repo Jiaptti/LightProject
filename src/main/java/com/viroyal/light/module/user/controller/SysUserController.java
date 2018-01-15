@@ -195,10 +195,10 @@ public class SysUserController {
 
     @ApiOperation("移动端分页查询用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="pageSize",dataType="Int",required=true,value="页面条数"),
-            @ApiImplicitParam(name="pageId",dataType="Int",required=true,value="第几页"),
-            @ApiImplicitParam(name="sort",dataType="String",required=true,value="排序方式asc/desc(可以后面什么都不带默认升序)"),
-            @ApiImplicitParam(name="keyWords",dataType="String",required=true,value="通过姓名模糊查询的关键字(可以后面什么都不带表示查询全部)")
+            @ApiImplicitParam(paramType="query", name="pageSize",dataType="Int",required=true,value="页面条数"),
+            @ApiImplicitParam(paramType="query", name="pageId",dataType="Int",required=true,value="第几页"),
+            @ApiImplicitParam(paramType="query", name="sort",dataType="String",required=true,value="排序方式asc/desc(可以后面什么都不带默认升序)"),
+            @ApiImplicitParam(paramType="query", name="keyWords",dataType="String",required=true,value="通过姓名模糊查询的关键字(可以后面什么都不带表示查询全部)")
     })
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),

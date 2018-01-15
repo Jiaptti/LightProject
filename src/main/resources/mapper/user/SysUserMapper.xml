@@ -16,16 +16,17 @@
 		<result column="create_name_id" property="createNameId" />
 		<result column="last_update_time" property="lastUpdateTime" />
 		<result column="last_update_name_id" property="lastUpdateNameId" />
+		<result column="flag" property="flag" />
 	</resultMap>
 
 	<!-- 查询所有用户 -->
 	<select id="getAllUser" resultType="com.viroyal.light.module.user.entity.SysUser">
-		select u.id, u.nickname, u.username, u.phone, u.email from sys_user as u and u.flag = 1
+		select u.id, u.nickname, u.username, u.phone, u.email from sys_user as u where u.flag = 1
 	</select>
 
 	<!-- 查询账号是否存在 -->
 	<select id="getUser" parameterType="String" resultType="Int">
-		select count(*) from sys_user as u where u.username = #{userName}
+		select count(*) from sys_user as u where u.username = #{userName} and u.flag = 1
 	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.user.entity.SysUser"
@@ -96,7 +97,7 @@
 	<!--</delete>-->
 
 	<!-- 删除(隐藏)用户 -->
-	<update id="deleteBatch"  parameterType="java.util.List">
+	<update id="deleteBatch">
 		update sys_user set flag = 0
 			where id in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">

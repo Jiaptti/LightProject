@@ -10,6 +10,7 @@
 		<result column="r_operation" property="rOperation" />
 		<result column="r_userid" property="rUserid" />
 		<result column="code" property="code" />
+		<result column="flag" property="flag" />
 	</resultMap>
 
 </mapper>
