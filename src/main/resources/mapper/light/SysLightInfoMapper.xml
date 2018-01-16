@@ -25,6 +25,13 @@
 		<result column="humidity_overload" property="humidityOverload" />
 		<result column="lightness_overload" property="lightnessOverload" />
 		<result column="flag" property="flag" />
+		<association property="region" javaType="com.viroyal.light.module.location.entity.SysRegion">
+			<id property="id" column="t_id"/>
+			<result column="common_region_id" property="commonRegionId" />
+			<result column="region_name" property="regionName" />
+			<result column="up_region_id" property="upRegionId" />
+			<result column="region_name" property="regionName" />
+		</association>
 	</resultMap>
 
 	<!-- 获得所有路灯 -->
@@ -73,8 +80,13 @@
 
 	<!-- 通过各种条件查询路灯 -->
 	<select id="queryWithCondition" resultMap="BaseResultMap">
-		select * from sys_light_info as info
-		left join sys_region as r on r.common_region_id=info.street_id
+		select distinct info.id, info.code, info.status, info.current_overload, info.humidity_overload,
+		info.current_threshold, info.info, info.latitude, info.lightness_overload, info.humidity_threshold,
+		info.lightness_threshold, info.longitude, info.strategy_id, info.temperature_overload,
+		info.temperature_threshold, info.voltage_overload, info.voltage_threshold,
+		r.common_region_id, r.up_region_id, r.region_name from sys_light_info as info
+		left join sys_user as us on us.id = info.user_id
+		left join sys_region as r on r.common_region_id = info.street_id
 		left join sys_region as sr on r.up_region_id = sr.common_region_id
 		where 1 = 1 and info.flag = 1
 		<if test="areaId != null"> and r.up_region_id = #{areaId} </if>
@@ -83,6 +95,7 @@
 		<if test="streetId != null"> and info.street_id = #{streetId} </if>
 		<if test="streetName != null"> and r.region_name like CONCAT(#{streetName}, '%')</if>
 		<if test="userId != null"> and info.user_id = #{userId}</if>
+		<if test="userName != null"> and ur.nickname = #{userName}</if>
 		<if test="groupId != null"> and info.group_id = #{groupId}</if>
 		<if test="code != null"> and info.code like CONCAT('%', #{code}, '%')</if>
 		<if test="status != null"> and info.status = #{status}</if>
@@ -190,21 +203,16 @@
 		where id = #{id}
 	</update>
 
-	<delete id="deleteBatch">
-		delete from sys_light_info as info where info.id in
+	<update id="deleteBatch">
+		update sys_light_info set flag = 0 where id in
 		<foreach item="lightId" collection="array" open="(" separator="," close=")">
 			#{lightId}
 		</foreach>
 		;
-		delete from sys_user_light where light_id in
+		update sys_light set flag = 0 where info_id in
 		<foreach item="lightId" collection="array" open="(" separator="," close=")">
 			#{lightId}
 		</foreach>
-		;
-		delete from sys_light as light where light.info_id in
-		<foreach item="lightId" collection="array" open="(" separator="," close=")">
-			#{lightId}
-		</foreach>
-	</delete>
+	</update>
 
 </mapper>

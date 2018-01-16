@@ -165,6 +165,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
         userRole.setRid(user.getRoleId());
+        userRole.setFlag(1);
 
         //保存用户与角色关系
         sysUserRoleService.insert(userRole);
@@ -185,6 +186,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
         userRole.setRid(user.getRoleId());
+        userRole.setFlag(1);
 
         //保存用户与角色关系
         sysUserRoleService.insert(userRole);

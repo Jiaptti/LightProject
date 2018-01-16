@@ -73,7 +73,6 @@ public class ShiroConfig {
         // 未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
-        System.out.println("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
     }
 

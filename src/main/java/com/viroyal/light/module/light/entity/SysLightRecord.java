@@ -27,34 +27,40 @@ public class SysLightRecord extends Model<SysLightRecord> {
 
     private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty("主键id,自增长(不用填，更新的时候带上)")
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
      * 记录时间
      */
-	@TableField("r_date")
-	private Date rDate;
+	@ApiModelProperty("记录时间(不用填写)")
+	@TableField("record_date")
+	private Date recordDate;
     /**
      * 记录状态
      */
-	@TableField("r_status")
-	private String rStatus;
+	@ApiModelProperty("记录状态(添加时候必填，更新不用)")
+	@TableField("record_status")
+	private String recordStatus;
     /**
      * 记录操作
      */
-	@TableField("r_operation")
-	private String rOperation;
+	@ApiModelProperty("谁进行了操作(添加时候必填，更新不用)")
+	@TableField("record_operation")
+	private String recordOperation;
     /**
      * 谁进行了操作
      */
-	@TableField("r_userid")
-	private Long rUserid;
+	@ApiModelProperty("谁进行了操作(添加时候必填，更新不用)")
+	@TableField("record_user_id")
+	private Long recordUserId;
 
     /**
-     * 对应sys_light_info里的code
+     * 对应sys_light_info里的id
      */
-	@ApiModelProperty("对应sys_light_info里的code(添加时候必填，更新不用)")
-	private String code;
+	@ApiModelProperty("对应sys_light_info里的id(添加时候必填，更新不用)")
+	@TableField("light_info_id")
+	private String lightInfoId;
 
 	/**
 	 * 是否可见

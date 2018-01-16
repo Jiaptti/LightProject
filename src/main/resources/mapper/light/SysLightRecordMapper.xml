@@ -5,11 +5,11 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.viroyal.light.module.light.entity.SysLightRecord">
 		<id column="id" property="id" />
-		<result column="r_date" property="rDate" />
-		<result column="r_status" property="rStatus" />
-		<result column="r_operation" property="rOperation" />
-		<result column="r_userid" property="rUserid" />
-		<result column="code" property="code" />
+		<result column="record_date" property="recordDate" />
+		<result column="record_status" property="recordStatus" />
+		<result column="record_operation" property="recordOperation" />
+		<result column="record_user_id" property="recordUserId" />
+		<result column="light_info_id" property="lightInfoId" />
 		<result column="flag" property="flag" />
 	</resultMap>
 

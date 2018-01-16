@@ -1,5 +1,6 @@
 package com.viroyal.light.module.location.dao;
 
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.session.RowBounds;
@@ -70,10 +71,9 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
 
     /**
      * 通过条件查询查询所有街道
-     * @param param  参数可以是cityId,areaId,userId的组合
-     *               eg:cityId=xx&areaId=xx
-     * @param rowBounds 分页对象
+     * @param param  参数
+     * @param page 分页对象
      * @return 街道列表
      */
-    List<SysRegion> queryWithCondition(Map<String, Object> param, RowBounds rowBounds);
+    List<SysRegion> queryWithCondition(Map<String, Object> param, Pagination page);
 }

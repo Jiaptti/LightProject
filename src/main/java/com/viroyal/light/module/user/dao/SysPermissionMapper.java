@@ -1,5 +1,6 @@
 package com.viroyal.light.module.user.dao;
 
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,11 +27,10 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     /**
      *通过各种条件查询权限
      * @param params 条件
-     * @param rowBounds 分页条件
+     * @param page 分页条件
      * @return 权限列表
      */
-    List<SysPermission> queryWithCondition(Map<String,Object> params, RowBounds rowBounds);
-
+    List<SysPermission> queryWithCondition(Map<String,Object> params, Pagination page);
 
     /**
      * 添加权限

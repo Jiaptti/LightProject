@@ -22,7 +22,7 @@
 		<!--where ur.uid = #{id}-->
 	<!--</select>-->
 
-	<select id="queryWithCondition" resultType="com.viroyal.light.module.user.entity.SysRole">
+	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select distinct r.id, r.`name`, r.type from sys_role as r
 		left join sys_user_role as ur on ur.rid = r.id
 		left join sys_user as u on ur.uid = u.id

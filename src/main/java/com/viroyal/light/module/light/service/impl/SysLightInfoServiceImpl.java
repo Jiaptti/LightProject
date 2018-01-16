@@ -89,23 +89,22 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
 
     @Override
     public DatePage<SysLightInfo> queryWithCondition(Map<String, Object> params) {
-        FrontPage<SysLightInfo> page = new FrontPage<SysLightInfo>();
+        Page<SysLightInfo> page = new Page<SysLightInfo>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             if(entry.getKey().toString().equals("pageId")){
-                page.setPage(Integer.parseInt(entry.getValue().toString()));
+                page.setCurrent(Integer.parseInt(entry.getValue().toString()));
             } else if(entry.getKey().toString().equals("pageSize")){
-                page.setPageSize(Integer.parseInt(entry.getValue().toString()));
+                page.setSize(Integer.parseInt(entry.getValue().toString()));
             } else {
                 if(NumberUtils.isNumber(entry.getValue().toString())){
                     params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
-                    if(entry.getKey().equals("cityId")){
+                    if(entry.getKey().toString().equals("cityId")){
                         params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
                     }
                 }
             }
         }
-        RowBounds rowBounds = new RowBounds(page.getPage() - 1, page.getPageSize());
-        page.setData(sysLightInfoMapper.queryWithCondition(params, rowBounds));
-        return new DatePage<SysLightInfo>(page.getPagePlus());
+        page.setRecords(sysLightInfoMapper.queryWithCondition(params, page));
+        return new DatePage<SysLightInfo>(page);
     }
 }

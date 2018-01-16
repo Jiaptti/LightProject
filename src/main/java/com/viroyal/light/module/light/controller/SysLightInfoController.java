@@ -336,6 +336,7 @@ public class SysLightInfoController {
             @ApiImplicitParam(paramType="query", name="streetId", dataType="Long", value="街道Id"),
             @ApiImplicitParam(paramType="query", name="streetName", dataType="String", value="街道名(模糊查询)"),
             @ApiImplicitParam(paramType="query", name="userId", dataType="Long", value="用户Id"),
+            @ApiImplicitParam(paramType="query", name="userName", dataType="String", value="维修员名字"),
             @ApiImplicitParam(paramType="query", name="groupId", dataType="Long", value="组Id"),
             @ApiImplicitParam(paramType="query", name="code", dataType="String", value="路灯编号(模糊查询)"),
             @ApiImplicitParam(paramType="query", name="status", dataType="String", value="是否启用(1表示启用，0表示没启用)"),

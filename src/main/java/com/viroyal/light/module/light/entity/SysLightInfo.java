@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.viroyal.light.module.location.entity.SysRegion;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,7 +28,6 @@ public class SysLightInfo extends Model<SysLightInfo> {
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
-	@ApiModelProperty("主键id,自增长(不用填，更新的时候带上)")
 	private Long id;
     /**
      * 路灯编码
@@ -145,6 +145,8 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
 	@TableField("flag")
 	private int flag;
+
+	private SysRegion region;
 
 	@Override
 	protected Serializable pkVal() {

@@ -22,4 +22,51 @@
 		select * from sys_light
 	</select>
 
+	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLight"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_light
+		(
+		`id`,
+		`status`,
+		`voltage`,
+		`current`,
+		`traffic_flow`,
+		`temperature`,
+		`humidity`,
+		`autoreport`,
+		`info_id`,
+		`lightness`
+		)
+		values
+		(
+		#{id},
+		#{status},
+		#{voltage},
+		#{current},
+		#{traffic_flow},
+		#{temperature},
+		#{humidity},
+		#{autoreport},
+		#{info_id},
+		#{lightness}
+		)
+	</insert>
+
+
+
+	<!-- 更新用户 -->
+	<update id="update" parameterType="com.viroyal.light.module.user.entity.SysUser">
+		update sys_light
+		<set>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="voltage != null">`voltage` = #{voltage}, </if>
+			<if test="pswd != null">`pswd` = #{pswd}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="lastUpdateNameId != null">`last_update_name_id` = #{lastUpdateNameId}, </if>
+			<if test="lastUpdateTime != null">`last_update_time` = #{lastUpdateTime} </if>
+		</set>
+		where id = #{id}
+	</update>
 </mapper>

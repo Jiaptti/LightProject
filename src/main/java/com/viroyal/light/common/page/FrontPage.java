@@ -40,7 +40,7 @@ public class FrontPage<T> {
     public Page<T> getPagePlus(){
         Page<T> pagePlus = new Page<T>();
         pagePlus.setCurrent(this.page);
-        pagePlus.setSize(pageSize);
+        pagePlus.setSize(rows);
         pagePlus.setRecords(data);
         if(sort == null){
             sort="asc";

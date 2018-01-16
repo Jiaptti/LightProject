@@ -185,11 +185,12 @@ public class SysLoginController {
                 user.setPswd(null);
                 resultMap.put(BaseConstant.CODE, 200);
                 resultMap.put(BaseConstant.USER, user);
-                SysUserRole userRole = sysUserRoleService.selectById(user.getId());
+                SysUserRole userRole = sysUserRoleService.getUserRole(user.getId());
                 user.setRoleId(userRole.getRid());
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_SUCCESS);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             String errorMessage = "";
             if (e instanceof AuthenticationException) {
                 errorMessage = "登录请求失败，请查看访问格式";

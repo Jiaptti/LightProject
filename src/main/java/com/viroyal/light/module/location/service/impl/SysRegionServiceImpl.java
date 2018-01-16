@@ -1,7 +1,9 @@
 package com.viroyal.light.module.location.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
+import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.viroyal.light.module.location.dao.SysRegionMapper;
 import com.viroyal.light.module.location.service.ISysRegionService;
@@ -72,23 +74,22 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
 
     @Override
     public DatePage<SysRegion> queryWithCondition(Map<String, Object> params) {
-        FrontPage<SysRegion> page = new FrontPage<SysRegion>();
+        Page<SysRegion> page = new Page<SysRegion>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             if(entry.getKey().toString().equals("pageId")){
-                page.setPage(Integer.parseInt(entry.getValue().toString()));
+                page.setCurrent(Integer.parseInt(entry.getValue().toString()));
             } else if(entry.getKey().toString().equals("pageSize")){
-                page.setPageSize(Integer.parseInt(entry.getValue().toString()));
+                page.setSize(Integer.parseInt(entry.getValue().toString()));
             } else {
-                if(!entry.getKey().toString().equals("sort")){
+                if(NumberUtils.isNumber(entry.getValue().toString())){
                     params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
-                    if(entry.getKey().equals("cityId")){
+                    if(entry.getKey().toString().equals("cityId")){
                         params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
                     }
                 }
             }
         }
-        RowBounds rowBounds = new RowBounds(page.getPage() - 1, page.getPageSize());
-        page.setData(sysRegionMapper.queryWithCondition(params, rowBounds));
-        return new DatePage<SysRegion>(page.getPagePlus());
+        page.setRecords(sysRegionMapper.queryWithCondition(params, page));
+        return new DatePage<SysRegion>(page);
     }
 }

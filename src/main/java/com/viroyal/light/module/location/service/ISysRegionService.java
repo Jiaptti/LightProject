@@ -1,5 +1,6 @@
 package com.viroyal.light.module.location.service;
 
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.IService;
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.module.location.entity.SysRegion;
@@ -66,9 +67,8 @@ public interface ISysRegionService extends IService<SysRegion> {
 
     /**
      * 通过条件查询查询所有街道
-     * @param param  参数可以是cityId,areaId,userId的组合
-     *               eg:cityId=xx&areaId=xx
+     * @param params  查询参数
      * @return 分页后的街道列表
      */
-    DatePage<SysRegion> queryWithCondition(Map<String, Object> param);
+    DatePage<SysRegion> queryWithCondition(Map<String,Object> params);
 }

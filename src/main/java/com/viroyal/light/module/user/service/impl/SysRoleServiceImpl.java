@@ -1,5 +1,9 @@
 package com.viroyal.light.module.user.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import com.viroyal.light.common.page.DatePage;
+import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.entity.SysRole;
 import com.viroyal.light.module.user.dao.SysRoleMapper;
 import com.viroyal.light.module.user.service.ISysRoleService;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,25 +29,39 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     SysRoleMapper sysRoleMapper;
 
-//    @Override
-//    public List<SysRole> getRoleListById(Long id) {
-//        return sysRoleMapper.getRoleListById(id);
-//    }
-//
-//    @Override
-//    public String getUserRoleName(Long id) {
-//        return sysRoleMapper.getUserRoleName(id);
-//    }
-
     @Transactional
     @Override
-    public void saveRole(SysRole role) {
+    public void save(SysRole role) {
         sysRoleMapper.save(role);
     }
 
     @Transactional
     @Override
-    public void updateRole(SysRole role) {
+    public void update(SysRole role) {
         sysRoleMapper.update(role);
+    }
+
+
+    @Override
+    public void deleteBatch(Object[] ids) {
+        sysRoleMapper.deleteBatch(ids);
+    }
+
+    @Override
+    public DatePage<SysRole> queryWithCondition(Map<String, Object> params) {
+        Page<SysRole> page = new Page<SysRole>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if(entry.getKey().toString().equals("pageId")){
+                page.setCurrent(Integer.parseInt(entry.getValue().toString()));
+            } else if(entry.getKey().toString().equals("pageSize")){
+                page.setSize(Integer.parseInt(entry.getValue().toString()));
+            } else {
+                if(NumberUtils.isNumber(entry.getValue().toString())){
+                    params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
+                }
+            }
+        }
+        page.setRecords(sysRoleMapper.queryWithCondition(params, page));
+        return new DatePage<SysRole>(page);
     }
 }
