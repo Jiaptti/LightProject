@@ -2,12 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.viroyal.light.module.user.dao.SysRolePermissionMapper">
 
-	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.viroyal.light.module.user.entity.SysRolePermission">
-		<id column="id" property="id" />
-		<result column="rid" property="rid" />
-		<result column="pid" property="pid" />
-		<result column="flag" property="flag" />
-	</resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.viroyal.light.module.user.entity.SysRolePermission">
+        <id column="id" property="id"/>
+        <result column="rid" property="rid"/>
+        <result column="pid" property="pid"/>
+        <result column="exist" property="exist"/>
+    </resultMap>
+
+    <insert id="save" parameterType="java.util.List"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_role_permission
+        (
+        `id`,
+        `rid`,
+        `pid`)
+        values
+        <foreach collection="list" item="rolePermission" index="index" separator=",">
+            (
+            #{rolePermission.id},
+            #{rolePermission.rid},
+            #{rolePermission.pid}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.viroyal.light.module.user.entity.SysRolePermission">
+        update sys_role_permission
+        <set>
+            <if test="rid != null" >`rid` = #{rid},</if>
+            <if test="pid != null" >`pid` = #{pid}</if>
+        </set>
+      where id = #{id}
+    </update>
+
+    <update id="deleteBatch">
+        update sys_role_permission set exist = 0
+        where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            ${ids}
+        </foreach>
+    </update>
 
 </mapper>

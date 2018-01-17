@@ -68,6 +68,8 @@ public class BaseConstant {
     public static final String NO_PERMISSION_ID = "没有更新的权限id";
     //地区id错误
     public static final String NO_REGION_ID = "没有更新的地区id";
+    //请求错误
+    public static final String REQUEST_ERROR = "请求错误";
     //添加区错误
     public static final String SAVE_AREA_CITY_ERROR = "请添加城市ID";
 }

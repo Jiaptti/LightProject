@@ -10,42 +10,42 @@
 		<result column="up_region_id" property="upRegionId" />
 		<result column="region_desc" property="regionDesc" />
 		<result column="postalcode" property="postalcode" />
-		<result column="flag" property="flag" />
+		<result column="exist" property="exist" />
 	</resultMap>
 
 	<!-- 查询所有城市 -->
 	<select id="queryAllCity" resultMap="BaseResultMap">
 		select region.id, region.common_region_id, region.region_name, region.postalcode  from sys_region as region
 		where region.region_name like '%市'
-		and region.flag = 1
+		and region.exist = 1
 	</select>
 
 	<!-- 查询所有区 -->
 	<select id="queryAllArea" resultMap="BaseResultMap">
 		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode  from sys_region as region
 		where region.region_name like '%区'
-		and region.flag = 1
+		and region.exist = 1
 	</select>
 
 	<!-- 查询所有街道 -->
 	<select id="queryAllStreet" resultMap="BaseResultMap">
 		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode  from sys_region as region
 		where region.region_name like '%街道'
-		and region.flag = 1
+		and region.exist = 1
 	</select>
 
 	<!-- 通过城市查询区 -->
 	<select id="queryAreaByCity" parameterType="Long" resultMap="BaseResultMap">
 		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode  from sys_region as region
 		where region.region_name like '%区' and region.up_region_id = #{cityId}
-		and region.flag = 1
+		and region.exist = 1
 	</select>
 
 	<!-- 通过区查询街道 -->
 	<select id="queryStreetByArea" parameterType="Long" resultMap="BaseResultMap">
 		select region.id, region.common_region_id, region.region_name
 		,region.up_region_id, region.postalcode  from sys_region as region
-		where region.up_region_id = #{areaId}  and region.region_desc = '街道' and region.flag = 1
+		where region.up_region_id = #{areaId}  and region.region_desc = '街道' and region.exist = 1
 	</select>
 
 	<!-- 通过条件查询街道 -->
@@ -55,7 +55,7 @@
 		from sys_region as r
 		left join sys_light_info as i
 		on i.street_id = r.common_region_id
-		where 1 = 1 and r.region_desc = '街道' and r.flag = 1
+		where 1 = 1 and r.region_desc = '街道' and r.exist = 1
 		<if test="cityId != null"> and r.common_region_id like CONCAT(#{cityId}, '%')  </if>
 		<if test="areaId != null"> and r.up_region_id = #{areaId}</if>
 		<if test="userId != null"> and i.user_id = #{userId}</if>
@@ -100,7 +100,7 @@
 	</update>
 
 	<update id="deleteBatch">
-		update sys_region set flag = 0 where id in
+		update sys_region set exist = 0 where id in
 		<foreach item="regionId" collection="array" open="(" separator="," close=")">
 			${regionId}
 		</foreach>

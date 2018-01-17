@@ -102,8 +102,8 @@ public class SysUser extends Model<SysUser> {
 	 * 是否可见
 	 */
 	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
-	@TableField("flag")
-	private int flag;
+	@TableField("exist")
+	private int exist;
 
 
 	@Override

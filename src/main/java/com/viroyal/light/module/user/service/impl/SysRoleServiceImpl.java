@@ -50,18 +50,31 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public DatePage<SysRole> queryWithCondition(Map<String, Object> params) {
         Page<SysRole> page = new Page<SysRole>();
+        int pageId = 0, pageSize = 0;
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             if(entry.getKey().toString().equals("pageId")){
-                page.setCurrent(Integer.parseInt(entry.getValue().toString()));
+                pageId = Integer.parseInt(entry.getValue().toString());
             } else if(entry.getKey().toString().equals("pageSize")){
-                page.setSize(Integer.parseInt(entry.getValue().toString()));
+                pageSize = Integer.parseInt(entry.getValue().toString());
             } else {
                 if(NumberUtils.isNumber(entry.getValue().toString())){
                     params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
+                    if(entry.getKey().toString().equals("cityId")){
+                        params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
+                    }
                 }
             }
         }
-        page.setRecords(sysRoleMapper.queryWithCondition(params, page));
+        if(pageId == 0 || pageSize == 0){
+            List<SysRole> data = sysRoleMapper.queryWithCondition(params);
+            page.setSize(data.size());
+            page.setTotal(data.size());
+            page.setRecords(data);
+        } else {
+            page.setCurrent(pageId);
+            page.setSize(pageSize);
+            page.setRecords(sysRoleMapper.queryWithCondition(params, page));
+        }
         return new DatePage<SysRole>(page);
     }
 }

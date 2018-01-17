@@ -8,26 +8,26 @@
 		<result column="url" property="url" />
 		<result column="name" property="name" />
 		<result column="perms" property="perms" />
-		<result column="flag" property="flag" />
+		<result column="exist" property="exist" />
 	</resultMap>
 
 	<!-- 查询所有权限 -->
 	<select id="queryAll" resultMap="BaseResultMap">
-		select * from sys_permission where flag = 1
+		select * from sys_permission where exist = 1
 	</select>
 
 	<select id="getUserPermissions" parameterType="Long" resultMap="BaseResultMap">
 		select p.name from sys_permission p
 		LEFT JOIN sys_role_permission as rp on p.id = rp.pid
 		LEFT JOIN sys_user_role as ur on ur.rid = rp.rid
-		where ur.uid = #{userId} and p.flag = 1
+		where ur.uid = #{userId} and p.exist = 1
 	</select>
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select DISTINCT p.id, p.`name`, p.perms from sys_permission as p
 		left join sys_role_permission as rp on p.id = rp.pid
 		left join sys_user_role as ur on ur.rid = rp.rid
-		where 1 = 1 and p.flag = 1
+		where 1 = 1 and p.exist = 1
 		<if test="userId != null"> and ur.uid = #{userId}</if>
 		<if test="roleId != null"> and ur.rid = #{roleId}</if>
 		<if test="permName != null"> and p.`name` like CONCAT('%', #{permName}, '%')</if>
@@ -68,12 +68,12 @@
 
 	<!-- 删除(隐藏)权限和关联 -->
 	<delete id="deleteBatch">
-		update sys_permission set flag = 0 where id in
+		update sys_permission set exist = 0 where id in
 		<foreach item="permissionId" collection="array" open="(" separator="," close=")">
 			${permissionId}
 		</foreach>
 		;
-		update sys_role_permission set flag = 0 where pid in
+		update sys_role_permission set exist = 0 where pid in
 		<foreach item="permissionId" collection="array" open="(" separator="," close=")">
 			${permissionId}
 		</foreach>

@@ -70,10 +70,17 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
     void deleteBatch(Object[] ids);
 
     /**
-     * 通过条件查询查询所有街道
+     * 通过条件分页查询查询所有街道
      * @param param  参数
      * @param page 分页对象
      * @return 街道列表
      */
     List<SysRegion> queryWithCondition(Map<String, Object> param, Pagination page);
+
+    /**
+     * 通过条件查询查询所有街道
+     * @param param  参数
+     * @return 街道列表
+     */
+    List<SysRegion> queryWithCondition(Map<String, Object> param);
 }

@@ -227,13 +227,13 @@ public class SysRegionController {
             "param参数接口填一个1就行，请求的时候，不需要带")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query",name="pageId",
-                    dataType="Int",required=true,value="第几页"),
+                    dataType="Int", value="第几页"),
             @ApiImplicitParam(paramType="query",name="pageSize",
-                    dataType="Int",required=true,value="多少条"),
+                    dataType="Int", value="多少条"),
             @ApiImplicitParam(paramType="query",name="cityId",
-                    dataType="Int",required=false,value="城市id"),
+                    dataType="Int",required=false,value="城市id(common_region_id)"),
             @ApiImplicitParam(paramType="query",name="areaId",
-                    dataType="Int",required=false,value="区id"),
+                    dataType="Int",required=false,value="区id(common_region_id)"),
             @ApiImplicitParam(paramType="query",name="userId",
                     dataType="Int",required=false,value="用户id"),
             @ApiImplicitParam(paramType="query",name="sort",
@@ -247,6 +247,13 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:list")
     public String queryWithCondition(@RequestParam Map<String, Object> params){
+        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
+                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }
         DatePage<SysRegion> datePage = sysRegionService.queryWithCondition(params);
         return JSON.toJSONString(datePage);
     }

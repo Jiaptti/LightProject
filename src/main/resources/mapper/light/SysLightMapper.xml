@@ -15,11 +15,18 @@
 		<result column="datetime" property="datetime" />
 		<result column="infoId" property="info_id" />
 		<result column="lightness" property="lightness" />
-		<result column="flag" property="flag" />
+		<result column="exist" property="exist" />
 	</resultMap>
 
 	<select id="queryAll" resultMap="BaseResultMap">
-		select * from sys_light
+		select * from sys_light where exist = 1
+	</select>
+
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select * from sys_light as light
+		where 1 = 1 and light.flag = 1
+		<if test="status != null"> and light.`status` = #{status}</if>
+		<if test="voltageGt != null"> and light.`status` = #{status}</if>
 	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLight"
@@ -52,21 +59,28 @@
 		)
 	</insert>
 
-
-
 	<!-- 更新用户 -->
 	<update id="update" parameterType="com.viroyal.light.module.user.entity.SysUser">
 		update sys_light
 		<set>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="voltage != null">`voltage` = #{voltage}, </if>
-			<if test="pswd != null">`pswd` = #{pswd}, </if>
-			<if test="phone != null">`phone` = #{phone}, </if>
-			<if test="email != null">`email` = #{email}, </if>
-			<if test="status != null">`status` = #{status}, </if>
-			<if test="lastUpdateNameId != null">`last_update_name_id` = #{lastUpdateNameId}, </if>
-			<if test="lastUpdateTime != null">`last_update_time` = #{lastUpdateTime} </if>
+			<if test="current != null">`current` = #{current}, </if>
+			<if test="trafficFlow != null">`traffic_flow` = #{trafficFlow}, </if>
+			<if test="temperature != null">`temperature` = #{temperature}, </if>
+			<if test="humidity != null">`humidity` = #{humidity}, </if>
+			<if test="autoreport != null">`autoreport` = #{autoreport}, </if>
+			<if test="infoId != null">`info_id` = #{infoId}, </if>
+			<if test="lightness != null">`lightness` = #{lightness} </if>
 		</set>
 		where id = #{id}
 	</update>
+
+	<update id="deleteBatch">
+		update sys_light set flag = 0 where id in
+		<foreach item="lightId" collection="array" open="(" separator="," close=")">
+			#{lightId}
+		</foreach>
+	</update>
+
 </mapper>

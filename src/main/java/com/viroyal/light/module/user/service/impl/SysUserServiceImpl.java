@@ -1,7 +1,10 @@
 package com.viroyal.light.module.user.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.MyDES;
+import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.common.utils.ShiroUtils;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysUser;
@@ -165,7 +168,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
         userRole.setRid(user.getRoleId());
-        userRole.setFlag(1);
+        userRole.setExist(1);
 
         //保存用户与角色关系
         sysUserRoleService.insert(userRole);
@@ -186,7 +189,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUserRole userRole = new SysUserRole();
         userRole.setUid(user.getId());
         userRole.setRid(user.getRoleId());
-        userRole.setFlag(1);
+        userRole.setExist(1);
 
         //保存用户与角色关系
         sysUserRoleService.insert(userRole);
@@ -260,5 +263,37 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public int getUser(String username) {
         return sysUserMapper.getUser(username);
     }
+
+    @Override
+    public DatePage<SysUser> queryWithCondition(Map<String, Object> params) {
+        Page<SysUser> page = new Page<SysUser>();
+        int pageId = 0, pageSize = 0;
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if(entry.getKey().toString().equals("pageId")){
+                pageId = Integer.parseInt(entry.getValue().toString());
+            } else if(entry.getKey().toString().equals("pageSize")){
+                pageSize = Integer.parseInt(entry.getValue().toString());
+            } else {
+                if(NumberUtils.isNumber(entry.getValue().toString())){
+                    params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
+                    if(entry.getKey().toString().equals("cityId")){
+                        params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
+                    }
+                }
+            }
+        }
+        if(pageId == 0 || pageSize == 0){
+            List<SysUser> data = sysUserMapper.queryWithCondition(params);
+            page.setSize(data.size());
+            page.setTotal(data.size());
+            page.setRecords(data);
+        } else {
+            page.setCurrent(pageId);
+            page.setSize(pageSize);
+            page.setRecords(sysUserMapper.queryWithCondition(params, page));
+        }
+        return new DatePage<SysUser>(page);
+    }
+
 }
 

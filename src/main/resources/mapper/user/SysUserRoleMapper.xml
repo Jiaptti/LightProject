@@ -7,7 +7,7 @@
 		<id column="id" property="id" />
 		<result column="uid" property="uid" />
 		<result column="rid" property="rid" />
-		<result column="flag" property="flag" />
+		<result column="exist" property="exist" />
 	</resultMap>
 
 

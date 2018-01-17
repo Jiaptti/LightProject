@@ -178,7 +178,7 @@ public class SysLoginController {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             SecurityUtils.getSubject().login(token);
             user = ShiroUtils.getUserEntity();
-            if (user.getFlag() == 0) {
+            if (user.getExist() == 0) {
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + BaseConstant.USER_ACCOUNT);
             } else {

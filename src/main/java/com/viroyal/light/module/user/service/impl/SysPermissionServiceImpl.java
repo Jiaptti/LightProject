@@ -43,18 +43,31 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public DatePage<SysPermission> queryWithCondition(Map<String, Object> params) {
         Page<SysPermission> page = new Page<SysPermission>();
+        int pageId = 0, pageSize = 0;
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             if(entry.getKey().toString().equals("pageId")){
-                page.setCurrent(Integer.parseInt(entry.getValue().toString()));
+                pageId = Integer.parseInt(entry.getValue().toString());
             } else if(entry.getKey().toString().equals("pageSize")){
-                page.setSize(Integer.parseInt(entry.getValue().toString()));
+                pageSize = Integer.parseInt(entry.getValue().toString());
             } else {
                 if(NumberUtils.isNumber(entry.getValue().toString())){
                     params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
+                    if(entry.getKey().toString().equals("cityId")){
+                        params.put(entry.getKey(), Long.valueOf(entry.getValue().toString().substring(0,3)));
+                    }
                 }
             }
         }
-        page.setRecords(sysPermissionMapper.queryWithCondition(params, page));
+        if(pageId == 0 || pageSize == 0){
+            List<SysPermission> data = sysPermissionMapper.queryWithCondition(params);
+            page.setSize(data.size());
+            page.setTotal(data.size());
+            page.setRecords(data);
+        } else {
+            page.setCurrent(pageId);
+            page.setSize(pageSize);
+            page.setRecords(sysPermissionMapper.queryWithCondition(params, page));
+        }
         return new DatePage<SysPermission>(page);
     }
 

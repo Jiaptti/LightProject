@@ -63,7 +63,7 @@ public class SysLightInfoController {
 
     @ApiOperation("移动端通过城市id查询所有街道")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query",name="cityId",dataType="String",required=true,value="城市id")
+            @ApiImplicitParam(paramType="query",name="cityId",dataType="String",required=true,value="城市id(common_region_id)")
     })
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),
@@ -74,7 +74,7 @@ public class SysLightInfoController {
     @RequiresPermissions("sys:lightInfo:list")
     public String queryCityLight(@RequestParam("cityId") String cityId){
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysLightInfo> lightInfoList = sysLightInfoService.queryByCity(Long.valueOf(cityId));
+        List<SysLightInfo> lightInfoList = sysLightInfoService.queryByCity(Long.valueOf(cityId.substring(0,3)));
         if (lightInfoList.size() > 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.VALUE_LIST, lightInfoList);
@@ -228,7 +228,7 @@ public class SysLightInfoController {
     public String getLightInfo(@RequestParam("id") String id){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysLightInfo lightInfo = sysLightInfoService.selectById(String.valueOf(id));
-        if (lightInfo != null) {
+        if (lightInfo != null && lightInfo.getExist() == 1) {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.LIGHT_INFO, lightInfo);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
@@ -307,33 +307,15 @@ public class SysLightInfoController {
         return JSON.toJSONString(resultMap);
     }
 
-//    // 移动端关键字分页查询街道列表
-//    @RequestMapping(value = "/getLightInfoPage")
-//    @RequiresPermissions("sys:lightInfo:list")
-//    @ResponseBody
-//    public String areaPage(int pageSize, int pageId, String sort,String keyWords) {
-//        FrontPage<SysLightInfo> page = new FrontPage<SysLightInfo>();
-//        page.setSort(sort);
-//        page.setPage(pageId);
-//        page.setPageSize(pageSize);
-//
-//        Wrapper<SysLightInfo> wrapper = new EntityWrapper<SysLightInfo>();
-//        if (!StringUtils.isEmpty(keyWords))
-//            wrapper.like("code", keyWords);
-//        Page<SysLightInfo> pageList = sysLightInfoService.selectPage(page.getPagePlus(), wrapper);
-//        DatePage<SysLightInfo> datePage = new DatePage<SysLightInfo>(pageList);
-//        return JSON.toJSONString(datePage);
-//    }
-
 
     @ApiOperation("移动端通过条件查询所有路灯(标记required的就是必填)pageId,pageSize为必填项,param参数接口填一个1就行，请求的时候不需要带")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name="pageId", dataType="Int", required=true,value="第几页"),
-            @ApiImplicitParam(paramType="query", name="pageSize", dataType="Int", required=true,value="多少条"),
-            @ApiImplicitParam(paramType="query", name="areaId", dataType="Long", value="区Id"),
+            @ApiImplicitParam(paramType="query", name="pageId", dataType="Int", value="第几页"),
+            @ApiImplicitParam(paramType="query", name="pageSize", dataType="Int", value="多少条"),
+            @ApiImplicitParam(paramType="query", name="areaId", dataType="Long", value="区Id(common_region_id)"),
             @ApiImplicitParam(paramType="query", name="areaName", dataType="String", value="区名(模糊查询)"),
-            @ApiImplicitParam(paramType="query", name="cityId", dataType="Long", value="城市Id"),
-            @ApiImplicitParam(paramType="query", name="streetId", dataType="Long", value="街道Id"),
+            @ApiImplicitParam(paramType="query", name="cityId", dataType="Long", value="城市Id(common_region_id)"),
+            @ApiImplicitParam(paramType="query", name="streetId", dataType="Long", value="街道Id(common_region_id)"),
             @ApiImplicitParam(paramType="query", name="streetName", dataType="String", value="街道名(模糊查询)"),
             @ApiImplicitParam(paramType="query", name="userId", dataType="Long", value="用户Id"),
             @ApiImplicitParam(paramType="query", name="userName", dataType="String", value="维修员名字"),
@@ -375,6 +357,13 @@ public class SysLightInfoController {
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:list")
     public String queryWithCondition(@RequestParam Map<String, Object> params){
+        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
+                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }
         DatePage<SysLightInfo> datePage = sysLightInfoService.queryWithCondition(params);
         return JSON.toJSONString(datePage);
     }

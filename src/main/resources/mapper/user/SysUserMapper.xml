@@ -16,17 +16,28 @@
 		<result column="create_name_id" property="createNameId" />
 		<result column="last_update_time" property="lastUpdateTime" />
 		<result column="last_update_name_id" property="lastUpdateNameId" />
-		<result column="flag" property="flag" />
+		<result column="exist" property="exist" />
 	</resultMap>
 
 	<!-- 查询所有用户 -->
 	<select id="getAllUser" resultType="com.viroyal.light.module.user.entity.SysUser">
-		select u.id, u.nickname, u.username, u.phone, u.email from sys_user as u where u.flag = 1
+		select u.id, u.nickname, u.username, u.phone, u.email from sys_user as u where u.exist = 1
 	</select>
 
 	<!-- 查询账号是否存在 -->
 	<select id="getUser" parameterType="String" resultType="Int">
-		select count(*) from sys_user as u where u.username = #{userName} and u.flag = 1
+		select count(*) from sys_user as u where u.username = #{userName} and u.exist = 1
+	</select>
+
+	<!-- 按条件查询用户 -->
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email from sys_user as u
+		where 1 = 1 and u.exist = 1
+		<if test="userId != null"> and u.id = #{userId}</if>
+		<if test="nickname != null"> and u.nickname like CONCAT('%', #{nickname}, '%') </if>
+		<if test="username != null"> and u.username like CONCAT('%', #{username}, '%')</if>
+		<if test="sort == 'asc' "> order by u.id asc </if>
+		<if test="sort == 'desc' "> order by u.id desc </if>
 	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.user.entity.SysUser"
@@ -65,7 +76,7 @@
 		select p.perms from sys_user_role ur
 		LEFT JOIN sys_role_permission rm on ur.rid = rm.rid
 		LEFT JOIN sys_permission p on p.id = rm.pid
-		where ur.uid = #{userId} and p.flag = 1
+		where ur.uid = #{userId} and p.exist = 1
 	</select>
 
 	<!-- 更新用户 -->
@@ -84,27 +95,15 @@
 		where id = #{id}
 	</update>
 
-	<!--<delete id="deleteBatch">-->
-		<!--delete from sys_user where id in-->
-		<!--<foreach item="userId" collection="array" open="(" separator="," close=")">-->
-			<!--#{userId}-->
-		<!--</foreach>-->
-		<!--;-->
-		<!--delete from sys_user_role where uid in-->
-		<!--<foreach item="userId" collection="array" open="(" separator="," close=")">-->
-			<!--#{userId}-->
-		<!--</foreach>-->
-	<!--</delete>-->
-
 	<!-- 删除(隐藏)用户 -->
 	<update id="deleteBatch">
-		update sys_user set flag = 0
+		update sys_user set exist = 0
 			where id in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
 			${userId}
 		</foreach>
 		;
-		update sys_user_role set flag = 0
+		update sys_user_role set exist = 0
 		where uid in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
 			${userId}

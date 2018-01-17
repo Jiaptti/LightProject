@@ -7,20 +7,8 @@
 		<result column="id" property="id" />
 		<result column="name" property="name" />
 		<result column="type" property="type" />
-		<result column="flag" property="flag" />
+		<result column="exist" property="exist" />
 	</resultMap>
-
-	<!--<select id="getRoleListById" parameterType="Long" resultType="com.viroyal.light.module.user.entity.SysRole">-->
-		<!--select r.type from sys_role as r-->
-		<!--LEFT JOIN sys_user_role as ur on ur.rid = r.id-->
-		<!--where ur.uid = #{id}-->
-	<!--</select>-->
-
-	<!--<select id="getUserRoleName" parameterType="Long" resultType="string">-->
-		<!--select r.name from sys_role as r-->
-		<!--LEFT JOIN sys_user_role as ur on ur.rid = r.id-->
-		<!--where ur.uid = #{id}-->
-	<!--</select>-->
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select distinct r.id, r.`name`, r.type from sys_role as r
@@ -40,7 +28,7 @@
 		update sys_role
 		<set>
 			<if test="name != null">`name` = #{name}, </if>
-			<if test="type != null">`type` = #{username}</if>
+			<if test="type != null">`type` = #{type}</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -63,12 +51,12 @@
 
 	<!-- 删除(隐藏)角色 -->
 	<update id="deleteBatch">
-		update sys_role set flag = 0 where id in
+		update sys_role set exist = 0 where id in
 		<foreach item="roleId" collection="array" open="(" separator="," close=")">
 			${roleId}
 		</foreach>
 		;
-		update sys_user_role set flag = 0 where rid in
+		update sys_user_role set exist = 0 where rid in
 		<foreach item="roleId" collection="array" open="(" separator="," close=")">
 			${roleId}
 		</foreach>

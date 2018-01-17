@@ -83,10 +83,18 @@ public interface SysLightInfoMapper extends BaseMapper<SysLightInfo> {
     void update(SysLightInfo lightInfo);
 
     /**
-     * 通过条件查询路灯
+     * 通过条件分页查询路灯
      * @param params 条件参数
      * @param page 分页条件
      * @return 路灯信息列表
      */
     List<SysLightInfo> queryWithCondition(Map<String,Object> params, Pagination page);
+
+
+    /**
+     * 通过条件查询路灯
+     * @param params 条件参数
+     * @return 路灯信息列表
+     */
+    List<SysLightInfo> queryWithCondition(Map<String,Object> params);
 }

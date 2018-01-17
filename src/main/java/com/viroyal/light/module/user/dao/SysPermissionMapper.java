@@ -25,12 +25,19 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     List<SysPermission> queryAll();
 
     /**
-     *通过各种条件查询权限
+     *通过各种条件分页查询权限
      * @param params 条件
      * @param page 分页条件
      * @return 权限列表
      */
     List<SysPermission> queryWithCondition(Map<String,Object> params, Pagination page);
+
+    /**
+     *通过各种条件查询权限
+     * @param params 条件
+     * @return 权限列表
+     */
+    List<SysPermission> queryWithCondition(Map<String,Object> params);
 
     /**
      * 添加权限

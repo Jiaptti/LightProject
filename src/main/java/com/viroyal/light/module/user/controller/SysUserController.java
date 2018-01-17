@@ -73,7 +73,7 @@ public class SysUserController {
         SysUser user = sysUserService.selectById(id);
         SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(id));
         user.setRoleId(userRole.getRid());
-        if(user == null) {
+        if(user == null && user.getExist() == 1) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.USER, user);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_RESULT);
@@ -195,10 +195,18 @@ public class SysUserController {
 
     @ApiOperation("移动端分页查询用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name="pageSize",dataType="Int",required=true,value="页面条数"),
-            @ApiImplicitParam(paramType="query", name="pageId",dataType="Int",required=true,value="第几页"),
-            @ApiImplicitParam(paramType="query", name="sort",dataType="String",required=true,value="排序方式asc/desc(可以后面什么都不带默认升序)"),
-            @ApiImplicitParam(paramType="query", name="keyWords",dataType="String",required=true,value="通过姓名模糊查询的关键字(可以后面什么都不带表示查询全部)")
+            @ApiImplicitParam(paramType="query", name="pageId",
+                    dataType="Int", value="第几页"),
+            @ApiImplicitParam(paramType="query", name="pageSize",
+                    dataType="Int", value="页面条数"),
+            @ApiImplicitParam(paramType="query", name="userId",
+                    dataType="Int", value="用户Id"),
+            @ApiImplicitParam(paramType="query", name="nickname",
+                    dataType="String", value="用户姓名(模糊查询)"),
+            @ApiImplicitParam(paramType="query", name="username",
+                    dataType="String", value="用户账号(模糊查询)"),
+            @ApiImplicitParam(paramType="query", name="sort",
+                    dataType="String", value="排序方式asc/desc(可以后面什么都不带默认升序)")
     })
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),
@@ -207,21 +215,16 @@ public class SysUserController {
     @RequestMapping(value = "/getUserPage", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")
     @ResponseBody
-    public String userPage(int pageSize, int pageId, String sort, String keyWords) {
-        FrontPage<SysUser> page = new FrontPage<SysUser>();
-        page.setPage(pageId);
-        page.setPageSize(pageSize);
-        page.setSort(sort);
-
-        Wrapper<SysUser> wrapper = new EntityWrapper<SysUser>();
-        wrapper.setSqlSelect("id,username,nickname,phone,email");
-        if (!StringUtils.isEmpty(keyWords))
-            wrapper.like("nickname", keyWords);
-
-        wrapper.eq("flag", 1);
-        Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
-        DatePage<SysUser> customPage = new DatePage<SysUser>(pageList);
-        return JSON.toJSONString(customPage);
+    public String userPage(@RequestParam Map<String, Object> params) {
+        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
+                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }
+        DatePage<SysUser> datePage = sysUserService.queryWithCondition(params);
+        return JSON.toJSONString(datePage);
     }
 
     @ApiOperation("移动端查询用户列表")

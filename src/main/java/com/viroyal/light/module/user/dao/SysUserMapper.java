@@ -1,10 +1,12 @@
 package com.viroyal.light.module.user.dao;
 
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -56,4 +58,19 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param user  用户
      */
     void update(SysUser user);
+
+    /**
+     *通过各种条件分页查询用户
+     * @param params 条件
+     * @param page 分页条件
+     * @return 用户列表
+     */
+    List<SysUser> queryWithCondition(Map<String,Object> params, Pagination page);
+
+    /**
+     *通过各种条件查询用户
+     * @param params 条件
+     * @return 用户列表
+     */
+    List<SysUser> queryWithCondition(Map<String,Object> params);
 }

@@ -27,32 +27,38 @@ public class SysLightInfo extends Model<SysLightInfo> {
 
     private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty("主键id,自增长(不用填，更新的时候带上)")
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
      * 路灯编码
      */
 	@ApiModelProperty("路灯编码(添加时候必填，更新选填)")
+	@TableField("code")
 	private String code;
     /**
      * 路灯信息
      */
 	@ApiModelProperty("路灯信息(添加时候必填，更新选填)")
-	private String info;
+	@TableField("light_info")
+	private String lightInfo;
     /**
      * 1:正在使用，0:刚注册信息并没有投入使用
      */
 	@ApiModelProperty("是否启用( 1:正在使用，0:刚注册信息并没有投入使用)(添加时候必填，更新选填)")
+	@TableField("status")
 	private String status;
     /**
      * 经度
      */
 	@ApiModelProperty("经度(选填)")
+	@TableField("longitude")
 	private Float longitude;
     /**
      * 纬度
      */
 	@ApiModelProperty("纬度(选填)")
+	@TableField("latitude")
 	private Float latitude;
 	/**
 	 * 引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间
@@ -143,10 +149,8 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	 * 是否可见
 	 */
 	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
-	@TableField("flag")
-	private int flag;
-
-	private SysRegion region;
+	@TableField("exist")
+	private int exist;
 
 	@Override
 	protected Serializable pkVal() {

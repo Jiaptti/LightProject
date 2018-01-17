@@ -44,4 +44,11 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @return 角色集合
      */
     List<SysRole> queryWithCondition(Map<String, Object> params, Pagination page);
+
+    /**
+     * 分页查询角色
+     * @param params 查询条件
+     * @return 角色集合
+     */
+    List<SysRole> queryWithCondition(Map<String, Object> params);
 }

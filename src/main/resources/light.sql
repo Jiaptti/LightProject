@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2018-01-12 18:10:43
+Date: 2018-01-17 17:58:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `sys_light` (
 `info_id`  bigint(10) NULL DEFAULT NULL COMMENT '对应light_info的code' ,
 `lightness`  int(11) NULL DEFAULT NULL COMMENT '亮度' ,
 `region_id`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -45,7 +45,7 @@ AUTO_INCREMENT=13
 -- Records of sys_light
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_light` VALUES ('1', '1', '110', '800', '1', '6', '65', '10000', '2017-12-01 17:40:40', '1', '0', null, '1'), ('2', '1', '100', '600', '1', '16', '85', '20000', '2016-12-01 12:00:06', '2', '0', null, '1'), ('3', '1', '110', '100', '0', '60', '120', '10000', '2017-12-31 22:00:36', '3', '8', null, '1'), ('4', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '4', '0', null, '1'), ('5', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '5', '0', null, '1'), ('6', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '6', '0', null, '1'), ('7', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '7', '0', null, '1'), ('8', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '8', '0', null, '1'), ('9', '1', '140', '800', '0', '24', '85', '20000', '2017-06-01 23:13:22', '9', '0', null, '1'), ('10', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '10', '0', null, '1'), ('11', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '11', '0', null, '1'), ('12', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '12', '0', null, '1');
+INSERT INTO `sys_light` VALUES ('1', '1', '110', '800', '1', '6', '65', '10000', '2017-12-01 17:40:40', '1', '0', null, '0'), ('2', '1', '100', '600', '1', '16', '85', '20000', '2016-12-01 12:00:06', '2', '0', null, '1'), ('3', '1', '110', '100', '0', '60', '120', '10000', '2017-12-31 22:00:36', '3', '8', null, '1'), ('4', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '4', '0', null, '1'), ('5', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '5', '0', null, '1'), ('6', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '6', '0', null, '1'), ('7', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '7', '0', null, '1'), ('8', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '8', '0', null, '1'), ('9', '1', '140', '800', '0', '24', '85', '20000', '2017-06-01 23:13:22', '9', '0', null, '1'), ('10', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '10', '0', null, '1'), ('11', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '11', '0', null, '1'), ('12', '1', '140', '800', '1', '24', '85', '20000', '2017-06-01 23:13:22', '12', '0', null, '1');
 COMMIT;
 
 -- ----------------------------
@@ -59,7 +59,7 @@ CREATE TABLE `sys_light_group` (
 `create_user_id`  bigint(10) NULL DEFAULT NULL COMMENT '由谁创建的组' ,
 `responsible_id`  bigint(10) NULL DEFAULT NULL COMMENT '谁负责的组' ,
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -82,7 +82,7 @@ DROP TABLE IF EXISTS `sys_light_info`;
 CREATE TABLE `sys_light_info` (
 `id`  bigint(10) NOT NULL AUTO_INCREMENT ,
 `code`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '路灯编码' ,
-`info`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路灯信息' ,
+`light_info`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路灯信息' ,
 `status`  varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '1:正在使用，0:刚注册信息并没有投入使用' ,
 `longitude`  float NULL DEFAULT 0 COMMENT '经度' ,
 `latitude`  float NULL DEFAULT 0 COMMENT '纬度' ,
@@ -100,7 +100,7 @@ CREATE TABLE `sys_light_info` (
 `temperature_overload`  int(11) NULL DEFAULT 0 COMMENT '温度过载阀值' ,
 `humidity_overload`  int(11) NULL DEFAULT 0 COMMENT '师傅过载阀值' ,
 `lightness_overload`  int(11) NULL DEFAULT 0 COMMENT '亮度过载阀值' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -122,12 +122,12 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_light_record`;
 CREATE TABLE `sys_light_record` (
 `id`  bigint(10) NOT NULL AUTO_INCREMENT ,
-`r_date`  datetime NULL DEFAULT NULL COMMENT '记录时间' ,
-`r_status`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录状态' ,
-`r_operation`  varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录操作' ,
-`r_userid`  bigint(20) NULL DEFAULT NULL COMMENT '谁进行了操作' ,
-`code`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对应sys_light_info里的code' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`record_date`  datetime NULL DEFAULT NULL COMMENT '记录时间' ,
+`record_status`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录状态' ,
+`record_operation`  varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录操作' ,
+`record_user_id`  bigint(10) NULL DEFAULT NULL COMMENT '谁进行了操作' ,
+`light_info_id`  bigint(10) NULL DEFAULT NULL COMMENT '对应sys_light_info里的id' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -154,7 +154,7 @@ CREATE TABLE `sys_light_strategy` (
 `open_time`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '打开时间' ,
 `close_time`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关闭时间' ,
 `type`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '冬季，夏季' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -179,12 +179,12 @@ CREATE TABLE `sys_permission` (
 `url`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'url地址' ,
 `name`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'url描述' ,
 `perms`  varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=30
+AUTO_INCREMENT=27
 
 ;
 
@@ -230,12 +230,12 @@ CREATE TABLE `sys_region` (
 `up_region_id`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '地区上级编号' ,
 `region_desc`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区描述' ,
 `postalcode`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮编' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=22
+AUTO_INCREMENT=19
 
 ;
 
@@ -252,9 +252,9 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
-`name`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名称' ,
-`type`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色类型' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`name`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名称' ,
+`type`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色类型' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -267,7 +267,7 @@ AUTO_INCREMENT=4
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES ('1', 'admin', '100004', '1'), ('2', 'user', '100001', '1'), ('3', 'worker', '100002', '1');
+INSERT INTO `sys_role` VALUES ('1', '管理员', 'admin', '1'), ('2', '用户', 'user', '1'), ('3', '维修员', 'worder', '1');
 COMMIT;
 
 -- ----------------------------
@@ -278,12 +278,12 @@ CREATE TABLE `sys_role_permission` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `rid`  bigint(20) NULL DEFAULT NULL COMMENT '角色ID' ,
 `pid`  bigint(20) NULL DEFAULT NULL COMMENT '权限ID' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=51
+AUTO_INCREMENT=59
 
 ;
 
@@ -291,7 +291,7 @@ AUTO_INCREMENT=51
 -- Records of sys_role_permission
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_permission` VALUES ('1', '1', '1', '1'), ('2', '1', '2', '1'), ('3', '1', '3', '1'), ('4', '1', '4', '1'), ('5', '1', '5', '1'), ('6', '1', '6', '1'), ('7', '1', '7', '1'), ('8', '1', '8', '1'), ('9', '1', '9', '1'), ('10', '1', '10', '1'), ('11', '1', '11', '1'), ('12', '1', '12', '1'), ('13', '1', '13', '1'), ('14', '1', '14', '1'), ('15', '2', '2', '1'), ('16', '2', '3', '1'), ('17', '2', '4', '1'), ('18', '2', '5', '1'), ('20', '1', '15', '1'), ('21', '1', '16', '1'), ('22', '1', '17', '1'), ('23', '1', '18', '1'), ('24', '1', '19', '1'), ('25', '1', '20', '1'), ('26', '1', '21', '1'), ('27', '1', '22', '1'), ('28', '3', '15', '1'), ('29', '3', '16', '1'), ('30', '3', '17', '1'), ('31', '3', '18', '1'), ('32', '3', '19', '1'), ('33', '3', '20', '1'), ('34', '3', '21', '1'), ('35', '3', '22', '1'), ('36', '2', '15', '1'), ('37', '2', '16', '1'), ('38', '2', '17', '1'), ('39', '2', '18', '1'), ('40', '2', '19', '1'), ('41', '2', '20', '1'), ('42', '2', '21', '1'), ('43', '2', '22', '1'), ('44', '1', '23', '1'), ('45', '1', '24', '1'), ('46', '1', '25', '1'), ('47', '1', '26', '1'), ('50', '1', '29', '1');
+INSERT INTO `sys_role_permission` VALUES ('1', '1', '1', '1'), ('2', '1', '2', '1'), ('3', '1', '3', '1'), ('4', '1', '4', '1'), ('5', '1', '5', '1'), ('6', '1', '6', '1'), ('7', '1', '7', '1'), ('8', '1', '8', '1'), ('9', '1', '9', '1'), ('10', '1', '10', '1'), ('11', '1', '11', '1'), ('12', '1', '12', '1'), ('13', '1', '13', '1'), ('14', '1', '14', '1'), ('15', '2', '2', '1'), ('16', '2', '3', '1'), ('17', '2', '4', '1'), ('18', '2', '5', '1'), ('20', '1', '15', '1'), ('21', '1', '16', '1'), ('22', '1', '17', '1'), ('23', '1', '18', '1'), ('24', '1', '19', '1'), ('25', '1', '20', '1'), ('26', '1', '21', '1'), ('27', '1', '22', '1'), ('28', '3', '15', '1'), ('29', '3', '16', '1'), ('30', '3', '17', '1'), ('31', '3', '18', '1'), ('32', '3', '19', '1'), ('33', '3', '20', '1'), ('34', '3', '21', '1'), ('35', '3', '22', '1'), ('36', '2', '15', '1'), ('37', '2', '16', '1'), ('38', '2', '17', '1'), ('39', '2', '18', '1'), ('40', '2', '19', '1'), ('41', '2', '20', '1'), ('42', '2', '21', '1'), ('43', '2', '22', '1'), ('44', '1', '23', '1'), ('45', '1', '24', '1'), ('46', '1', '25', '1'), ('47', '1', '26', '1');
 COMMIT;
 
 -- ----------------------------
@@ -311,12 +311,12 @@ CREATE TABLE `sys_user` (
 `create_name_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `last_update_time`  datetime NULL DEFAULT NULL ,
 `last_update_name_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-`flag`  int(1) NOT NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NOT NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=29
+AUTO_INCREMENT=14
 
 ;
 
@@ -324,7 +324,7 @@ AUTO_INCREMENT=29
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES ('1', 'admin', 'admin', 'l9a0lajfwQ3VRSh4jUUJSQ==', '15255257895', 'admin@qq.com', '2016-06-16 11:15:33', '2018-01-12 17:31:37', '1', null, null, null, '1'), ('2', '张三', 'zhang', 'eC/MmhASeJBCbfh7W0YU1A==', '13316998986', '123@123.com', '2017-12-24 19:37:40', null, '1', '1', null, null, '1'), ('3', '李四', 'lisi', 'bR28UodwBWRDm+buWIaZbg==', '15575590909', '321@123.com', '2017-12-24 19:38:06', null, '1', '1', null, null, '1'), ('4', '王五', 'wangwu', 'Yb7Dc8/cPeCL8NwOjnYSRA==', '13317979888', '456@123.com', '2017-12-24 19:38:30', null, '1', '1', null, null, '1'), ('20', '罗总', 'luo', '7NjQPajcVm2j1j8LIfaQew==', '15575889999', '123@123.com', '2017-12-25 10:33:48', '2018-01-03 18:07:51', '1', '1', null, null, '1'), ('22', '老司机', 'laosiji', '7NjQPajcVm1PC6tJMaodpQxtrQrzzUma', '15585858585', '123@123.com', '2017-12-25 10:34:55', '2017-12-25 10:36:52', '1', '1', null, null, '1'), ('28', '123', 'luo', null, null, null, '2018-01-12 18:09:56', null, '0', '1', null, null, '1');
+INSERT INTO `sys_user` VALUES ('1', 'admin', 'admin', 'l9a0lajfwQ3VRSh4jUUJSQ==', '15565567776', 'admin@admin.com', '2018-01-12 15:34:06', '2018-01-17 09:42:00', '1', '26', null, null, '1'), ('2', '张三', 'zhang', 'eC/MmhASeJBCbfh7W0YU1A==', '13316998986', '123@123.com', '2017-12-24 19:37:40', null, '1', '1', null, null, '1'), ('3', '李四', 'lisi', 'bR28UodwBWRDm+buWIaZbg==', '15575590909', '321@123.com', '2017-12-24 19:38:06', null, '1', '1', null, null, '1'), ('4', '王五', 'wangwu', 'Yb7Dc8/cPeCL8NwOjnYSRA==', '13317979888', '456@123.com', '2017-12-24 19:38:30', null, '1', '1', null, null, '1'), ('6', '权哥', 'quan', '7NjQPajcVm1dzbZMJvVcRA==', '15475878981', '132@123.com', '2017-12-25 10:34:26', '2018-01-15 09:51:15', '1', '1', null, null, '1'), ('7', '老司机', 'laosiji', '7NjQPajcVm1PC6tJMaodpQxtrQrzzUma', '15585858585', '123@123.com', '2017-12-25 10:34:55', '2018-01-11 16:31:05', '1', '1', null, null, '1'), ('8', '赵总', 'zxb', '7NjQPajcVm3rcjWOTacgxQ==', '13816214814', '460837364@qq.com', '2017-12-26 11:11:50', '2018-01-15 09:40:57', '1', '20', null, null, '1'), ('9', '哈哈哈哈哈', 'sunyy', '8AetwF4m3o3Y4JDqkLIeLA==', '13145678961', '2222@11.COM', '2017-12-27 13:59:21', '2018-01-12 14:18:37', '1', '1', '2018-01-03 15:09:37', '1', '1'), ('10', '武因生', '武因生', '7NjQPajcVm05iEcgH3wDZ/3531yNGT4C', '15821361405', 'wys484112@163.com', '2017-12-28 00:00:00', '2017-12-28 19:45:58', '1', null, null, null, '1'), ('11', '黑哥', 'darkface', 'Ysrp0xWBcJDSXzqMlWwNag==', '15545457777', '123@123.com', '2018-01-08 17:53:16', '2018-01-11 16:06:02', '1', '1', null, null, '1'), ('12', 'zzzz', 'zzzz', null, '11111111', 'zzzzzz@viroyal-elec.com', '2018-01-09 09:09:14', null, '0', '29', null, null, '1'), ('13', '罗宝娟', 'luo345', 'g+tTx+DfnBsHMANo9jgcZA==', '13512312312', '123@123.com', '2018-01-09 16:07:53', '2018-01-15 09:41:02', '1', '1', null, null, '1');
 COMMIT;
 
 -- ----------------------------
@@ -335,12 +335,12 @@ CREATE TABLE `sys_user_role` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `uid`  bigint(20) NULL DEFAULT NULL COMMENT '用户ID' ,
 `rid`  bigint(20) NULL DEFAULT NULL COMMENT '角色ID' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=22
+AUTO_INCREMENT=28
 
 ;
 
@@ -348,7 +348,7 @@ AUTO_INCREMENT=22
 -- Records of sys_user_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user_role` VALUES ('1', '1', '1', '1'), ('2', '2', '3', '1'), ('3', '3', '3', '1'), ('4', '4', '3', '1'), ('13', '20', '1', '1'), ('15', '22', '1', '1'), ('21', '28', null, '1');
+INSERT INTO `sys_user_role` VALUES ('1', '1', '1', '1'), ('2', '2', '3', '1'), ('3', '3', '3', '1'), ('4', '4', '3', '1'), ('13', '6', '1', '1'), ('15', '7', '1', '1'), ('22', '8', '1', '1'), ('23', '9', '1', '1'), ('24', '10', '1', '1'), ('25', '11', '1', '1'), ('26', '12', '1', '0'), ('27', '13', '1', '1');
 COMMIT;
 
 -- ----------------------------
@@ -379,7 +379,7 @@ ALTER TABLE `sys_light_strategy` AUTO_INCREMENT=5;
 -- ----------------------------
 -- Auto increment value for sys_permission
 -- ----------------------------
-ALTER TABLE `sys_permission` AUTO_INCREMENT=30;
+ALTER TABLE `sys_permission` AUTO_INCREMENT=27;
 
 -- ----------------------------
 -- Auto increment value for sys_permission_init
@@ -389,7 +389,7 @@ ALTER TABLE `sys_permission_init` AUTO_INCREMENT=15;
 -- ----------------------------
 -- Auto increment value for sys_region
 -- ----------------------------
-ALTER TABLE `sys_region` AUTO_INCREMENT=22;
+ALTER TABLE `sys_region` AUTO_INCREMENT=19;
 
 -- ----------------------------
 -- Auto increment value for sys_role
@@ -399,14 +399,14 @@ ALTER TABLE `sys_role` AUTO_INCREMENT=4;
 -- ----------------------------
 -- Auto increment value for sys_role_permission
 -- ----------------------------
-ALTER TABLE `sys_role_permission` AUTO_INCREMENT=51;
+ALTER TABLE `sys_role_permission` AUTO_INCREMENT=59;
 
 -- ----------------------------
 -- Auto increment value for sys_user
 -- ----------------------------
-ALTER TABLE `sys_user` AUTO_INCREMENT=29;
+ALTER TABLE `sys_user` AUTO_INCREMENT=14;
 
 -- ----------------------------
 -- Auto increment value for sys_user_role
 -- ----------------------------
-ALTER TABLE `sys_user_role` AUTO_INCREMENT=22;
+ALTER TABLE `sys_user_role` AUTO_INCREMENT=28;

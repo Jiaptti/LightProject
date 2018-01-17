@@ -10,7 +10,7 @@
 		<result column="record_operation" property="recordOperation" />
 		<result column="record_user_id" property="recordUserId" />
 		<result column="light_info_id" property="lightInfoId" />
-		<result column="flag" property="flag" />
+		<result column="exist" property="exist" />
 	</resultMap>
 
 </mapper>
