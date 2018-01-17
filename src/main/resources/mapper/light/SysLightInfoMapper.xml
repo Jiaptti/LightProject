@@ -119,7 +119,7 @@
         <if test="longitude != null">and i.longitude = #{longitude}</if>
         <if test="latitude != null">and i.latitude = #{latitude}</if>
         <if test="strategyId != null">and i.strategy_id = #{strategyId}</if>
-        <if test="voltageThresholdGt != null">and i.voltage_threshold &gt;= #{voltageThresholdGt}</if>
+        <if test="voltageThresholdGt != null">and i.voltage_threshold @gt;= #{voltageThresholdGt}</if>
         <if test="voltageThresholdLt != null">and i.voltage_threshold @lt;= #{voltageThresholdLt}</if>
         <if test="currentThresholdGt != null">and i.current_threshold @gt;= #{currentThresholdGt}</if>
         <if test="currentThresholdLt != null">and i.current_threshold @lt;= #{currentThresholdLt}</if>
