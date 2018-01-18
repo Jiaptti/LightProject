@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -46,7 +47,7 @@ public class SysUserController {
 
 
     // 跳转到用户管理页面
-    @RequestMapping(value = "/userPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/userPage", method = RequestMethod.GET)
     public String userPage(String edit, Model model) {
         // edit判断是否编辑成功
         model.addAttribute("edit", edit);
@@ -62,18 +63,18 @@ public class SysUserController {
 
     @ApiOperation("移动端通过id获得用户")
     @ApiResponses({
-            @ApiResponse(code=200,message="Success"),
-            @ApiResponse(code=500,message="No Result")
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 500, message = "No Result")
     })
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:user:info")
-    public String getUser(@RequestParam("id") String id){
+    public String getUser(@RequestParam("id") String id) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysUser user = sysUserService.selectById(id);
         SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(id));
         user.setRoleId(userRole.getRid());
-        if(user == null && user.getExist() == 1) {
+        if (user == null && user.getExist() == 1) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.USER, user);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_RESULT);
@@ -92,48 +93,31 @@ public class SysUserController {
         SysUserRole userRole = sysUserRoleService.getUserRole(Long.valueOf(Id));
         user.setRoleId(userRole.getRid());
         String pswd = MyDES.decryptBasedDes(user.getPswd());
-        pswd = pswd.substring(0,pswd.indexOf(user.getUsername()));
+        pswd = pswd.substring(0, pswd.indexOf(user.getUsername()));
         user.setPswd(pswd);
         model.addAttribute(BaseConstant.USER, user);
         return "user/edit";
     }
 
     //添加用户
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    @RequiresPermissions("sys:user:save")
-    public String saveUser(SysUser user, String isEffective) {
-        sysUserService.saveUser(user, isEffective);
-        return "forward:userPage?edit=true";
-    }
-
     @ApiOperation("移动端添加用户")
     @ApiResponses({
-            @ApiResponse(code=200,message="添加成功"),
-            @ApiResponse(code=500,message="添加失败")
+            @ApiResponse(code = 200, message = "更新成功"),
+            @ApiResponse(code = 500, message = "更新失败")
     })
-    @RequestMapping(value = "/userAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "/userSave", method = RequestMethod.POST)
     @RequiresPermissions("sys:user:save")
     @ResponseBody
-    public String save(SysUser user){
+    public String saveUser(@Valid @RequestBody SysUser user) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        Map<String, Object> params = new LinkedHashMap<String, Object>();
-        params.put("username", user.getUsername());
-        if(user.getRoleId() == null){
+        try {
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            sysUserService.save(user);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+        } catch (Exception e) {
+            e.printStackTrace();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.USER_EXIST);
-        } else if(sysUserService.getUser(user.getUsername()) > 0){
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_USER_ROLE_ERROR);
-        } else {
-            try{
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-                sysUserService.save(user);
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-            } catch (Exception e){
-                e.printStackTrace();
-                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-            }
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }
@@ -148,26 +132,26 @@ public class SysUserController {
 
     @ApiOperation("移动端更新用户")
     @ApiResponses({
-            @ApiResponse(code=200,message="更新成功"),
-            @ApiResponse(code=500,message="更新失败")
+            @ApiResponse(code = 200, message = "更新成功"),
+            @ApiResponse(code = 500, message = "更新失败")
     })
     @RequestMapping(value = "/userUpdate", method = RequestMethod.POST)
     @RequiresPermissions("sys:user:update")
     @ResponseBody
-    public String update(SysUser user){
+    public String update(SysUser user) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(user.getId() == null){
+        if (user.getId() == null) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_USER_ID);
-        } else if(user.getRoleId() == null){
+        } else if (user.getRoleId() == null) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_USER_ROLE_ERROR);
-        } else{
-            try{
+        } else {
+            try {
                 resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 sysUserService.update(user);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
@@ -195,29 +179,29 @@ public class SysUserController {
 
     @ApiOperation("移动端分页查询用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name="pageId",
-                    dataType="Int", value="第几页"),
-            @ApiImplicitParam(paramType="query", name="pageSize",
-                    dataType="Int", value="页面条数"),
-            @ApiImplicitParam(paramType="query", name="userId",
-                    dataType="Int", value="用户Id"),
-            @ApiImplicitParam(paramType="query", name="nickname",
-                    dataType="String", value="用户姓名(模糊查询)"),
-            @ApiImplicitParam(paramType="query", name="username",
-                    dataType="String", value="用户账号(模糊查询)"),
-            @ApiImplicitParam(paramType="query", name="sort",
-                    dataType="String", value="排序方式asc/desc(可以后面什么都不带默认升序)")
+            @ApiImplicitParam(paramType = "query", name = "pageId",
+                    dataType = "Int", value = "第几页"),
+            @ApiImplicitParam(paramType = "query", name = "pageSize",
+                    dataType = "Int", value = "页面条数"),
+            @ApiImplicitParam(paramType = "query", name = "userId",
+                    dataType = "Int", value = "用户Id"),
+            @ApiImplicitParam(paramType = "query", name = "nickname",
+                    dataType = "String", value = "用户姓名(模糊查询)"),
+            @ApiImplicitParam(paramType = "query", name = "username",
+                    dataType = "String", value = "用户账号(模糊查询)"),
+            @ApiImplicitParam(paramType = "query", name = "sort",
+                    dataType = "String", value = "排序方式asc/desc(可以后面什么都不带默认升序)")
     })
     @ApiResponses({
-            @ApiResponse(code=200,message="查询成功"),
-            @ApiResponse(code=500,message="查询失败")
+            @ApiResponse(code = 200, message = "查询成功"),
+            @ApiResponse(code = 500, message = "查询失败")
     })
     @RequestMapping(value = "/getUserPage", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String userPage(@RequestParam Map<String, Object> params) {
-        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
-                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
+        if ((!params.containsKey("pageId") && params.containsKey("pageSize"))
+                || (params.containsKey("pageId") && !params.containsKey("pageSize"))) {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
@@ -229,8 +213,8 @@ public class SysUserController {
 
     @ApiOperation("移动端查询用户列表")
     @ApiResponses({
-            @ApiResponse(code=200,message="查询成功"),
-            @ApiResponse(code=500,message="查询失败")
+            @ApiResponse(code = 200, message = "查询成功"),
+            @ApiResponse(code = 500, message = "查询失败")
     })
     @RequestMapping(value = "/userList", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")
@@ -251,19 +235,19 @@ public class SysUserController {
 
     @ApiOperation("移动端删除用户")
     @ApiResponses({
-            @ApiResponse(code=200,message="删除成功"),
-            @ApiResponse(code=500,message="删除失败")
+            @ApiResponse(code = 200, message = "删除成功"),
+            @ApiResponse(code = 500, message = "删除失败")
     })
     @RequestMapping(value = "/userDelete", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:user:delete")
     public String userBatchUpdate(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
+        try {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             sysUserService.deleteBatch(ids);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
+        } catch (Exception e) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE);
         }

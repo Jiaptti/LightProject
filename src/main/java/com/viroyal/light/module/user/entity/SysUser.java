@@ -11,7 +11,11 @@ import com.baomidou.mybatisplus.enums.IdType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -35,42 +39,49 @@ public class SysUser extends Model<SysUser> {
     /**
      * 用户昵称
      */
-	@ApiModelProperty("用户昵称(添加时候必填，更新不用)")
+	@ApiModelProperty("用户姓名(添加时候必填，更新不用)")
+	@NotNull(message = "{user.nickname.not.empty}")
+	@Pattern(regexp = "[\\u4E00-\\u9FA5]{2,5}(?:·[\\u4E00-\\u9FA5]{2,5})*", message = "{user.nickname.right.format}")
+	@Size(min=2, max=5, message="{user.nickname.length}")
 	private String nickname;
 
 	/**
-	 * 用户姓名
+	 * 用户账号
 	 */
-	@ApiModelProperty("用户姓名(添加时候必填，更新不用)")
+	@ApiModelProperty("用户账号(添加时候必填，更新不用)")
+	@NotNull(message = "{user.username.not.empty}")
+	@Size(min=5, max=10, message="{user.username.length}")
 	private String username;
 
 	/**
 	 * 手机号码
 	 */
 	@ApiModelProperty("手机号码(添加时候必填，更新不用)")
+	@Pattern(regexp = "^1(3|4|5|7|8)\\d{9}$",message = "{user.phone.right.format}")
 	private String phone;
     /**
      * 邮箱
      */
-	@ApiModelProperty("邮箱(添加时候必填，更新不用)")
+	@ApiModelProperty("邮箱(添加时候选填，更新不用)")
+	@Pattern(regexp="[a-za-z0-9._%+-]+@[a-za-z0-9.-]+\\.[a-za-z]{2,4}", message="{user.email.right.format}")
 	private String email;
     /**
      * 密码
      */
+    @NotEmpty(message = "{user.password.not.empty}")
+	@Size(min=5, max=20, message="{user.password.length}")
 	@ApiModelProperty("密码(添加时候必填，更新不用)，记得加密")
 	private String pswd;
     /**
      * 创建时间
      */
 	@ApiModelProperty("创建时间(不必添加)")
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@TableField("create_time")
 	private Date createTime;
     /**
      * 最后登录时间
      */
 	@ApiModelProperty("最后登录时间(不必填)")
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@TableField("last_login_time")
 	private Date lastLoginTime;
     /**
@@ -96,6 +107,7 @@ public class SysUser extends Model<SysUser> {
 	 */
 	@ApiModelProperty("角色ID(必填，1表示管理员，2表示用户，3表示维修员，更新时候带上表示修改)")
 	@TableField(exist = false)
+	@NotNull(message = "{user.roleId.not.empty}")
 	private Long roleId;
 
 	/**
