@@ -1,17 +1,11 @@
 package com.viroyal.light.module.light.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLightInfo;
-import com.viroyal.light.module.light.entity.SysUserLight;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
-import com.viroyal.light.common.page.FrontPage;
 import io.swagger.annotations.*;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -247,7 +241,7 @@ public class SysLightInfoController {
     @RequestMapping(value = "/lightInfoSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:save")
-    public String saveStreet(SysLightInfo lightInfo){
+    public String saveLightInfo(SysLightInfo lightInfo){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try{
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
@@ -279,7 +273,7 @@ public class SysLightInfoController {
         } catch (Exception e){
             e.printStackTrace();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }
@@ -302,7 +296,7 @@ public class SysLightInfoController {
         } catch (Exception e){
             e.printStackTrace();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }

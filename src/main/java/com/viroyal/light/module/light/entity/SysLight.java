@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,43 +34,49 @@ public class SysLight extends Model<SysLight> {
     /**
      * 1:开灯，0:关灯
      */
-	@ApiModelProperty("状态(是否打开)")
-	private String status;
+	@ApiModelProperty("状态(是否打开)(添加时候必填，更新选填)")
+	private Integer status;
     /**
      * 电压
      */
-	private Long voltage;
+	@ApiModelProperty("电压(添加时候必填，更新选填)")
+	private Integer voltage;
     /**
      * 电流
      */
-	private Long current;
+	@ApiModelProperty("电流(添加时候必填，更新选填)")
+	private Integer current;
     /**
      * 车流量,暂时用1表示车流量多，0表示车流量少，具体按照路灯获取的信息
      */
+	@ApiModelProperty("车流量(1表示车流量多，0表示车流量少)(添加时候必填，更新选填)")
 	@TableField("traffic_flow")
-	private String trafficFlow;
+	private Integer trafficFlow;
     /**
      * 温度
      */
-	private Long temperature;
+	@ApiModelProperty("温度(添加时候必填，更新选填)")
+	private Integer temperature;
     /**
      * 湿度
      */
-	private Long humidity;
-    /**
-     * 路灯自动上报周期
-     */
-	private Long autoreport;
-
+	@ApiModelProperty("湿度(添加时候必填，更新选填)")
+	private Integer humidity;
+	/**
+	 * 数据提交的时间
+	 */
+	@ApiModelProperty("数据提交的时间(不用填)")
 	private Date datetime;
     /**
-     * 对应light_info的id
+     * 对应sys_light_info的id
      */
+	@ApiModelProperty("对应sys_light_info的id(添加时候必填，更新选填)")
     @TableField("info_id")
 	private Long infoId;
     /**
      * 亮度
      */
+	@ApiModelProperty("亮度(添加时候必填，更新选填)")
 	private Integer lightness;
 
 	@Override

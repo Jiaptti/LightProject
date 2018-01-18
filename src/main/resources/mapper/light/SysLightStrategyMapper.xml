@@ -13,4 +13,62 @@
 		<result column="exist" property="exist" />
 	</resultMap>
 
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select strategy.id, strategy.smooth_level, strategy.traffic_level,
+		strategy.open_time, strategy.close_time, strategy.`type`
+		from sys_light_strategy as strategy
+		where 1 = 1 and strategy.exist = 1
+		<if test="strategyId != null"> and strategy.id = #{strategyId}</if>
+		<if test="smoothLevel != null">  and strategy.smooth_level = #{smoothLevel}</if>
+		<if test="trafficLevel != null">  and strategy.traffic_level = #{trafficLevel}</if>
+		<if test="openTime != null">  and strategy.open_time = #{openTime}</if>
+		<if test="closeTime != null">  and strategy.close_time = #{closeTime}</if>
+		<if test="type != null">  and strategy.`type` = #{type}</if>
+		<if test="sort == 'asc' "> order by strategy.id asc</if>
+		<if test="sort == 'desc' "> order by strategy.id desc</if>
+	</select>
+
+
+	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLightStrategy"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_light_strategy
+		(
+		`id`,
+		`smooth_level`,
+		`traffic_level`,
+		`open_time`,
+		`close_time`,
+		`type`
+		)
+		values
+		(
+		#{id},
+		#{smoothLevel},
+		#{trafficLevel},
+		#{openTime},
+		#{closeTime},
+		#{type}
+		)
+	</insert>
+
+
+	<update id="update" parameterType="com.viroyal.light.module.light.entity.SysLightStrategy">
+		update sys_light_strategy
+		<set>
+			<if test="smoothLevel != null">`smooth_level` = #{smoothLevel}, </if>
+			<if test="trafficLevel != null">`traffic_level` = #{trafficLevel}, </if>
+			<if test="openTime != null">`open_time` = #{openTime}, </if>
+			<if test="closeTime != null">`close_time` = #{closeTime}, </if>
+			<if test="type != null">`type` = #{type}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="deleteBatch">
+		update sys_light_strategy set exist = 0 where id in
+		<foreach item="strategyId" collection="array" open="(" separator="," close=")">
+			#{strategyId}
+		</foreach>
+	</update>
+
 </mapper>

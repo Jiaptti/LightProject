@@ -84,6 +84,12 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	@ApiModelProperty("所属组的id(即sys_group表中的id)(选填)")
 	@TableField("group_id")
 	private Long groupId;
+	/**
+	 * 路灯自动上报周期
+	 */
+	@ApiModelProperty("路灯自动上报周期(时间为毫秒，多久提交一次数据到sys_light表，默认60秒)")
+	@TableField("auto_report")
+	private Long autoReport;
     /**
      * 电压报警阀值
      */
@@ -150,7 +156,17 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	 */
 	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
 	@TableField("exist")
-	private int exist;
+	private Integer exist;
+
+	@ApiModelProperty("查询出来的数据，添加和修改的时候，都不用管")
+	@TableField(exist = false)
+	private String openTime;
+
+	@ApiModelProperty("查询出来的数据，添加和修改的时候，都不用管")
+	@TableField(exist = false)
+	private String closeTime;
+
+
 
 	@Override
 	protected Serializable pkVal() {

@@ -14,6 +14,7 @@
         <result column="user_id" property="userId"/>
         <result column="street_id" property="streetId"/>
         <result column="group_id" property="groupId"/>
+        <result column="auto_report" property="autoReport"/>
         <result column="voltage_threshold" property="voltageThreshold"/>
         <result column="current_threshold" property="currentThreshold"/>
         <result column="temperature_threshold" property="temperatureThreshold"/>
@@ -24,84 +25,107 @@
         <result column="temperature_overload" property="temperatureOverload"/>
         <result column="humidity_overload" property="humidityOverload"/>
         <result column="lightness_overload" property="lightnessOverload"/>
+        <result column="open_time" property="openTime"/>
+        <result column="close_time" property="closeTime"/>
         <result column="exist" property="exist"/>
     </resultMap>
 
     <!-- 获得所有路灯 -->
     <select id="queryAll" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+		select distinct i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
 		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
 		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold
-		from sys_light_info as i where i.exist = 1
+		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+		ls.open_time, ls.close_time
+		from sys_light_info as i
+		left join sys_light_strategy as ls on i.strategy_id = ls.id
+		where i.exist = 1
 	</select>
 
     <!-- 获得城市下的路灯 -->
     <select id="queryByCity" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+		select distinct i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
 		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
 		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold
+		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+		ls.open_time, ls.close_time
 		from sys_light_info as i
+		left join sys_light_strategy as ls on i.strategy_id = ls.id
 		left join sys_region as r on r.common_region_id = i.street_id
-		where r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道' and i.exist = 1
+		where r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道' and i.exist = 1 and r.exist = 1
 	</select>
 
     <!-- 获得区下的路灯 -->
     <select id="queryByArea" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
 		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
 		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold
+		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+		ls.open_time, ls.close_time
 		from sys_light_info as i
+		left join sys_light_strategy as ls on i.strategy_id = ls.id
 		left join sys_region as r on r.common_region_id = i.street_id
-		where r.up_region_id = #{areaId}
+		where r.up_region_id = #{areaId} and i.exist = 1 and r.exist = 1
 	</select>
 
     <!-- 获得街道下的路灯 -->
     <select id="queryByStreet" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
 		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
 		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold from sys_light_info as i
+		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+		ls.open_time, ls.close_time
+		from sys_light_info as i
+		left join sys_light_strategy as ls on i.strategy_id = ls.id
 		where i.street_id = #{streetId} and i.exist = 1
 	</select>
 
     <!-- 获得组下的路灯 -->
     <select id="queryByGroup" parameterType="Long" resultMap="BaseResultMap">
-        select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+        select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
 		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
 		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold from sys_light_info as i
+		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+		ls.open_time, ls.close_time
+		from sys_light_info as i
+		left join sys_light_strategy as ls on i.strategy_id = ls.id
 		where i.group_id = #{groupId} and i.exist = 1
 	</select>
 
     <!-- 获得维修员的路灯 -->
     <select id="queryByUser" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
 		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
 		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold from sys_light_info as i
+		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+		ls.open_time, ls.close_time
+		from sys_light_info as i
+		left join sys_light_strategy as ls on i.strategy_id = ls.id
 		where i.user_id = #{userId} and i.exist = 1
 	</select>
 
     <!-- 获得是否投入使用的路灯 -->
     <select id="queryByStatus" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
 		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
 		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold from sys_light_info as i
+		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+		ls.open_time, ls.close_time
+		from sys_light_info as i
+		left join sys_light_strategy as ls on i.strategy_id = ls.id
 		where i.status = #{status} and i.exist = 1
 	</select>
 
 
     <!-- 通过各种条件查询路灯 -->
     <select id="queryWithCondition" resultMap="BaseResultMap">
-        select distinct i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,
+        select distinct i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
         i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
         i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-        i.temperature_threshold, i.voltage_overload, i.voltage_threshold
+        i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
+        ls.open_time, ls.close_time
         from sys_light_info as i
+        left join sys_light_strategy as ls on i.strategy_id = ls.id
         left join sys_user as us on us.id = i.user_id
         left join sys_region as r on r.common_region_id = i.street_id
         left join sys_region as sr on r.up_region_id = sr.common_region_id
@@ -111,34 +135,34 @@
         <if test="cityId != null">and r.common_region_id like CONCAT(#{cityId}, '%') and r.region_desc = '街道'</if>
         <if test="streetId != null">and i.street_id = #{streetId}</if>
         <if test="streetName != null">and r.region_name like CONCAT(#{streetName}, '%')</if>
-        <if test="userId != null">and i.user_id = #{userId}</if>
-        <if test="userName != null">and ur.nickname = #{userName}</if>
+        <if test="userId != null"> and i.user_id = #{userId}</if>
+        <if test="userName != null">and us.nickname = #{userName}</if>
         <if test="groupId != null">and i.group_id = #{groupId}</if>
         <if test="code != null">and i.code like CONCAT('%', #{code}, '%')</if>
         <if test="status != null">and i.status = #{status}</if>
         <if test="longitude != null">and i.longitude = #{longitude}</if>
         <if test="latitude != null">and i.latitude = #{latitude}</if>
         <if test="strategyId != null">and i.strategy_id = #{strategyId}</if>
-        <if test="voltageThresholdGt != null">and i.voltage_threshold @gt;= #{voltageThresholdGt}</if>
-        <if test="voltageThresholdLt != null">and i.voltage_threshold @lt;= #{voltageThresholdLt}</if>
-        <if test="currentThresholdGt != null">and i.current_threshold @gt;= #{currentThresholdGt}</if>
-        <if test="currentThresholdLt != null">and i.current_threshold @lt;= #{currentThresholdLt}</if>
-        <if test="temperatureThresholdGt != null">and i.temperature_threshold @gt;= #{temperatureThresholdGt}</if>
-        <if test="temperatureThresholdLt != null">and i.temperature_threshold @lt;= #{temperatureThresholdLt}</if>
-        <if test="humidityThresholdGt != null">and i.humidity_threshold @gt;= #{humidityThresholdGt}</if>
-        <if test="humidityThresholdLt != null">and i.humidity_threshold @lt;= #{humidityThresholdLt}</if>
-        <if test="lightnessThresholdGt != null">and i.lightness_threshold @gt;= #{lightnessThresholdGt}</if>
-        <if test="lightnessThresholdLt != null">and i.lightness_threshold @lt;= #{lightnessThresholdLt}</if>
-        <if test="voltageOverloadGt != null">and i.voltage_overload @gt;= #{voltageOverloadGt}</if>
-        <if test="voltageOverloadLt != null">and i.voltage_overload @lt;= #{voltageOverloadLt}</if>
-        <if test="currentOverloadGt != null">and i.current_overload @gt;= #{currentOverloadGt}</if>
-        <if test="currentOverloadLt != null">and i.current_overload @lt;= #{currentOverloadLt}</if>
-        <if test="temperatureOverloadGt != null">and i.temperature_overload @gt;= #{temperatureOverloadGt}</if>
-        <if test="temperatureOverloadLt != null">and i.temperature_overload @lt;= #{temperatureOverloadLt}</if>
-        <if test="humidityOverloadGt != null">and i.humidity_overload @gt;= #{humidityOverloadGt}</if>
-        <if test="humidityOverloadLt != null">and i.humidity_overload @lt;= #{humidityOverloadLt}</if>
-        <if test="lightnessOverloadGt != null">and i.lightness_overload @gt;= #{lightnessOverloadGt}</if>
-        <if test="lightnessOverloadLt != null">and i.lightness_overload @lt;= #{lightnessOverloadLt}</if>
+        <if test="voltageThresholdGt != null"><![CDATA[ and i.voltage_threshold >= #{voltageThresholdGt} ]]></if>
+        <if test="voltageThresholdLt != null"><![CDATA[ and i.voltage_threshold <= #{voltageThresholdLt} ]]></if>
+        <if test="currentThresholdGt != null"><![CDATA[ and i.current_threshold >= #{currentThresholdGt} ]]></if>
+        <if test="currentThresholdLt != null"><![CDATA[ and i.current_threshold <= #{currentThresholdLt} ]]></if>
+        <if test="temperatureThresholdGt != null"><![CDATA[ and i.temperature_threshold >= #{temperatureThresholdGt} ]]></if>
+        <if test="temperatureThresholdLt != null"><![CDATA[ and i.temperature_threshold @lt;= #{temperatureThresholdLt} ]]></if>
+        <if test="humidityThresholdGt != null"><![CDATA[ and i.humidity_threshold @gt;= #{humidityThresholdGt} ]]></if>
+        <if test="humidityThresholdLt != null"><![CDATA[ and i.humidity_threshold @lt;= #{humidityThresholdLt} ]]></if>
+        <if test="lightnessThresholdGt != null"><![CDATA[ and i.lightness_threshold @gt;= #{lightnessThresholdGt} ]]></if>
+        <if test="lightnessThresholdLt != null"><![CDATA[ and i.lightness_threshold @lt;= #{lightnessThresholdLt} ]]></if>
+        <if test="voltageOverloadGt != null"><![CDATA[ and i.voltage_overload @gt;= #{voltageOverloadGt} ]]></if>
+        <if test="voltageOverloadLt != null"><![CDATA[ and i.voltage_overload @lt;= #{voltageOverloadLt} ]]></if>
+        <if test="currentOverloadGt != null"><![CDATA[ and i.current_overload @gt;= #{currentOverloadGt} ]]></if>
+        <if test="currentOverloadLt != null"><![CDATA[ and i.current_overload @lt;= #{currentOverloadLt} ]]></if>
+        <if test="temperatureOverloadGt != null"><![CDATA[ and i.temperature_overload @gt;= #{temperatureOverloadGt} ]]></if>
+        <if test="temperatureOverloadLt != null"><![CDATA[ and i.temperature_overload @lt;= #{temperatureOverloadLt} ]]></if>
+        <if test="humidityOverloadGt != null"><![CDATA[ and i.humidity_overload @gt;= #{humidityOverloadGt} ]]></if>
+        <if test="humidityOverloadLt != null"><![CDATA[ and i.humidity_overload @lt;= #{humidityOverloadLt} ]]></if>
+        <if test="lightnessOverloadGt != null"><![CDATA[ and i.lightness_overload @gt;= #{lightnessOverloadGt} ]]></if>
+        <if test="lightnessOverloadLt != null"><![CDATA[ and i.lightness_overload @lt;= #{lightnessOverloadLt} ]]></if>
         <if test="sort == 'asc' ">order by i.id asc</if>
         <if test="sort == 'desc' ">order by i.id desc</if>
     </select>
@@ -158,6 +182,7 @@
 		`user_id`,
 		`street_id`,
 		`group_id`,
+		`auto_report`,
 		`voltage_threshold`,
 		`current_threshold`,
 		`temperature_threshold`,
@@ -181,6 +206,7 @@
 		#{userId},
 		#{streetId},
 		#{groupId},
+		#{autoReport},
 		#{voltageThreshold},
 		#{currentThreshold},
 		#{temperatureThreshold},
@@ -207,6 +233,7 @@
             <if test="userId != null">`user_id` = #{userId},</if>
             <if test="streetId != null">`street_id` = #{streetId},</if>
             <if test="groupId != null">`group_id` = #{groupId},</if>
+            <if test="autoReport != null">`auto_report` = #{autoReport},</if>
             <if test="voltageThreshold != null">`voltage_threshold` = #{voltageThreshold},</if>
             <if test="currentThreshold != null">`current_threshold` = #{currentThreshold},</if>
             <if test="temperatureThreshold != null">`temperature_threshold` = #{temperatureThreshold},</if>

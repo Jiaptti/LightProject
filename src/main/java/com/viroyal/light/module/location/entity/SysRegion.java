@@ -66,7 +66,7 @@ public class SysRegion extends Model<SysRegion> {
 	 */
 	@ApiModelProperty("用来标记删除的不需要添加，默认为1")
 	@TableField("exist")
-	private int exist;
+	private Integer exist;
 
 	@Override
 	protected Serializable pkVal() {

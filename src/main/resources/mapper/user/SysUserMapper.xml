@@ -16,12 +16,16 @@
 		<result column="create_name_id" property="createNameId" />
 		<result column="last_update_time" property="lastUpdateTime" />
 		<result column="last_update_name_id" property="lastUpdateNameId" />
+		<result column="rid" property="roleId" />
 		<result column="exist" property="exist" />
 	</resultMap>
 
 	<!-- 查询所有用户 -->
-	<select id="getAllUser" resultType="com.viroyal.light.module.user.entity.SysUser">
-		select u.id, u.nickname, u.username, u.phone, u.email from sys_user as u where u.exist = 1
+	<select id="getAllUser" resultMap="BaseResultMap">
+		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid
+		from sys_user as u
+		left join sys_user_role as ur on ur.uid = u.id
+		where u.exist = 1
 	</select>
 
 	<!-- 查询账号是否存在 -->
@@ -31,7 +35,9 @@
 
 	<!-- 按条件查询用户 -->
 	<select id="queryWithCondition" resultMap="BaseResultMap">
-		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email from sys_user as u
+		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid
+		from sys_user as u
+		left join sys_user_role as ur on ur.uid = u.id
 		where 1 = 1 and u.exist = 1
 		<if test="userId != null"> and u.id = #{userId}</if>
 		<if test="nickname != null"> and u.nickname like CONCAT('%', #{nickname}, '%') </if>
@@ -105,6 +111,12 @@
 		;
 		update sys_user_role set exist = 0
 		where uid in
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			${userId}
+		</foreach>
+		;
+		update sys_light_info set user_id = 0
+		where user_id in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
 			${userId}
 		</foreach>
