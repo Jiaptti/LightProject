@@ -9,6 +9,7 @@ import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.MyDES;
 import com.viroyal.light.common.page.CustomPage;
 import com.viroyal.light.common.page.FrontPage;
+import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.viroyal.light.module.user.entity.SysUserRole;
 import com.viroyal.light.module.user.entity.UserOnlineBo;
@@ -102,22 +103,27 @@ public class SysUserController {
     //添加用户
     @ApiOperation("移动端添加用户")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "更新成功"),
-            @ApiResponse(code = 500, message = "更新失败")
+            @ApiResponse(code = 200, message = "添加成功"),
+            @ApiResponse(code = 500, message = "添加失败")
     })
     @RequestMapping(value = "/userSave", method = RequestMethod.POST)
     @RequiresPermissions("sys:user:save")
     @ResponseBody
     public String saveUser(@Valid @RequestBody SysUser user) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysUserService.save(user);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(sysUserService.getUser(user.getUsername()) != 0){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.USER_EXIST);
+        } else {
+            try {
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysUserService.save(user);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e) {
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+            }
         }
         return JSON.toJSONString(resultMap);
     }
@@ -143,9 +149,6 @@ public class SysUserController {
         if (user.getId() == null) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_USER_ID);
-        } else if (user.getRoleId() == null) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_USER_ROLE_ERROR);
         } else {
             try {
                 resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
@@ -200,11 +203,15 @@ public class SysUserController {
     @RequiresPermissions("sys:user:list")
     @ResponseBody
     public String userPage(@RequestParam Map<String, Object> params) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         if ((!params.containsKey("pageId") && params.containsKey("pageSize"))
                 || (params.containsKey("pageId") && !params.containsKey("pageSize"))) {
-            Map<String, Object> resultMap = new HashMap<String, Object>();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }else if(params.containsKey("userId") && !NumberUtils.isNumber(params.get("userId").toString())){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.ID_ERROR);
             return JSON.toJSONString(resultMap);
         }
         DatePage<SysUser> datePage = sysUserService.queryWithCondition(params);
@@ -243,13 +250,21 @@ public class SysUserController {
     @RequiresPermissions("sys:user:delete")
     public String userBatchUpdate(@RequestParam(value = "ids[]") String[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysUserService.deleteBatch(ids);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e) {
+        if(ids.length == 0){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_DELETE_ID);
+        } else if(!NumberUtils.isNumber(ids)){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.ID_ERROR);
+        } else {
+            try {
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysUserService.deleteBatch(ids);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e) {
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE);
+            }
         }
         return JSON.toJSONString(resultMap);
     }

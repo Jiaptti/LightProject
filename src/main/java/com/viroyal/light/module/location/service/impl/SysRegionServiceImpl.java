@@ -3,6 +3,7 @@ package com.viroyal.light.module.location.service.impl;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
+import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.viroyal.light.module.location.dao.SysRegionMapper;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,9 +56,35 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
         return sysRegionMapper.queryAreaByCity(cityId);
     }
 
+    @Override
+    public SysRegion queryStreet(Map<String,Object> params) {
+        return sysRegionMapper.queryStreet(params);
+    }
+
     @Transactional
     @Override
     public void save(SysRegion sysRegion) {
+        sysRegionMapper.save(sysRegion);
+    }
+
+    @Transactional
+    @Override
+    public void saveStreet(SysRegion sysRegion) throws Exception {
+        Map<String, Object> params = new LinkedHashMap<String, Object>();
+        params.put("areaId", sysRegion.getCommonRegionId());
+        params.put("streetName", sysRegion.getRegionName());
+        SysRegion region = sysRegionMapper.queryStreet(params);
+        if(region != null){
+            throw new Exception(BaseConstant.REGION_STREET_EXIST);
+        }
+        int size =sysRegionMapper.queryStreetCount(Long.parseLong(sysRegion.getCommonRegionId()));
+        sysRegion.setUpRegionId(sysRegion.getCommonRegionId());
+        if(size == 0){
+            sysRegion.setCommonRegionId(sysRegion.getCommonRegionId() + "0");
+        } else {
+            sysRegion.setCommonRegionId(sysRegion.getCommonRegionId() + size);
+        }
+        sysRegion.setRegionDesc("街道");
         sysRegionMapper.save(sysRegion);
     }
 

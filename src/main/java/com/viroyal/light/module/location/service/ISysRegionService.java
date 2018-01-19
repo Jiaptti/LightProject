@@ -48,10 +48,21 @@ public interface ISysRegionService extends IService<SysRegion> {
      */
     List<SysRegion> queryAreaByCity(Long cityId);
     /**
+     * 查询街道
+     * @param params 查询参数
+     * @return  街道对象
+     */
+    SysRegion queryStreet(Map<String, Object> params);
+    /**
      * 存储地区
      * @param sysRegion 地区对象
      */
     void save(SysRegion sysRegion);
+    /**
+     * 存储街道
+     * @param sysRegion 街道对象
+     */
+    void saveStreet(SysRegion sysRegion) throws Exception;
 
     /**
      * 更新地区

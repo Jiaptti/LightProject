@@ -8,6 +8,7 @@ import com.viroyal.light.common.page.CustomPage;
 import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.common.utils.BaseConstant;
+import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.entity.SysRole;
 import com.viroyal.light.module.user.entity.SysRolePermission;
 import com.viroyal.light.module.user.service.ISysRolePermissionService;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -134,7 +136,7 @@ public class SysRoleController {
     @RequestMapping(value = "/saveRole", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:role:save")
-    public String save(SysRole role){
+    public String save(@Valid @RequestBody SysRole role){
         Map<String, Object> resultMap = new HashMap<>();
         try {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
@@ -166,6 +168,9 @@ public class SysRoleController {
         if(StringUtils.isEmpty(roleId) || StringUtils.isEmpty(permissionId)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
+        } else if(!NumberUtils.isNumber(roleId) || !NumberUtils.isNumber(permissionId)){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.ID_ERROR);
         } else {
             try {
                 resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
@@ -273,14 +278,22 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:delete")
     public String deleteRolePermission(@RequestParam(value = "ids[]") String[] ids){
         Map<String, Object> resultMap = new HashMap<>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysRolePermissionService.deleteBatch(ids);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
+        if(ids.length == 0){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_DELETE_ID);
+        } else if(!NumberUtils.isNumber(ids)){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.ID_ERROR);
+        } else {
+            try {
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysRolePermissionService.deleteBatch(ids);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE);
+            }
         }
         return JSON.toJSONString(resultMap);
     }

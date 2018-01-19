@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +127,7 @@ public class SysPermissionController {
     @RequestMapping(value = "/permissionSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:permission:save")
-    public String permissionSave(SysPermission permission){
+    public String permissionSave(@Valid @RequestBody SysPermission permission){
         Map<String, Object> resultMap = new HashMap<>();
         try {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);

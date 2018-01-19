@@ -41,9 +41,9 @@ public class BaseConstant {
     //踢出失败
     public static final String KICKOUT_FAILURE = "Kickout Failure";
     //登录成功
-    public static final String LOGIN_SUCCESS = "Login Success";
+    public static final String LOGIN_SUCCESS = "登录成功";
     //登录失败
-    public static final String LOGIN_FAILURE = "Login Failure";
+    public static final String LOGIN_FAILURE = "登录失败";
     //验证码错误
     public static final String ERROR_VERIFICATION_CODR = "验证码错误";
     //验证码不能为空
@@ -56,10 +56,12 @@ public class BaseConstant {
     public static final String LOGOUT_FAILURE = "登出失败";
 
 
-    //用户角色id错误
-    public static final String SAVE_USER_ROLE_ERROR = "请添加用户角色ID";
+    //id错误
+    public static final String ID_ERROR = "请输入正确的id";
     //用户已经存在
     public static final String USER_EXIST = "用户已经存在";
+    //账号密码不能为空
+    public static final String USER_ACCOUNT_NOT_NULL = "用户名密码不能为空";
     //用户id错误
     public static final String NO_USER_ID = "没有更新的用户id";
     //用户不存在错误
@@ -70,6 +72,8 @@ public class BaseConstant {
     public static final String NO_REGION_ID = "没有更新的地区id";
     //请求错误
     public static final String REQUEST_ERROR = "请求错误";
-    //添加区错误
-    public static final String SAVE_AREA_CITY_ERROR = "请添加城市ID";
+    //删除id错误
+    public static final String NO_DELETE_ID = "请选择要删除的id";
+    //街道已经存在
+    public static final String REGION_STREET_EXIST = "街道已经存在";
 }

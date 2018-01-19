@@ -174,32 +174,38 @@ public class SysLoginController {
     public String login(String username, String password) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         SysUser user = null;
-        try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            SecurityUtils.getSubject().login(token);
-            user = ShiroUtils.getUserEntity();
-            if (user.getExist() == 0) {
-                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + BaseConstant.USER_ACCOUNT);
-            } else {
-                user.setPswd(null);
-                resultMap.put(BaseConstant.CODE, 200);
-                resultMap.put(BaseConstant.USER, user);
-                SysUserRole userRole = sysUserRoleService.getUserRole(user.getId());
-                user.setRoleId(userRole.getRid());
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_SUCCESS);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            String errorMessage = "";
-            if (e instanceof AuthenticationException) {
-                errorMessage = "登录请求失败，请查看访问格式";
-            } else {
-                errorMessage = e.getMessage();
-            }
+        if(username == null || password == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + errorMessage);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + BaseConstant.USER_ACCOUNT_NOT_NULL);
+        } else {
+            try {
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                SecurityUtils.getSubject().login(token);
+                user = ShiroUtils.getUserEntity();
+                if (user.getExist() == 0) {
+                    resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + BaseConstant.USER_ACCOUNT);
+                } else {
+                    user.setPswd(null);
+                    resultMap.put(BaseConstant.CODE, 200);
+                    resultMap.put(BaseConstant.USER, user);
+                    SysUserRole userRole = sysUserRoleService.getUserRole(user.getId());
+                    user.setRoleId(userRole.getRid());
+                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_SUCCESS);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                String errorMessage = "";
+                if (e instanceof AuthenticationException) {
+                    errorMessage = "登录请求失败，请查看访问格式";
+                } else {
+                    errorMessage = e.getMessage();
+                }
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.LOGIN_FAILURE + " : " + errorMessage);
+            }
         }
+
         return JSON.toJSONString(resultMap);
     }
 

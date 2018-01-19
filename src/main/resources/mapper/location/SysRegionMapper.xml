@@ -54,7 +54,7 @@
 
     <!-- 通过区查询街道 -->
     <select id="queryStreetByArea" parameterType="Long" resultMap="BaseResultMap">
-		select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode
+		select distinct region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode
 		from sys_region as region
 		left join sys_region as sr on region.up_region_id = sr.common_region_id
         left join sys_region as ssr on sr.up_region_id = ssr.common_region_id
@@ -62,6 +62,26 @@
 		and region.exist = 1 and sr.exist = 1 and ssr.exist = 1
 		order by region.id asc
 	</select>
+
+    <!-- 通过区查询街道数 -->
+    <select id="queryStreetCount" parameterType="Long" resultType="Int">
+        select count(*) from sys_region as region left join sys_region as sr on region.up_region_id = sr.common_region_id
+        left join sys_region as ssr on sr.up_region_id = ssr.common_region_id
+        where region.up_region_id = #{areaId}  and region.region_desc = '街道'
+        and region.exist = 1 and sr.exist = 1 and ssr.exist = 1
+        order by region.id asc
+    </select>
+
+    <!-- 通过街道是否存在 -->
+    <select id="queryStreet" resultMap="BaseResultMap">
+        select region.id, region.common_region_id, region.region_name,region.up_region_id, region.postalcode
+        from sys_region as region
+        left join sys_region as sr on region.up_region_id = sr.common_region_id
+        left join sys_region as ssr on sr.up_region_id = ssr.common_region_id
+        where region.up_region_id = #{areaId} and region.region_name = #{streetName}
+        and region.exist = 1 and sr.exist = 1 and ssr.exist = 1
+        order by region.id asc
+    </select>
 
     <!-- 通过条件查询街道 -->
     <select id="queryWithCondition" resultMap="BaseResultMap">
@@ -76,6 +96,7 @@
         and sr.exist = 1 and ssr.exist = 1
         <if test="cityId != null">and region.common_region_id like CONCAT(#{cityId}, '%')</if>
         <if test="areaId != null">and region.up_region_id = #{areaId}</if>
+        <if test="streetName != null">and region.region_name like CONCAT(#{streetName}, '%')</if>
         <if test="userId != null">and i.user_id = #{userId}</if>
         <if test="sort == 'asc' ">order by region.id asc</if>
         <if test="sort == 'desc' ">order by region.id desc</if>
