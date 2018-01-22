@@ -17,12 +17,16 @@ import com.viroyal.light.module.user.service.ISysUserRoleService;
 import com.viroyal.light.module.user.service.ISysUserService;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -123,6 +127,15 @@ public class SysUserController {
         return sysUserService.update(user);
     }
 
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public String processUnauthenticatedException() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+        resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_AUTORITY);
+        return JSON.toJSONString(resultMap);
+    }
 
     @RequestMapping(value = "/getUserListWithPager", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")

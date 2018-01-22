@@ -107,4 +107,6 @@ public class BaseConstant {
     public static final String ROLE_TYPE_IS_EMPTY = "角色类型为空";
     //没有要更新的数据
     public static final String NO_DATA_TO_UPDATE = "没有要更新的数据";
+    //没权限
+    public static final String NO_AUTORITY = "没权限";
 }
