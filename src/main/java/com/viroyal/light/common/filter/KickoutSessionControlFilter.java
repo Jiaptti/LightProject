@@ -157,17 +157,4 @@ public class KickoutSessionControlFilter extends AccessControlFilter{
         }
         return true;
     }
-
-    private void out(ServletResponse hresponse, Map<String, String> resultMap)
-            throws IOException {
-        try {
-            hresponse.setCharacterEncoding("UTF-8");
-            PrintWriter out = hresponse.getWriter();
-            out.println(JSON.toJSONString(resultMap));
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            System.err.println("KickoutSessionFilter.class 输出JSON异常，可以忽略。");
-        }
-    }
 }

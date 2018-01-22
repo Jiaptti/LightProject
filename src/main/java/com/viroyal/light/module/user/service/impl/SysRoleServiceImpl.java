@@ -1,17 +1,21 @@
 package com.viroyal.light.module.user.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.viroyal.light.common.page.DatePage;
+import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.entity.SysRole;
 import com.viroyal.light.module.user.dao.SysRoleMapper;
 import com.viroyal.light.module.user.service.ISysRoleService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,26 +35,88 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Transactional
     @Override
-    public void save(SysRole role) {
-        sysRoleMapper.save(role);
+    public String save(SysRole role) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if(StringUtils.isBlank(role.getName())){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.ROLE_NAME_IS_EMPTY);
+            return JSON.toJSONString(resultMap);
+        } else if(StringUtils.isBlank(role.getType())){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.ROLE_TYPE_IS_EMPTY);
+            return JSON.toJSONString(resultMap);
+        }
+
+        try {
+            sysRoleMapper.save(role);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
     }
 
     @Transactional
     @Override
-    public void update(SysRole role) {
-        sysRoleMapper.update(role);
+    public String update(SysRole role) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if(role.getId() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
+            return JSON.toJSONString(resultMap);
+        } else if(StringUtils.isBlank(role.getName()) && StringUtils.isBlank(role.getType())){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
+            return JSON.toJSONString(resultMap);
+        }
+        try {
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            sysRoleMapper.update(role);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
     }
 
 
     @Override
-    public void deleteBatch(Object[] ids) {
-        sysRoleMapper.deleteBatch(ids);
+    public String deleteBatch(Object[] ids) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if(ids.toString().length() == 0){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + BaseConstant.NO_DELETE_ID);
+            return JSON.toJSONString(resultMap);
+        }
+        try {
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            sysRoleMapper.deleteBatch(ids);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
     }
 
     @Override
-    public DatePage<SysRole> queryWithCondition(Map<String, Object> params) {
+    public String queryWithCondition(Map<String, Object> params) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         Page<SysRole> page = new Page<SysRole>();
         int pageId = 0, pageSize = 0;
+        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
+                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }
+
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             if(entry.getKey().toString().equals("pageId")){
                 pageId = Integer.parseInt(entry.getValue().toString());
@@ -75,6 +141,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             page.setSize(pageSize);
             page.setRecords(sysRoleMapper.queryWithCondition(params, page));
         }
-        return new DatePage<SysRole>(page);
+        resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+        resultMap.put(BaseConstant.PAGE_RESULT, new DatePage<SysRole>(page));
+        resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+        return JSON.toJSONString(resultMap);
     }
 }

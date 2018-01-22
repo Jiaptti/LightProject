@@ -28,8 +28,9 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 更新角色
      * @param role 角色对象
+     * @return 更新结果
      */
-    void update(SysRole role);
+    int update(SysRole role);
 
     /**
      * 删除角色

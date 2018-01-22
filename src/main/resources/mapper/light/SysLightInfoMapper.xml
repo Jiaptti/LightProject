@@ -233,7 +233,7 @@
         update sys_light_info
         <set>
             <if test="code != null">`code` = #{code},</if>
-            <if test="lightInfo != null">`light_info` = #{lightnfo},</if>
+            <if test="lightInfo != null">`light_info` = #{lightInfo},</if>
             <if test="status != null">`status` = #{status},</if>
             <if test="longitude != null">`longitude` = #{longitude},</if>
             <if test="latitude != null">`latitude` = #{latitude},</if>

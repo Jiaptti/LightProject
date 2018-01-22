@@ -33,29 +33,47 @@ public interface ISysUserService extends IService<SysUser> {
     //后台存储用户
     void saveUser(SysUser user, String isEffective);
 
-    //app存储用户
-    void save(SysUser user);
+    /**
+     * 添加用户
+     * @param user 用户对象
+     * @return json格式的结果
+     */
+    String save(SysUser user);
 
-    //获得用户列表
-    List<SysUser> getAllUser();
+    /**
+     * 查询所有用户
+     * @return json格式的用户列表
+     */
+    String getAllUser();
 
     //后台更新用户
     void updateUser(SysUser user, String isEffective);
 
-    //app更新
-    void update(SysUser user);
+    /**
+     * 更新用户
+     * @param user 用户对象
+     * @return json格式的结果
+     */
+    String update(SysUser user);
 
-    //批量删除用户
-    void deleteBatch(String[] userId);
-
-    //查询账号是否存在
-    int getUser(String username);
-
+    /**
+     * 批量删除用户
+     * @param userId 用户id数组
+     * @return json格式的结果
+     */
+    String deleteBatch(String[] userId);
 
     /**
      *通过各种条件分页查询用户
      * @param params 条件
-     * @return 用户列表
+     * @return json格式的用户列表
      */
-    DatePage<SysUser> queryWithCondition(Map<String,Object> params);
+    String queryWithCondition(Map<String,Object> params);
+
+    /**
+     * 通过id查询对应用户
+     * @param userId 用户id
+     * @return json格式的用户对象
+     */
+    String getUserById(Long userId);
 }

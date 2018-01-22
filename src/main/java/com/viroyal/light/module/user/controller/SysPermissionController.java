@@ -127,7 +127,7 @@ public class SysPermissionController {
     @RequestMapping(value = "/permissionSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:permission:save")
-    public String permissionSave(@Valid @RequestBody SysPermission permission){
+    public String permissionSave(SysPermission permission){
         Map<String, Object> resultMap = new HashMap<>();
         try {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);

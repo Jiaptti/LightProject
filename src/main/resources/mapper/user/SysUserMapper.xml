@@ -26,6 +26,16 @@
 		from sys_user as u
 		left join sys_user_role as ur on ur.uid = u.id
 		where u.exist = 1
+		order by u.id asc
+	</select>
+
+	<!-- 通过id查询用户 -->
+	<select id="getUserById" resultMap="BaseResultMap">
+		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid
+		from sys_user as u
+		left join sys_user_role as ur on ur.uid = u.id
+		where u.id = #{userId} and u.exist = 1
+		order by u.id asc
 	</select>
 
 	<!-- 查询账号是否存在 -->
@@ -40,8 +50,10 @@
 		left join sys_user_role as ur on ur.uid = u.id
 		where 1 = 1 and u.exist = 1
 		<if test="userId != null"> and u.id = #{userId}</if>
+		<if test="roleId != null"> and ur.rid = #{roleId}</if>
 		<if test="nickname != null"> and u.nickname like CONCAT('%', #{nickname}, '%') </if>
 		<if test="username != null"> and u.username like CONCAT('%', #{username}, '%')</if>
+		<if test="phone != null"> and u.phone like CONCAT('%', #{phone}, '%')</if>
 		<if test="sort == 'asc' "> order by u.id asc </if>
 		<if test="sort == 'desc' "> order by u.id desc </if>
 	</select>

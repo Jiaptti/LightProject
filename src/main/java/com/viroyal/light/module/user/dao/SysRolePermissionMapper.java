@@ -26,8 +26,9 @@ public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
     /**
      * 更新角色权限关联
      * @param  rolePermission 角色权限对象
+     * @return 更新记录条数
      */
-    void update(SysRolePermission rolePermission);
+    int update(SysRolePermission rolePermission);
 
     /**
      * 删除角色权限关联

@@ -5,13 +5,17 @@ import com.baomidou.mybatisplus.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author jiaptti
  * @since 2017-12-01
  */
 public interface ISysUserRoleService extends IService<SysUserRole> {
+
+
+
     SysUserRole getUserRole(Long id);
-    void updateUserRole(SysUserRole userRole);
+
+    int updateUserRole(SysUserRole userRole);
 }

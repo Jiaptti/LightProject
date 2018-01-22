@@ -16,19 +16,23 @@ import java.util.List;
 public interface ISysRolePermissionService extends IService<SysRolePermission> {
     /**
      * 添加角色权限
-     * @param  rolePermissionList 角色权限对象
+     * @param  roleId 角色
+     * @param  permissionId 权限id(多的用逗号隔开)
+     * @return json格式的结果
      */
-    void save(List<SysRolePermission> rolePermissionList);
+    String save(String roleId, String permissionId);
 
     /**
      * 更新角色权限关联
      * @param  rolePermission 角色权限对象
+     * @return json格式的结果
      */
-    void update(SysRolePermission rolePermission);
+    String update(SysRolePermission rolePermission);
 
     /**
      * 删除角色权限关联
      * @param  ids 角色权限id数组
+     * @return json格式的结果
      */
-    void deleteBatch(Object[] ids);
+    String deleteBatch(Object[] ids);
 }

@@ -38,9 +38,6 @@ public class SysRegion extends Model<SysRegion> {
      */
 	@ApiModelProperty("地区id,参考数据库规律添加(添加时候必填，更新不用)")
 	@TableField("common_region_id")
-	@NotNull(message = "{region.commonRegionId.not.empty}")
-	@Pattern(regexp = "^-?[1-9]\\d*$", message = "{region.commonRegionId.right.format}")
-	@Size(min=6, max=9, message="{region.commonRegionId.length}")
 	private String commonRegionId;
 
     /**
@@ -48,22 +45,18 @@ public class SysRegion extends Model<SysRegion> {
      */
 	@ApiModelProperty("地区名,参考数据库规律添加(添加时候必填，更新不用)")
 	@TableField("region_name")
-	@NotNull(message = "{region.regionName.not.empty}")
-	@Size(min=2, max=12, message="{region.commonRegionId.length}")
 	private String regionName;
     /**
      * 地区上级编号
      */
 	@ApiModelProperty("地区上级id,参考数据库规律添加(添加时候必填，更新不用)")
 	@TableField("up_region_id")
-	@Size(min=6, max=9, message="{region.upRegionId.length}")
 	private String upRegionId;
     /**
      * 地区描述
      */
 	@ApiModelProperty("地区描述(参考数据库,如地级(直辖)市/市辖区/街道,必填)")
 	@TableField("region_desc")
-	@NotNull(message = "{region.regionDesc.not.empty}")
 	private String regionDesc;
     /**
      * 邮编

@@ -108,7 +108,7 @@ public class SysRegionController {
     @RequestMapping(value = "/regionSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:region:save")
-    public String saveRegion(@Valid @RequestBody SysRegion region) {
+    public String saveRegion(SysRegion region) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         try {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);

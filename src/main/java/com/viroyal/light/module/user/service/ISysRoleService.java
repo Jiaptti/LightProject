@@ -20,26 +20,28 @@ public interface ISysRoleService extends IService<SysRole> {
     /**
      * 添加角色
      * @param role 角色对象
+     * @return json格式的结果
      */
-    void save(SysRole role);
+    String save(SysRole role);
 
     /**
      * 更新角色
      * @param role 角色对象
+     * @return json格式的结果
      */
-    void update(SysRole role);
+    String update(SysRole role);
 
     /**
      * 删除角色
      * @param ids 角色对象id数组
+     * @return json格式的结果
      */
-    void deleteBatch(Object[] ids);
+    String deleteBatch(Object[] ids);
 
     /**
      * 分页查询角色
      * @param params 查询条件
-     * @param page 分页条件
-     * @return 角色集合
+     * @return json格式的结果集合
      */
-    DatePage<SysRole> queryWithCondition(Map<String, Object> params);
+    String queryWithCondition(Map<String, Object> params);
 }

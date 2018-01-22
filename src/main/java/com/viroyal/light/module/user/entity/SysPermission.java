@@ -40,14 +40,12 @@ public class SysPermission extends Model<SysPermission> {
      * url描述
      */
 	@ApiModelProperty("权限名(xx列表，xx添加，xx删除，xx更新，参考数据库)(添加时候必填，更新不用)")
-	@NotNull(message = "{permission.name.not.empty}")
 	private String name;
 
 	/**
 	 * 授权(多个用逗号分隔，如：user:list,user:create)
 	 */
 	@ApiModelProperty("授权(多个用逗号分隔，如：user:list,user:create)(添加时候必填，更新不用)")
-	@NotNull(message = "{permission.perms.not.empty}")
 	@TableField("perms")
 	private String perms;
 

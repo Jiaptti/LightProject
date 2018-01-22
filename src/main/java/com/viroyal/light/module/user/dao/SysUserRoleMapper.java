@@ -34,5 +34,5 @@ public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
      * 更新用户角色关系
      * @param userRole 用户角色对象
      */
-    void updateUserRole(SysUserRole userRole);
+    int updateUserRole(SysUserRole userRole);
 }

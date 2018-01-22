@@ -37,7 +37,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return 删除的用户数
      * @param userId  用户ID数组
      */
-    void deleteBatch(Object[] userId);
+    int deleteBatch(Object[] userId);
 
     /**
      * 查询用户的所有权限
@@ -57,7 +57,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * 更新用户
      * @param user  用户
      */
-    void update(SysUser user);
+    int update(SysUser user);
 
     /**
      *通过各种条件分页查询用户
@@ -73,4 +73,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return 用户列表
      */
     List<SysUser> queryWithCondition(Map<String,Object> params);
+
+    /**
+     * 通过id查询对应用户
+     * @param userId 用户id
+     * @return 用户对象
+     */
+    SysUser getUserById(Long userId);
 }

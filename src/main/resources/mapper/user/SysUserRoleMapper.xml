@@ -17,6 +17,6 @@
 	</select>
 
 	<update id="updateUserRole" parameterType="com.viroyal.light.module.user.entity.SysUserRole">
-		update sys_user_role set sys_user_role.rid = #{rid} where sys_user_role.uid = #{uid}  and exist = 1
+		update sys_user_role set sys_user_role.rid = #{rid} where sys_user_role.uid = #{uid} and exist = 1
 	</update>
 </mapper>
