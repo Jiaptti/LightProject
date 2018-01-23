@@ -22,7 +22,7 @@
 
 	<!-- 查询所有用户 -->
 	<select id="getAllUser" resultMap="BaseResultMap">
-		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid
+		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid,u.status
 		from sys_user as u
 		left join sys_user_role as ur on ur.uid = u.id
 		where u.exist = 1
@@ -31,11 +31,16 @@
 
 	<!-- 通过id查询用户 -->
 	<select id="getUserById" resultMap="BaseResultMap">
-		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid
+		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid,u.status
 		from sys_user as u
 		left join sys_user_role as ur on ur.uid = u.id
 		where u.id = #{userId} and u.exist = 1
 		order by u.id asc
+	</select>
+
+	<!-- 判断用户密码是否正确 -->
+	<select id="getUserPswd" parameterType="Long" resultMap="BaseResultMap">
+		select u.pswd,u.username from sys_user as u where u.id = #{userId} and u.exist = 1
 	</select>
 
 	<!-- 查询账号是否存在 -->
@@ -45,7 +50,7 @@
 
 	<!-- 按条件查询用户 -->
 	<select id="queryWithCondition" resultMap="BaseResultMap">
-		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid
+		select DISTINCT u.id,u.nickname,u.username,u.phone,u.email,ur.rid,u.status
 		from sys_user as u
 		left join sys_user_role as ur on ur.uid = u.id
 		where 1 = 1 and u.exist = 1

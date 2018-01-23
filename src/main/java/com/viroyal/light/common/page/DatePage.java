@@ -17,6 +17,12 @@ public class DatePage<T> {
     //当前页数
     private int page;
 
+    //返回code
+    private int code;
+
+    //返回信息
+    private String message;
+
     //每页显示数量
     private int pagesize;
 

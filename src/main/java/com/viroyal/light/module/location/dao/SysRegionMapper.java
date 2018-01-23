@@ -73,8 +73,9 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
     /**
      * 更新地区
      * @param sysRegion 地区对象
+     * @return 更新的记录条数
      */
-    void update(SysRegion sysRegion);
+    int update(SysRegion sysRegion);
 
     /**
      * 删除地区

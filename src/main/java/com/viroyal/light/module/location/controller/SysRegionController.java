@@ -6,9 +6,12 @@ import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.viroyal.light.module.location.service.ISysRegionService;
 import io.swagger.annotations.*;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,17 +45,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:list")
     public String getCityList() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysRegion> cityList = sysRegionService.queryAllCity();
-        if (cityList.size() > 0) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, cityList);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+       return sysRegionService.queryAllCity();
     }
 
 
@@ -65,17 +58,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:list")
     public String getAreaList() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysRegion> areaList = sysRegionService.queryAllArea();
-        if (areaList.size() > 0) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, areaList);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+        return sysRegionService.queryAllArea();
     }
 
     @ApiOperation("获得街道列表")
@@ -87,17 +70,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:list")
     public String getStreetList() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysRegion> areaList = sysRegionService.queryAllStreet();
-        if (areaList.size() > 0) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, areaList);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+        return sysRegionService.queryAllStreet();
     }
 
     @ApiOperation("添加地区")
@@ -109,17 +82,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:save")
     public String saveRegion(SysRegion region) {
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysRegionService.save(region);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+       return sysRegionService.save(region);
     }
 
     @ApiOperation("添加街道")
@@ -131,17 +94,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:save")
     public String saveStreet(SysRegion region) {
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysRegionService.saveStreet(region);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+        return sysRegionService.saveStreet(region);
     }
 
     @ApiOperation("删除地区")
@@ -153,17 +106,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:delete")
     public String deleteRegion(@RequestParam(value = "ids[]") String[] ids) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysRegionService.deleteBatch(ids);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+        return sysRegionService.deleteBatch(ids);
     }
 
     @ApiOperation("更新地区")
@@ -175,22 +118,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:update")
     public String updateRegion(SysRegion region) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        if (region.getId() == null) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_REGION_ID);
-        } else {
-            try {
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-                sysRegionService.update(region);
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-            } catch (Exception e) {
-                e.printStackTrace();
-                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-            }
-        }
-        return JSON.toJSONString(resultMap);
+        return sysRegionService.update(region);
     }
 
     @ApiOperation("通过区id查询街道")
@@ -205,17 +133,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:list")
     public String getAreaStreet(@RequestParam("areaId") String areaId) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysRegion> streetList = sysRegionService.queryStreetByArea(Long.valueOf(areaId));
-        if (streetList.size() > 0) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, streetList);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+        return sysRegionService.queryStreetByArea(Long.parseLong(areaId));
     }
 
     @ApiOperation("通过城市id查询区")
@@ -230,17 +148,7 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:list")
     public String getAreaByCity(@RequestParam("cityId") String cityId) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysRegion> streetList = sysRegionService.queryAreaByCity(Long.parseLong(cityId));
-        if (streetList.size() > 0) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, streetList);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+       return sysRegionService.queryAreaByCity(Long.parseLong(cityId));
     }
 
     @ApiOperation("通过条件查询所有街道(可以随意搭配，也可以单独使用，也可以一个不用),sort进行排序asc升序desc降序，pageId,pageSize为必填项" +
@@ -269,14 +177,26 @@ public class SysRegionController {
     @ResponseBody
     @RequiresPermissions("sys:region:list")
     public String queryWithCondition(@RequestParam Map<String, Object> params) {
-        if ((!params.containsKey("pageId") && params.containsKey("pageSize"))
-                || (params.containsKey("pageId") && !params.containsKey("pageSize"))) {
-            Map<String, Object> resultMap = new HashMap<String, Object>();
+        return sysRegionService.queryWithCondition(params);
+    }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public String processUnauthenticatedException(Exception ex) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        if(ex instanceof UnauthorizedException){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
-            return JSON.toJSONString(resultMap);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_AUTORITY);
+        } else if(ex instanceof BindException){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " + BaseConstant.EXCEPTION_FORMAT);
+        } else {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " +
+                    BaseConstant.EXCEPTION_TYPE + " = " +ex.getClass().getSimpleName() + ", " +
+                    BaseConstant.EXCEPTION_MESSAGE + " = " + ex.getMessage());
         }
-        DatePage<SysRegion> datePage = sysRegionService.queryWithCondition(params);
-        return JSON.toJSONString(datePage);
+        return JSON.toJSONString(resultMap);
     }
 }

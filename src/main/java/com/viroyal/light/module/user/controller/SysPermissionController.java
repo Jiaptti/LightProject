@@ -11,10 +11,13 @@ import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.viroyal.light.module.user.service.ISysPermissionService;
 import io.swagger.annotations.*;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -71,17 +74,7 @@ public class SysPermissionController {
     @ResponseBody
     @RequiresPermissions("sys:permission:list")
     public String permissionList(){
-        Map<String, Object> resultMap = new HashMap<>();
-        List<SysPermission> permissions = sysPermissionService.queryAll();
-        if (permissions.size() > 0) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, permissions);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+        return sysPermissionService.queryAll();
     }
 
     @RequestMapping(value = "/editPage/{Id}", method = RequestMethod.GET)
@@ -128,16 +121,7 @@ public class SysPermissionController {
     @ResponseBody
     @RequiresPermissions("sys:permission:save")
     public String permissionSave(SysPermission permission){
-        Map<String, Object> resultMap = new HashMap<>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysPermissionService.savePermission(permission);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+        return sysPermissionService.savePermission(permission);
     }
 
     @ApiOperation("移动端删除权限")
@@ -149,16 +133,7 @@ public class SysPermissionController {
     @ResponseBody
     @RequiresPermissions("sys:permission:delete")
     public String permissionDelete(@RequestParam(value = "ids[]") String[] ids){
-        Map<String, Object> resultMap = new HashMap<>();
-        try {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysPermissionService.deleteBatch(ids);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE);
-        }
-        return JSON.toJSONString(resultMap);
+       return sysPermissionService.deleteBatch(ids);
     }
 
     @ApiOperation("移动端更新权限")
@@ -170,21 +145,7 @@ public class SysPermissionController {
     @ResponseBody
     @RequiresPermissions("sys:permission:update")
     public String permissionUpdate(SysPermission permission){
-        Map<String, Object> resultMap = new HashMap<>();
-        if(permission.getId() == null){
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_PERMISSION_ID);
-        } else {
-            try {
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-                sysPermissionService.update(permission);
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-            } catch (Exception e){
-                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE);
-            }
-        }
-        return JSON.toJSONString(resultMap);
+       return sysPermissionService.update(permission);
     }
 
 
@@ -211,15 +172,26 @@ public class SysPermissionController {
     @ResponseBody
     @RequiresPermissions("sys:permission:list")
     public String queryWithCondition(@RequestParam Map<String, Object> params){
-        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
-                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
-            return JSON.toJSONString(resultMap);
-        }
-        DatePage<SysPermission> datePage = sysPermissionService.queryWithCondition(params);
-        return JSON.toJSONString(datePage);
+        return sysPermissionService.queryWithCondition(params);
     }
 
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public String processUnauthenticatedException(Exception ex) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        if(ex instanceof UnauthorizedException){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_AUTORITY);
+        } else if(ex instanceof BindException){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " + BaseConstant.EXCEPTION_FORMAT);
+        } else {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " +
+                    BaseConstant.EXCEPTION_TYPE + " = " +ex.getClass().getSimpleName() + ", " +
+                    BaseConstant.EXCEPTION_MESSAGE + " = " + ex.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
+    }
 }

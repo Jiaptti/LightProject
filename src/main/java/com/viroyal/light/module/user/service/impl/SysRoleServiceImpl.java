@@ -109,6 +109,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public String queryWithCondition(Map<String, Object> params) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Page<SysRole> page = new Page<SysRole>();
+        DatePage<SysRole> datePage = null;
         int pageId = 0, pageSize = 0;
         if((!params.containsKey("pageId") && params.containsKey("pageSize"))
                 || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
@@ -141,9 +142,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             page.setSize(pageSize);
             page.setRecords(sysRoleMapper.queryWithCondition(params, page));
         }
-        resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-        resultMap.put(BaseConstant.PAGE_RESULT, new DatePage<SysRole>(page));
-        resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        return JSON.toJSONString(resultMap);
+        datePage = new DatePage<SysRole>(page);
+        datePage.setCode(BaseConstant.SUCCESS_CODE);
+        datePage.setMessage(BaseConstant.SUCCESS_RESULT);
+        return JSON.toJSONString(datePage);
     }
 }

@@ -80,4 +80,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return 用户对象
      */
     SysUser getUserById(Long userId);
+
+    /**
+     * 通过id查询用户密码
+     * @param userId 条件
+     * @return 用户对象
+     */
+    SysUser getUserPswd(Long userId);
 }

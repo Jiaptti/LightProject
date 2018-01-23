@@ -19,34 +19,37 @@ public interface ISysPermissionService extends IService<SysPermission> {
 
     /**
      * 查询所有权限
-     * @return 权限列表
+     * @return json格式的权限列表
      */
-    List<SysPermission> queryAll();
+    String queryAll();
 
     /**
      *通过各种条件查询权限
      * @param params 条件
-     * @return 权限列表
+     * @return json格式的权限列表
      */
-    DatePage<SysPermission> queryWithCondition(Map<String,Object> params);
+    String queryWithCondition(Map<String,Object> params);
 
 
     /**
      * 添加权限
      * @param permission 权限对象
+     * @return json格式的结果集
      */
-    void savePermission(SysPermission permission);
+    String savePermission(SysPermission permission);
 
 
     /**
      * 更新权限
      * @param permission 权限对象
+     * @return json格式的结果集
      */
-    void update(SysPermission permission);
+    String update(SysPermission permission);
 
     /**
      * 通过id删除权限
      * @param permissionId 权限对象id
+     * @return json格式的结果集
      */
-    void deleteBatch(String[] permissionId);
+    String deleteBatch(String[] permissionId);
 }

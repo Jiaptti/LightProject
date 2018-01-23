@@ -220,7 +220,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_NO_STATUS);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(user.getUsername().trim(), 0, 2)){
+        } else if(!CommonUtil.rightLength(user.getStatus().trim(), 0, 2)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_STATUS_LENGTH, 0, 2));
             return JSON.toJSONString(resultMap);
@@ -331,6 +331,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.USER_EMAIL_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
+        } else if(!StringUtils.isBlank(user.getStatus()) && !CommonUtil.rightLength(user.getStatus(),0,2)){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_STATUS_LENGTH, 0, 2));
+            return JSON.toJSONString(resultMap);
         } else {
             //更新用户
             if (StringUtils.isBlank(user.getPswd())) {
@@ -380,6 +384,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public String queryWithCondition(Map<String, Object> params) {
+        DatePage<SysUser> datePage = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Page<SysUser> page = new Page<SysUser>();
         int pageId = 0, pageSize = 0;
@@ -417,10 +422,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             page.setSize(pageSize);
             page.setRecords(sysUserMapper.queryWithCondition(params, page));
         }
-        resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-        resultMap.put(BaseConstant.PAGE_RESULT, new DatePage<SysUser>(page));
-        resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        return JSON.toJSONString(resultMap);
+        datePage = new DatePage<SysUser>(page);
+        datePage.setCode(BaseConstant.SUCCESS_CODE);
+        datePage.setMessage(BaseConstant.SUCCESS_RESULT);
+        return JSON.toJSONString(datePage);
     }
 
     @Override
@@ -438,5 +443,49 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return JSON.toJSONString(resultMap);
     }
 
+    @Override
+    public String updateUserPassword(Map<String, Object> params) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        if(!params.containsKey("userId")){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " +  BaseConstant.NO_USER_ID);
+            return JSON.toJSONString(resultMap);
+        }else if(!params.containsKey("password")){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " +  BaseConstant.NO_ORIGIN_PASSWORD);
+            return JSON.toJSONString(resultMap);
+        } else if(!params.containsKey("newPassword")){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " +  BaseConstant.NO_NEW_PASSWORD);
+            return JSON.toJSONString(resultMap);
+        }  else {
+            SysUser myUser = sysUserMapper.getUserPswd(Long.parseLong(params.get("userId").toString()));
+            if(myUser == null){
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " +  BaseConstant.INPUT_RIGHT_USER_ID);
+            } else {
+                String password = MyDES.decryptBasedDes(myUser.getPswd());
+                String pswd = params.get("password").toString() + myUser.getUsername();
+                if(StringUtils.equals(password, pswd)){
+                    SysUser user = new SysUser();
+                    user.setId(Long.parseLong(params.get("userId").toString()));
+                    user.setPswd(MyDES.encryptBasedDes(params.get("newPassword").toString() + myUser.getUsername()));
+                    try{
+                        sysUserMapper.update(user);
+                        resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                        resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                        resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
+                    }
+                } else {
+                    resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " +  BaseConstant.CHECKOUT_USER_PASSWORD);
+                }
+            }
+        }
+        return JSON.toJSONString(resultMap);
+    }
 }
 

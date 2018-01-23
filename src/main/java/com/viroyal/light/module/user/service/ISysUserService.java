@@ -76,4 +76,12 @@ public interface ISysUserService extends IService<SysUser> {
      * @return json格式的用户对象
      */
     String getUserById(Long userId);
+
+
+    /**
+     * 更新用户密码
+     * @param params 用户密码和id等参数
+     * @return json格式的用户对象
+     */
+    String updateUserPassword(Map<String,Object> params);
 }

@@ -6,13 +6,13 @@ import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLight;
 import com.viroyal.light.module.light.service.ISysLightService;
 import io.swagger.annotations.*;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -140,5 +140,25 @@ public class SysLightController {
         }
         DatePage<SysLight> datePage = sysLightService.queryWithCondition(params);
         return JSON.toJSONString(datePage);
+    }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public String processUnauthenticatedException(Exception ex) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        if(ex instanceof UnauthorizedException){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_AUTORITY);
+        } else if(ex instanceof BindException){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " + BaseConstant.EXCEPTION_FORMAT);
+        } else {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " +
+                    BaseConstant.EXCEPTION_TYPE + " = " +ex.getClass().getSimpleName() + ", " +
+                    BaseConstant.EXCEPTION_MESSAGE + " = " + ex.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
     }
 }

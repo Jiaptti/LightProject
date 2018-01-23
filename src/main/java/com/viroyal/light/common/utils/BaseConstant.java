@@ -82,8 +82,14 @@ public class BaseConstant {
     public static final String USER_EMAIL_RIGHT_FORMAT = "输入正确格式的邮箱";
     //请输入用户状态是否可用
     public static final String USER_NO_STATUS = "请输入用户状态是否可用";
-    //请输入用户状态是否可用
-    public static final String USER_RIGHT_STATUS_FORMAT = "请输入用户状态是否可用";
+    //请输入用户id
+    public static final String NO_USER_ID = "请输入用户id";
+    //请输入原始密码
+    public static final String NO_ORIGIN_PASSWORD = "请输入原始密码";
+    //请输入需要修改的密码
+    public static final String NO_NEW_PASSWORD = "请输入需要修改的密码";
+    //请确认密码是否正确
+    public static final String CHECKOUT_USER_PASSWORD = "请确认密码是否正确";
     //请添加更新对象的id
     public static final String NO_UPDATE_ID = "请添加更新对象的id";
     //账号密码不能为空
@@ -109,4 +115,64 @@ public class BaseConstant {
     public static final String NO_DATA_TO_UPDATE = "没有要更新的数据";
     //没权限
     public static final String NO_AUTORITY = "没权限";
+    //访问异常
+    public static final String REQUEST_EXCEPTION = "访问异常";
+    //异常类型
+    public static final String EXCEPTION_TYPE = "异常类型";
+    //异常描述
+    public static final String EXCEPTION_MESSAGE = "异常描述";
+    //异常原因
+    public static final String EXCEPTION_CAUSE= "异常原因";
+    //输入数据格式不正确
+    public static final String EXCEPTION_FORMAT = "输入数据格式不正确";
+    //请输入正确的用户id
+    public static final String INPUT_RIGHT_USER_ID = "请输入正确的用户id";
+    //没有数据
+    public static final String NO_QUERY_RESULT = "没有数据";
+
+
+    //权限请求路径超过指定长度，需在{min} - {max}之间
+    public static final String PERMISSION_URL_LENGTH = "权限请求路径超过指定长度，需在{%1$d}~{%2$d}之间";
+    //权限名超过指定长度，需在{min} - {max}之间
+    public static final String PERMISSION_NAME_LENGTH = "权限名超过指定长度，需在{%1$d}~{%2$d}之间";
+    //授权超过指定长度，需在{min} - {max}之间
+    public static final String PERMISSION_PERMS_LENGTH = "授权超过指定长度，需在{%1$d}~{%2$d}之间";
+    //权限名不能为空
+    public static final String PERMISSION_NAME_NOT_NULL = "权限名不能为空";
+    //授权不能为空
+    public static final String PERMISSION_PERMS_NOT_NULL = "授权不能为空";
+
+
+    //请输入要查询的城市id
+    public static final String CITY_ID_NOT_NULL = "请输入要查询的城市id";
+    //请输入要查询的地区id
+    public static final String AREA_ID_NOT_NULL = "请输入要查询的地区id";
+    //地区id不能为空
+    public static final String REGION_ID_NOT_NULL = "地区id不能为空";
+    //街道id不能为空
+    public static final String REGION_STREET_ID_NOT_NULL = "街道id不能为空";
+    //地区名不能为空
+    public static final String REGION_NAME_NOT_NULL = "地区名不能为空";
+    //街道名不能为空
+    public static final String REGION_STRETT_NAME_NOT_NULL = "街道名不能为空";
+    //请选择街道所在的区id
+    public static final String REGION_STREET_UP_REGION_ID_NOT_NULL = "请选择街道所在的区id";
+    //地区id超过指定长度，需在{min} - {max}之间
+    public static final String REGION_COMMON_ID_LENGTH = "地区id超过指定长度，需在{%1$d}~{%2$d}之间";
+    //街道id超过指定长度，需在{min} - {max}之间
+    public static final String REGION_STREET_ID_LENGTH = "街道id超过指定长度，需在{%1$d}~{%2$d}之间";
+    //地区名超过指定长度，需在{min} - {max}之间
+    public static final String REGION_NAME_LENGTH = "地区名超过指定长度，需在{%1$d}~{%2$d}之间";
+    //街道名超过指定长度，需在{min} - {max}之间
+    public static final String REGION_STREET_NAME_LENGTH = "街道名超过指定长度，需在{%1$d}~{%2$d}之间";
+    //地区上级id超过指定长度，需在{min} - {max}之间
+    public static final String REGION_UP_REGION_ID_LENGTH = "地区上级id超过指定长度，需在{%1$d}~{%2$d}之间";
+    //街道的区id超过指定长度，需在{min} - {max}之间
+    public static final String REGION_STREET_UP_REGION_ID_LENGTH = "街道的区id超过指定长度，需在{%1$d}~{%2$d}之间";
+    //地区描述不能为空
+    public static final String REGION_DESC_NOT_NULL = "地区描述不能为空";
+    //地区描述只能是 地级市、直辖市、市辖区、街道等
+    public static final String REGION_DESC_RIGHT_FORMAT = "地区描述只能是 地级市、直辖市、市辖区、街道等";
+    //请输入正确的邮编
+    public static final String REGION_POSTAL_CODE_RIGHT_FORMAT = "请输入正确的邮编";
 }

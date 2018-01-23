@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -127,16 +128,6 @@ public class SysUserController {
         return sysUserService.update(user);
     }
 
-    @ExceptionHandler({Exception.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ResponseBody
-    public String processUnauthenticatedException() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-        resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_AUTORITY);
-        return JSON.toJSONString(resultMap);
-    }
-
     @RequestMapping(value = "/getUserListWithPager", method = RequestMethod.GET)
     @RequiresPermissions("sys:user:list")
     @ResponseBody
@@ -147,7 +138,7 @@ public class SysUserController {
         if (!StringUtils.isEmpty(keyWords))
             wrapper.like("username", keyWords);
 
-        wrapper.eq("flag", 1);
+        wrapper.eq("exist", 1);
         Page<SysUser> pageList = sysUserService.selectPage(page.getPagePlus(), wrapper);
         CustomPage<SysUser> customPage = new CustomPage<SysUser>(pageList);
         return JSON.toJSONString(customPage);
@@ -200,6 +191,28 @@ public class SysUserController {
     }
 
 
+    @ApiOperation("更新用户密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "userId",
+                    required = true, dataType = "Int", value = "用户id"),
+            @ApiImplicitParam(paramType = "query", name = "password",
+                    required = true, dataType = "String", value = "原始密码"),
+            @ApiImplicitParam(paramType = "query", name = "newPassword",
+                    required = true, dataType = "String", value = "新密码")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "更新成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code = 500, message = "更新失败")
+    })
+    @RequestMapping(value = "/updateUserPswd", method = RequestMethod.POST)
+    @RequiresPermissions("sys:user:update")
+    @ResponseBody
+    public String updateUserPswd(@RequestParam Map<String, Object> params){
+        return sysUserService.updateUserPassword(params);
+    }
+
+
     @ApiOperation("移动端删除用户")
     @ApiResponses({
             @ApiResponse(code = 200, message = "删除成功"),
@@ -245,6 +258,26 @@ public class SysUserController {
         } catch (Exception e) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.KICKOUT_FAILURE + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public String processUnauthenticatedException(Exception ex) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        if(ex instanceof UnauthorizedException){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.NO_AUTORITY);
+        } else if(ex instanceof BindException){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " + BaseConstant.EXCEPTION_FORMAT);
+        } else {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_EXCEPTION + " : " +
+                    BaseConstant.EXCEPTION_TYPE + " = " +ex.getClass().getSimpleName() + ", " +
+                    BaseConstant.EXCEPTION_MESSAGE + " = " + ex.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }
