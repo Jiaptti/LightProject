@@ -175,4 +175,14 @@ public class BaseConstant {
     public static final String REGION_DESC_RIGHT_FORMAT = "地区描述只能是 地级市、直辖市、市辖区、街道等";
     //请输入正确的邮编
     public static final String REGION_POSTAL_CODE_RIGHT_FORMAT = "请输入正确的邮编";
+
+
+    //路灯编码不能为空
+    public static final String LIGHT_INFO_CODE_NOT_NULL = "路灯编码不能为空";
+    //路灯信息不能为空
+    public static final String LIGHT_INFO_NOT_NULL = "路灯信息不能为空";
+    //路灯信息状态不能为空
+    public static final String LIGHT_INFO_STATUS_NOT_NULL = "路灯信息状态不能为空";
+    //请选择路灯信息策略id
+    public static final String LIGHT_INFO_STRATEGY = "请选择路灯信息策略id";
 }

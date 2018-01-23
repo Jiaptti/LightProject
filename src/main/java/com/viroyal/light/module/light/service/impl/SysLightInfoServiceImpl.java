@@ -40,15 +40,32 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
     @Override
     public String saveLightInfo(SysLightInfo lightInfo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightInfoMapper.save(lightInfo);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
+        if(StringUtils.isBlank(lightInfo.getCode())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-            e.printStackTrace();
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
+                    BaseConstant.LIGHT_INFO_CODE_NOT_NULL);
+        } else if(StringUtils.isBlank(lightInfo.getLightInfo())){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
+                    BaseConstant.LIGHT_INFO_NOT_NULL);
+        } else if(StringUtils.isBlank(lightInfo.getStatus())){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
+                    BaseConstant.LIGHT_INFO_STATUS_NOT_NULL);
+        } else if(StringUtils.isBlank(lightInfo.getStrategyId())){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
+                    BaseConstant.LIGHT_INFO_STRATEGY);
+        } else {
+            try{
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysLightInfoMapper.save(lightInfo);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
+                e.printStackTrace();
+            }
         }
         return JSON.toJSONString(resultMap);
     }

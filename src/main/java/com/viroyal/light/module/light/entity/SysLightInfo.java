@@ -69,7 +69,7 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	/**
 	 * 所属用户id
 	 */
-	@ApiModelProperty("所属维修员id(即用户id,看数据库谁是维修员)(添加时候必填，更新选填)")
+	@ApiModelProperty("所属维修员id(即用户id,看数据库谁是维修员)(添加，更新都选填)")
 	@TableField("user_id")
 	private Long userId;
     /**
