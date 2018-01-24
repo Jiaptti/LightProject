@@ -1,7 +1,6 @@
 package com.viroyal.light.module.location.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.viroyal.light.module.location.service.ISysRegionService;
@@ -14,10 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

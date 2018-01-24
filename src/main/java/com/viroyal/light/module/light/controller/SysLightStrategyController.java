@@ -1,8 +1,6 @@
 package com.viroyal.light.module.light.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.viroyal.light.common.page.DatePage;
-import com.viroyal.light.common.utils.BaseConstant;
+import com.viroyal.light.module.light.entity.LightStrategyVo;
 import com.viroyal.light.module.light.entity.SysLightStrategy;
 import com.viroyal.light.module.light.service.ISysLightStrategyService;
 import io.swagger.annotations.*;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,18 +38,8 @@ public class SysLightStrategyController {
     @RequestMapping(value = "/strategySave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:strategy:save")
-    public String saveStrategy(SysLightStrategy lightStrategy){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightStrategyService.save(lightStrategy);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+    public String saveStrategy(LightStrategyVo lightStrategyVo){
+        return sysLightStrategyService.save(lightStrategyVo);
     }
 
 
@@ -65,17 +52,7 @@ public class SysLightStrategyController {
     @ResponseBody
     @RequiresPermissions("sys:strategy:update")
     public String updateStrategy(SysLightStrategy lightStrategy){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightStrategyService.update(lightStrategy);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+        return sysLightStrategyService.update(lightStrategy);
     }
 
 
@@ -84,21 +61,11 @@ public class SysLightStrategyController {
             @ApiResponse(code=200,message="删除成功"),
             @ApiResponse(code=500,message="删除失败")
     })
-    @RequestMapping(value = "/strategyDelete", method = RequestMethod.GET)
+    @RequestMapping(value = "/strategyDelete", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:strategy:delete")
     public String deleteStrategy(@RequestParam(value = "ids[]") String[] ids){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightStrategyService.deleteBatch(ids);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+        return sysLightStrategyService.deleteBatch(ids);
     }
 
     @ApiOperation("移动端通过条件查询所有路灯策略(标记required的就是必填)pageId,pageSize为必填项,param参数接口填一个1就行，请求的时候不需要带")
@@ -120,14 +87,6 @@ public class SysLightStrategyController {
     @ResponseBody
     @RequiresPermissions("sys:strategy:list")
     public String queryWithCondition(@RequestParam Map<String, Object> params){
-        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
-                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
-            return JSON.toJSONString(resultMap);
-        }
-        DatePage<SysLightStrategy> datePage = sysLightStrategyService.queryWithCondition(params);
-        return JSON.toJSONString(datePage);
+        return sysLightStrategyService.queryWithCondition(params);
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * 所以这个由这个中间对象来转换
  */
 @Data
-public class DatePage<T> {
+public class DataPage<T> {
     //当前页数
     private int page;
 
@@ -41,7 +41,7 @@ public class DatePage<T> {
     //是否升序
     private boolean isAsc;
 
-    public DatePage(Page<T> page){
+    public DataPage(Page<T> page){
         this.page = page.getCurrent();
         this.pagesize = page.getSize();
         this.records = page.getTotal();

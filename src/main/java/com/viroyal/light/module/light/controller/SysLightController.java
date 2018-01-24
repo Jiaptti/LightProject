@@ -1,7 +1,7 @@
 package com.viroyal.light.module.light.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.viroyal.light.common.page.DatePage;
+import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLight;
 import com.viroyal.light.module.light.service.ISysLightService;
@@ -36,69 +36,42 @@ public class SysLightController {
     @ApiOperation("移动端添加路灯数据")
     @ApiResponses({
             @ApiResponse(code=200,message="添加成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="添加失败")
     })
     @RequestMapping(value = "/lightSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:light:save")
     public String saveLight(SysLight sysLight){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightService.save(sysLight);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+       return sysLightService.save(sysLight);
     }
 
 
     @ApiOperation("移动端更新路灯数据")
     @ApiResponses({
             @ApiResponse(code=200,message="更新成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="更新失败")
     })
     @RequestMapping(value = "/lightUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:light:update")
     public String updateLight(SysLight sysLight){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightService.update(sysLight);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+       return sysLightService.update(sysLight);
     }
 
 
     @ApiOperation("移动端删除路灯数据")
     @ApiResponses({
             @ApiResponse(code=200,message="删除成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="删除失败")
     })
     @RequestMapping(value = "/lightDelete", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("sys:light:delete")
     public String deleteLight(@RequestParam(value = "ids[]") String[] ids){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightService.deleteBatch(ids);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
+       return sysLightService.deleteBatch(ids);
     }
 
     @ApiOperation("移动端通过条件查询所有路灯数据(标记required的就是必填)pageId,pageSize为必填项,param参数接口填一个1就行，请求的时候不需要带")
@@ -131,15 +104,7 @@ public class SysLightController {
     @ResponseBody
     @RequiresPermissions("sys:light:list")
     public String queryWithCondition(@RequestParam Map<String, Object> params){
-        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
-                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
-            return JSON.toJSONString(resultMap);
-        }
-        DatePage<SysLight> datePage = sysLightService.queryWithCondition(params);
-        return JSON.toJSONString(datePage);
+        return sysLightService.queryWithCondition(params);
     }
 
     @ExceptionHandler({Exception.class})

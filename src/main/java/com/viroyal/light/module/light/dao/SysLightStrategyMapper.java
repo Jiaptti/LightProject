@@ -25,8 +25,9 @@ public interface SysLightStrategyMapper extends BaseMapper<SysLightStrategy> {
     /**
      * 更新路灯策略
      * @param  lightStrategy 路灯策略对象
+     * @return 更新结果记录条数
      */
-    void update(SysLightStrategy lightStrategy);
+    int update(SysLightStrategy lightStrategy);
 
     /**
      * 删除路灯策略

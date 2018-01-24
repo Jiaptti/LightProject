@@ -68,12 +68,14 @@ public class SysUser extends Model<SysUser> {
      */
 	@ApiModelProperty("创建时间(不必添加)")
 	@TableField("create_time")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
     /**
      * 最后登录时间
      */
 	@ApiModelProperty("最后登录时间(不必填)")
 	@TableField("last_login_time")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date lastLoginTime;
     /**
      * 1:有效，0:禁止登录
@@ -87,6 +89,7 @@ public class SysUser extends Model<SysUser> {
 
 	@ApiModelProperty("最后修改时间(不必填)")
 	@TableField("last_update_time")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date lastUpdateTime;
 
 	@ApiModelProperty("最后更新用户id(对用户进行更新的时候添加，看数据库自己的id号,因为是你更新了)(添加时候必填，更新不用)")

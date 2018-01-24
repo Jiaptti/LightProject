@@ -2,8 +2,7 @@ package com.viroyal.light.module.location.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.viroyal.light.common.page.DatePage;
-import com.viroyal.light.common.page.FrontPage;
+import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
@@ -12,7 +11,6 @@ import com.viroyal.light.module.location.dao.SysRegionMapper;
 import com.viroyal.light.module.location.service.ISysRegionService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -292,7 +290,7 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
     public String queryWithCondition(Map<String, Object> params) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Page<SysRegion> page = new Page<SysRegion>();
-        DatePage<SysRegion> datePage = null;
+        DataPage<SysRegion> dataPage = null;
         int pageId = 0, pageSize = 0;
         if ((!params.containsKey("pageId") && params.containsKey("pageSize"))
                 || (params.containsKey("pageId") && !params.containsKey("pageSize"))) {
@@ -324,10 +322,15 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
                 page.setSize(pageSize);
                 page.setRecords(sysRegionMapper.queryWithCondition(params, page));
             }
-            datePage = new DatePage<SysRegion>(page);
-            datePage.setCode(BaseConstant.SUCCESS_CODE);
-            datePage.setMessage(BaseConstant.SUCCESS_RESULT);
+            dataPage = new DataPage<SysRegion>(page);
+            if(dataPage.getRecords() == 0){
+                dataPage.setCode(BaseConstant.ERROR_CODE);
+                dataPage.setMessage(BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
+            } else {
+                dataPage.setCode(BaseConstant.SUCCESS_CODE);
+                dataPage.setMessage(BaseConstant.SUCCESS_RESULT);
+            }
         }
-        return JSON.toJSONString(datePage);
+        return JSON.toJSONString(dataPage);
     }
 }

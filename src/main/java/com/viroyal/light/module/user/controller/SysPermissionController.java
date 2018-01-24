@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.CustomPage;
-import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.user.entity.SysPermission;
@@ -20,10 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,6 +65,7 @@ public class SysPermissionController {
     @ApiOperation("移动端获得权限列表")
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="查询失败")
     })
     @RequestMapping(value = "/permissionList", method = RequestMethod.GET)
@@ -115,6 +113,7 @@ public class SysPermissionController {
     @ApiOperation("移动端添加权限")
     @ApiResponses({
             @ApiResponse(code=200,message="添加成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="添加失败")
     })
     @RequestMapping(value = "/permissionSave", method = RequestMethod.POST)
@@ -127,6 +126,7 @@ public class SysPermissionController {
     @ApiOperation("移动端删除权限")
     @ApiResponses({
             @ApiResponse(code=200,message="删除成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="删除失败")
     })
     @RequestMapping(value = "/permissionDelete", method = RequestMethod.POST)
@@ -139,6 +139,7 @@ public class SysPermissionController {
     @ApiOperation("移动端更新权限")
     @ApiResponses({
             @ApiResponse(code=200,message="更新成功"),
+            @ApiResponse(code=400, message = "请求错误"),
             @ApiResponse(code=500,message="更新失败")
     })
     @RequestMapping(value = "/permissionUpdate", method = RequestMethod.POST)
@@ -166,6 +167,7 @@ public class SysPermissionController {
     })
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="查询失败")
     })
     @RequestMapping(value = "/queryWithCondition", method = RequestMethod.POST)

@@ -2,7 +2,7 @@ package com.viroyal.light.module.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.viroyal.light.common.page.DatePage;
+import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.*;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysUser;
@@ -384,7 +384,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public String queryWithCondition(Map<String, Object> params) {
-        DatePage<SysUser> datePage = null;
+        DataPage<SysUser> dataPage = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Page<SysUser> page = new Page<SysUser>();
         int pageId = 0, pageSize = 0;
@@ -422,10 +422,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             page.setSize(pageSize);
             page.setRecords(sysUserMapper.queryWithCondition(params, page));
         }
-        datePage = new DatePage<SysUser>(page);
-        datePage.setCode(BaseConstant.SUCCESS_CODE);
-        datePage.setMessage(BaseConstant.SUCCESS_RESULT);
-        return JSON.toJSONString(datePage);
+        dataPage = new DataPage<SysUser>(page);
+        if(dataPage.getRecords() == 0){
+            dataPage.setCode(BaseConstant.ERROR_CODE);
+            dataPage.setMessage(BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
+        } else {
+            dataPage.setCode(BaseConstant.SUCCESS_CODE);
+            dataPage.setMessage(BaseConstant.SUCCESS_RESULT);
+        }
+        return JSON.toJSONString(dataPage);
     }
 
     @Override

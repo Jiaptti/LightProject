@@ -1,10 +1,8 @@
 package com.viroyal.light.module.user.service;
 
-import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.baomidou.mybatisplus.service.IService;
 
-import java.util.List;
 import java.util.Map;
 
 /**

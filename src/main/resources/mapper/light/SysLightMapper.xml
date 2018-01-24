@@ -12,15 +12,19 @@
 		<result column="temperature" property="temperature" />
 		<result column="humidity" property="humidity" />
 		<result column="datetime" property="datetime" />
-		<result column="infoId" property="info_id" />
+		<result column="info_id" property="infoId" />
 		<result column="lightness" property="lightness" />
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="code" property="code" />
+		<result column="light_info" property="lightInfo" />
 		<result column="exist" property="exist" />
 	</resultMap>
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
-		select light.id,light.status,light.`current`,light.datetime,
-		light.humidity,light.info_id,light.lightness,light.temperature,
-		light.traffic_flow,light.voltage from sys_light as light
+		select distinct light.id, light.status, light.`current`,light.datetime,
+		light.humidity, light.lightness,light.temperature,
+		light.traffic_flow,light.voltage, i.`code`, i.light_info
+		from sys_light as light
 		left join sys_light_info as i on i.id = light.info_id
 		where 1 = 1 and light.exist = 1 and i.exist = 1
 		<if test="lightId != null"> and light.id = #{lightId}</if>
@@ -83,8 +87,9 @@
 			<if test="temperature != null">`temperature` = #{temperature}, </if>
 			<if test="humidity != null">`humidity` = #{humidity}, </if>
 			<if test="infoId != null">`info_id` = #{infoId}, </if>
-			<if test="lightness != null">`lightness` = #{lightness} </if>
-			<if test="datetime != null">`datetime` = #{datetime} </if>
+			<if test="lightness != null">`lightness` = #{lightness},</if>
+			<if test="datetime != null">`datetime` = #{datetime},</if>
+			<if test="lastUpdateTime != null">`last_update_time` = #{lastUpdateTime} </if>
 		</set>
 		where id = #{id}
 	</update>

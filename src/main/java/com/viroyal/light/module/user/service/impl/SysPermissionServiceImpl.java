@@ -2,15 +2,13 @@ package com.viroyal.light.module.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.sun.javafx.binding.StringFormatter;
-import com.viroyal.light.common.page.DatePage;
+import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.dao.SysRolePermissionMapper;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.viroyal.light.module.user.dao.SysPermissionMapper;
-import com.viroyal.light.module.user.entity.SysRolePermission;
 import com.viroyal.light.module.user.service.ISysPermissionService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +56,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public String queryWithCondition(Map<String, Object> params) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Page<SysPermission> page = new Page<SysPermission>();
-        DatePage<SysPermission> datePage = null;
+        DataPage<SysPermission> dataPage = null;
         int pageId = 0, pageSize = 0;
         if((!params.containsKey("pageId") && params.containsKey("pageSize"))
                 || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
@@ -89,11 +87,16 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 page.setSize(pageSize);
                 page.setRecords(sysPermissionMapper.queryWithCondition(params, page));
             }
-            datePage = new DatePage<SysPermission>(page);
-            datePage.setCode(BaseConstant.SUCCESS_CODE);
-            datePage.setMessage(BaseConstant.SUCCESS_RESULT);
+            dataPage = new DataPage<SysPermission>(page);
+            if(dataPage.getRecords() == 0){
+                dataPage.setCode(BaseConstant.ERROR_CODE);
+                dataPage.setMessage(BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
+            } else {
+                dataPage.setCode(BaseConstant.SUCCESS_CODE);
+                dataPage.setMessage(BaseConstant.SUCCESS_RESULT);
+            }
         }
-        return JSON.toJSONString(datePage);
+        return JSON.toJSONString(dataPage);
     }
 
     @Transactional

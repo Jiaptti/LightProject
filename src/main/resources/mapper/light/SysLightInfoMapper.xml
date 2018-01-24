@@ -27,101 +27,10 @@
         <result column="lightness_overload" property="lightnessOverload"/>
         <result column="open_time" property="openTime"/>
         <result column="close_time" property="closeTime"/>
+        <result column="strategy_open_time" property="strategyOpenTime"/>
+        <result column="strategy_close_time" property="strategyCloseTime"/>
         <result column="exist" property="exist"/>
     </resultMap>
-
-    <!-- 获得所有路灯 -->
-    <select id="queryAll" resultMap="BaseResultMap">
-		select distinct i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
-		i.street_id,i.user_id,i.group_id,
-		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
-		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-		ls.open_time, ls.close_time
-		from sys_light_info as i
-		left join sys_light_strategy as ls on i.strategy_id = ls.id
-		where i.exist = 1
-	</select>
-
-    <!-- 获得城市下的路灯 -->
-    <select id="queryByCity" parameterType="Long" resultMap="BaseResultMap">
-		select distinct i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
-		i.street_id,i.user_id,i.group_id,
-		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
-		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-		ls.open_time, ls.close_time
-		from sys_light_info as i
-		left join sys_light_strategy as ls on i.strategy_id = ls.id
-		left join sys_region as r on r.common_region_id = i.street_id
-		where r.common_region_id like CONCAT(#{cityId}, '%')  and r.region_desc = '街道' and i.exist = 1 and r.exist = 1
-	</select>
-
-    <!-- 获得区下的路灯 -->
-    <select id="queryByArea" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
-		i.street_id,i.user_id,i.group_id,
-		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
-		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-		ls.open_time, ls.close_time
-		from sys_light_info as i
-		left join sys_light_strategy as ls on i.strategy_id = ls.id
-		left join sys_region as r on r.common_region_id = i.street_id
-		where r.up_region_id = #{areaId} and i.exist = 1 and r.exist = 1
-	</select>
-
-    <!-- 获得街道下的路灯 -->
-    <select id="queryByStreet" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
-		i.street_id,i.user_id,i.group_id,
-		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
-		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-		ls.open_time, ls.close_time
-		from sys_light_info as i
-		left join sys_light_strategy as ls on i.strategy_id = ls.id
-		where i.street_id = #{streetId} and i.exist = 1
-	</select>
-
-    <!-- 获得组下的路灯 -->
-    <select id="queryByGroup" parameterType="Long" resultMap="BaseResultMap">
-        select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
-        i.street_id,i.user_id,i.group_id,
-		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
-		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-		ls.open_time, ls.close_time
-		from sys_light_info as i
-		left join sys_light_strategy as ls on i.strategy_id = ls.id
-		where i.group_id = #{groupId} and i.exist = 1
-	</select>
-
-    <!-- 获得维修员的路灯 -->
-    <select id="queryByUser" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
-		i.street_id,i.user_id,i.group_id,
-		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
-		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-		ls.open_time, ls.close_time
-		from sys_light_info as i
-		left join sys_light_strategy as ls on i.strategy_id = ls.id
-		where i.user_id = #{userId} and i.exist = 1
-	</select>
-
-    <!-- 获得是否投入使用的路灯 -->
-    <select id="queryByStatus" parameterType="Long" resultMap="BaseResultMap">
-		select i.id, i.code, i.`status`, i.current_overload, i.humidity_overload,i.auto_report,
-		i.street_id,i.user_id,i.group_id,
-		i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
-		i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
-		i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-		ls.open_time, ls.close_time
-		from sys_light_info as i
-		left join sys_light_strategy as ls on i.strategy_id = ls.id
-		where i.status = #{status} and i.exist = 1
-	</select>
 
 
     <!-- 通过各种条件查询路灯 -->
@@ -131,7 +40,7 @@
         i.current_threshold, i.light_info, i.latitude, i.lightness_overload, i.humidity_threshold,
         i.lightness_threshold, i.longitude, i.strategy_id, i.temperature_overload,
         i.temperature_threshold, i.voltage_overload, i.voltage_threshold,
-        ls.open_time, ls.close_time
+        ls.open_time, ls.close_time, ls.strategy_open_time, ls.strategy_close_time
         from sys_light_info as i
         left join sys_light_strategy as ls on i.strategy_id = ls.id
         left join sys_user as us on us.id = i.user_id

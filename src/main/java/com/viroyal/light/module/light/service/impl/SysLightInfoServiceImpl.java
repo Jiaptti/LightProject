@@ -1,11 +1,8 @@
 package com.viroyal.light.module.light.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.viroyal.light.common.page.DatePage;
-import com.viroyal.light.common.page.FrontPage;
+import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.light.entity.SysLightInfo;
@@ -13,7 +10,6 @@ import com.viroyal.light.module.light.dao.SysLightInfoMapper;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,20 +38,28 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if(StringUtils.isBlank(lightInfo.getCode())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
-                    BaseConstant.LIGHT_INFO_CODE_NOT_NULL);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_CODE_NOT_NULL);
+            return JSON.toJSONString(resultMap);
         } else if(StringUtils.isBlank(lightInfo.getLightInfo())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
-                    BaseConstant.LIGHT_INFO_NOT_NULL);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_NOT_NULL);
+            return JSON.toJSONString(resultMap);
         } else if(StringUtils.isBlank(lightInfo.getStatus())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
-                    BaseConstant.LIGHT_INFO_STATUS_NOT_NULL);
-        } else if(StringUtils.isBlank(lightInfo.getStrategyId())){
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_STATUS_NOT_NULL);
+            return JSON.toJSONString(resultMap);
+        } else if(lightInfo.getLongitude() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " +
-                    BaseConstant.LIGHT_INFO_STRATEGY);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_LONGITUDE_NOT_NULL);
+            return JSON.toJSONString(resultMap);
+        } else if(lightInfo.getLatitude() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_LATITUDE_NOT_NULL);
+            return JSON.toJSONString(resultMap);
+        } else if(lightInfo.getStreetId() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_STREET_ID_NOT_NULL);
+            return JSON.toJSONString(resultMap);
         } else {
             try{
                 resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
@@ -74,14 +78,19 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
     @Override
     public String deleteLightInfo(Object[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightInfoMapper.deleteBatch(ids);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
+        if(ids.length == 0){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
-            e.printStackTrace();
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + BaseConstant.NO_DELETE_ID);
+        } else {
+            try{
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                sysLightInfoMapper.deleteBatch(ids);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } catch (Exception e){
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + e.getMessage());
+                e.printStackTrace();
+            }
         }
         return JSON.toJSONString(resultMap);
     }
@@ -90,22 +99,33 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
     @Override
     public String updateLightInfo(SysLightInfo lightInfo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try{
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysLightInfoMapper.update(lightInfo);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } catch (Exception e){
-            e.printStackTrace();
+        if(lightInfo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
+        } else {
+            try{
+                if(sysLightInfoMapper.update(lightInfo) == 0){
+                    resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
+                } else {
+                    resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+                }
+
+            } catch (Exception e){
+                e.printStackTrace();
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
+            }
         }
+
         return JSON.toJSONString(resultMap);
     }
 
 
     @Override
     public String queryWithCondition(Map<String, Object> params) {
-        DatePage<SysLightInfo> datePage = null;
+        DataPage<SysLightInfo> dataPage = null;
         Page<SysLightInfo> page = new Page<SysLightInfo>();
         int pageId = 0, pageSize = 0;
         if((!params.containsKey("pageId") && params.containsKey("pageSize"))
@@ -139,10 +159,15 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
                 page.setSize(pageSize);
                 page.setRecords(sysLightInfoMapper.queryWithCondition(params, page));
             }
-            datePage = new DatePage<SysLightInfo>(page);
-            datePage.setCode(BaseConstant.SUCCESS_CODE);
-            datePage.setMessage(BaseConstant.SUCCESS_RESULT);
+            dataPage = new DataPage<SysLightInfo>(page);
+            if(dataPage.getRecords() == 0){
+                dataPage.setCode(BaseConstant.ERROR_CODE);
+                dataPage.setMessage(BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
+            } else {
+                dataPage.setCode(BaseConstant.SUCCESS_CODE);
+                dataPage.setMessage(BaseConstant.SUCCESS_RESULT);
+            }
         }
-        return JSON.toJSONString(datePage);
+        return JSON.toJSONString(dataPage);
     }
 }

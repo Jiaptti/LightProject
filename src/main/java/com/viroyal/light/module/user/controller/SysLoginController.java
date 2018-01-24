@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -47,14 +48,14 @@ public class SysLoginController {
 
     //首页
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index() {
-        return "/index";
+    public void index(HttpServletResponse response)  throws IOException {
+        response.sendRedirect("swagger-ui.html");
     }
 
     //登录
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
-        return "/login";
+        return "/login.jsp";
     }
 
     //权限测试用

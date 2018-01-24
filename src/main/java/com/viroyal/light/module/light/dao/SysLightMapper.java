@@ -27,7 +27,7 @@ public interface SysLightMapper extends BaseMapper<SysLight> {
      * 更新路灯数据
      * @param  light 路灯数据对象
      */
-    void update(SysLight light);
+    int update(SysLight light);
 
     /**
      * 删除路灯数据

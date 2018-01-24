@@ -41,6 +41,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
             return JSON.toJSONString(resultMap);
         }
         try {
+            sysRolePermissionMapper.deleteAllPerms(Long.parseLong(roleId));
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             List<SysRolePermission> rolePermissionList = new ArrayList<>();
             String[] ids = permissionId.split(",");

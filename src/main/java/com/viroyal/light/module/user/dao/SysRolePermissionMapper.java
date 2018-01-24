@@ -36,4 +36,10 @@ public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
      */
     void deleteBatch(Object[] ids);
 
+    /**
+     * 删除角色所有的权限
+     * @param  roleId 角色id
+     */
+    void deleteAllPerms(Long roleId);
+
 }

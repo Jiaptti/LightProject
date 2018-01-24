@@ -1,5 +1,6 @@
 package com.viroyal.light.module.light.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -69,7 +71,7 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	/**
 	 * 所属用户id
 	 */
-	@ApiModelProperty("所属维修员id(即用户id,看数据库谁是维修员)(添加，更新都选填)")
+	@ApiModelProperty("所属维修员id(即用户id,看数据库谁是维修员)(需要分配的时候就添加，更新选填)")
 	@TableField("user_id")
 	private Long userId;
     /**
@@ -166,7 +168,15 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	@TableField(exist = false)
 	private String closeTime;
 
+	@ApiModelProperty("查询出来的数据，添加和修改的时候，都不用管")
+	@TableField(exist = false)
+	@JSONField(format="yyyy-MM-dd")
+	private Date strategyOpenTime;
 
+	@ApiModelProperty("查询出来的数据，添加和修改的时候，都不用管")
+	@TableField(exist = false)
+	@JSONField(format="yyyy-MM-dd")
+	private Date strategyCloseTime;
 
 	@Override
 	protected Serializable pkVal() {

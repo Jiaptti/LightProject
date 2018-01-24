@@ -9,13 +9,16 @@
 		<result column="traffic_level" property="trafficLevel" />
 		<result column="open_time" property="openTime" />
 		<result column="close_time" property="closeTime" />
+		<result column="strategy_open_time" property="strategyOpenTime"/>
+		<result column="strategy_close_time" property="strategyCloseTime"/>
 		<result column="type" property="type" />
 		<result column="exist" property="exist" />
 	</resultMap>
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select strategy.id, strategy.smooth_level, strategy.traffic_level,
-		strategy.open_time, strategy.close_time, strategy.`type`
+		strategy.open_time, strategy.close_time, strategy.strategy_open_time,
+		strategy.strategy_close_time, strategy.`type`
 		from sys_light_strategy as strategy
 		where 1 = 1 and strategy.exist = 1
 		<if test="strategyId != null"> and strategy.id = #{strategyId}</if>
@@ -38,6 +41,8 @@
 		`traffic_level`,
 		`open_time`,
 		`close_time`,
+		`strategy_open_time`,
+		`strategy_close_time`,
 		`type`
 		)
 		values
@@ -47,6 +52,8 @@
 		#{trafficLevel},
 		#{openTime},
 		#{closeTime},
+		#{strategyOpenTime},
+		#{strategyCloseTime},
 		#{type}
 		)
 	</insert>

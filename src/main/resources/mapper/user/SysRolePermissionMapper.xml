@@ -40,8 +40,12 @@
         update sys_role_permission set exist = 0
         where id in
         <foreach item="ids" collection="array" open="(" separator="," close=")">
-            ${ids}
+            #{ids}
         </foreach>
     </update>
+
+    <delete id="deleteAllPerms" parameterType="Long">
+        delete from sys_role_permission where rid = #{roleId}
+    </delete>
 
 </mapper>

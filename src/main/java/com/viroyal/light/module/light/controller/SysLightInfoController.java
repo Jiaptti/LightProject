@@ -1,7 +1,6 @@
 package com.viroyal.light.module.light.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
@@ -15,7 +14,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +34,7 @@ public class SysLightInfoController {
     @ApiOperation("移动端添加路灯")
     @ApiResponses({
             @ApiResponse(code=200,message="添加成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="添加失败")
     })
     @RequestMapping(value = "/lightInfoSave", method = RequestMethod.POST)
@@ -49,6 +48,7 @@ public class SysLightInfoController {
     @ApiOperation("移动端删除路灯")
     @ApiResponses({
             @ApiResponse(code=200,message="删除成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="删除失败")
     })
     @RequestMapping(value = "/lightInfoDelete", method = RequestMethod.GET)
@@ -62,6 +62,7 @@ public class SysLightInfoController {
     @ApiOperation("移动端更新路灯")
     @ApiResponses({
             @ApiResponse(code=200,message="更新成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="更新失败")
     })
     @RequestMapping(value = "/lightInfoUpdate", method = RequestMethod.POST)
@@ -115,6 +116,7 @@ public class SysLightInfoController {
     })
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="查询失败")
     })
     @RequestMapping(value = "/queryWithCondition", method = RequestMethod.POST)

@@ -5,16 +5,13 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.CustomPage;
-import com.viroyal.light.common.page.DatePage;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.common.utils.BaseConstant;
-import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.entity.SysRole;
 import com.viroyal.light.module.user.entity.SysRolePermission;
 import com.viroyal.light.module.user.service.ISysRolePermissionService;
 import com.viroyal.light.module.user.service.ISysRoleService;
 import io.swagger.annotations.*;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
 
 /**

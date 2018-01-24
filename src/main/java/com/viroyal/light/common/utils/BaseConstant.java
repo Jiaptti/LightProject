@@ -28,12 +28,8 @@ public class BaseConstant {
     public static final String SUCCESS_RESULT = "Success";
     //返回user的key
     public static final String USER = "user";
-    //返回lightInfo的key
-    public static final String LIGHT_INFO = "lightInfo";
     //返回userList的key
     public static final String VALUE_LIST = "list";
-    //返回分页结果集
-    public static final String PAGE_RESULT = "result";
     //踢出成功
     public static final String KICKOUT_SUCCESS = "Kickout Success";
     //踢出失败
@@ -98,8 +94,6 @@ public class BaseConstant {
     public static final String USER_ACCOUNT = "帐号或密码不正确，请确认用户名密码";
     //权限id错误
     public static final String NO_PERMISSION_ID = "没有更新的权限id";
-    //地区id错误
-    public static final String NO_REGION_ID = "没有更新的地区id";
     //请求错误
     public static final String REQUEST_ERROR = "请求错误";
     //删除id错误
@@ -122,7 +116,6 @@ public class BaseConstant {
     //异常描述
     public static final String EXCEPTION_MESSAGE = "异常描述";
     //异常原因
-    public static final String EXCEPTION_CAUSE= "异常原因";
     //输入数据格式不正确
     public static final String EXCEPTION_FORMAT = "输入数据格式不正确";
     //请输入正确的用户id
@@ -155,8 +148,6 @@ public class BaseConstant {
     public static final String REGION_NAME_NOT_NULL = "地区名不能为空";
     //街道名不能为空
     public static final String REGION_STRETT_NAME_NOT_NULL = "街道名不能为空";
-    //请选择街道所在的区id
-    public static final String REGION_STREET_UP_REGION_ID_NOT_NULL = "请选择街道所在的区id";
     //地区id超过指定长度，需在{min} - {max}之间
     public static final String REGION_COMMON_ID_LENGTH = "地区id超过指定长度，需在{%1$d}~{%2$d}之间";
     //街道id超过指定长度，需在{min} - {max}之间
@@ -184,5 +175,39 @@ public class BaseConstant {
     //路灯信息状态不能为空
     public static final String LIGHT_INFO_STATUS_NOT_NULL = "路灯信息状态不能为空";
     //请选择路灯信息策略id
-    public static final String LIGHT_INFO_STRATEGY = "请选择路灯信息策略id";
+    public static final String LIGHT_INFO_STREET_ID_NOT_NULL = "请输入路灯所在街道id";
+    //请输入路灯的经度
+    public static final String LIGHT_INFO_LONGITUDE_NOT_NULL = "请输入路灯的经度";
+    //请输入路灯的纬度
+    public static final String LIGHT_INFO_LATITUDE_NOT_NULL = "请输入路灯的纬度";
+
+
+    //路灯开启状态不能为空
+    public static final String LIGHT_STATUS_NOT_NULL = "路灯开启状态不能为空";
+    //请输入路灯当前电压
+    public static final String LIGHT_VOLTAGE_NOT_NULL = "请输入路灯当前电压";
+    //请输入路灯当前电流
+    public static final String LIGHT_CURRENT_NOT_NULL = "请输入路灯当前电流";
+    //请输入路灯检测到的车流量
+    public static final String LIGHT_TRAFFIC_FLOW_NOT_NULL = "请输入路灯检测到的车流量";
+    //请输入路灯检测到的温度
+    public static final String LIGHT_TEMPERATURE_NOT_NULL = "请输入路灯检测到的温度";
+    //请输入路灯检测到的湿度
+    public static final String LIGHT_HUMIDITY_NOT_NULL = "请输入路灯检测到的湿度";
+    //请输入路灯当前亮度
+    public static final String LIGHT_LIGHTNESS_NOT_NULL = "请输入路灯当前亮度";
+    //请输入对应的路灯信息id
+    public static final String LIGHT_INFO_ID_NOT_NULL = "请输入对应的路灯信息id";
+
+
+    //请输入车流量多时候的亮度
+    public static final String LIGHT_STRATEGY_TRAFFIC_LEVEL_NOT_NULL = "请输入车流量多时候的亮度";
+    //请输入车流量少时候的亮度
+    public static final String LIGHT_STRATEGY_SMOOTH_LEVEL_NOT_NULL = "请输入车流量少时候的亮度";
+    //打开时间不能为空
+    public static final String LIGHT_STRATEGY_OPEN_TIME_NOT_NULL = "打开时间不能为空";
+    //关闭时间不能为空
+    public static final String LIGHT_STRATEGY_CLOSE_TIME_NOT_NULL = "关闭时间不能为空";
+    //策略类型不能为空
+    public static final String LIGHT_STRATEGY_TYPE_NOT_NULL = "策略类型不能为空";
 }

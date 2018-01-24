@@ -1,5 +1,6 @@
 package com.viroyal.light.module.light.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -66,6 +67,7 @@ public class SysLight extends Model<SysLight> {
 	 * 数据提交的时间
 	 */
 	@ApiModelProperty("数据提交的时间(不用填)")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date datetime;
     /**
      * 对应sys_light_info的id
@@ -78,6 +80,20 @@ public class SysLight extends Model<SysLight> {
      */
 	@ApiModelProperty("亮度(添加时候必填，更新选填)")
 	private Integer lightness;
+
+	@ApiModelProperty("最后一次修改时间(不用填)")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@TableField("last_update_time")
+	private Date lastUpdateTime;
+
+	@ApiModelProperty("查询出来的数据，添加和修改的时候，都不用管")
+	@TableField(exist = false)
+	private String code;
+
+	@ApiModelProperty("查询出来的数据，添加和修改的时候，都不用管")
+	@TableField(exist = false)
+	private String lightInfo;
+
 
 	@Override
 	protected Serializable pkVal() {

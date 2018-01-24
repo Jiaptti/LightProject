@@ -29,7 +29,7 @@
 		left join sys_user_role as ur on ur.rid = rp.rid
 		where 1 = 1 and p.exist = 1
 		<if test="userId != null"> and ur.uid = #{userId} and ur.exist = 1</if>
-		<if test="roleId != null"> and ur.rid = #{roleId}  and ur.exist = 1</if>
+		<if test="roleId != null"> and rp.rid = #{roleId}  and rp.exist = 1</if>
 		<if test="permName != null"> and p.`name` like CONCAT('%', #{permName}, '%')</if>
 		<if test="sort == 'asc' "> order by p.id asc </if>
 		<if test="sort == 'desc' "> order by p.id desc </if>
