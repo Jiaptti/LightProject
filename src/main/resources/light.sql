@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : my_db
-Source Server Version : 50527
+Source Server Version : 50558
 Source Host           : localhost:3306
 Source Database       : viroyal_light_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50527
+Target Server Version : 50558
 File Encoding         : 65001
 
-Date: 2018-01-18 19:52:23
+Date: 2018-01-26 00:18:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,11 +31,12 @@ CREATE TABLE `sys_light` (
 `info_id`  bigint(10) NULL DEFAULT NULL COMMENT '对应light_info的code' ,
 `lightness`  int(11) NULL DEFAULT NULL COMMENT '亮度' ,
 `exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
+`last_update_time`  datetime NULL DEFAULT NULL COMMENT '最后更新时间' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=15
+AUTO_INCREMENT=16
 
 ;
 
@@ -43,7 +44,7 @@ AUTO_INCREMENT=15
 -- Records of sys_light
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_light` VALUES ('1', '1', '110', '800', '1', '6', '65', '2017-12-01 17:40:40', '1', '0', '1'), ('2', '1', '100', '600', '1', '16', '85', '2017-12-01 12:00:06', '2', '0', '1'), ('3', '1', '110', '100', '0', '60', '120', '2017-12-31 22:00:36', '3', '8', '1'), ('4', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '4', '0', '1'), ('5', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '5', '0', '1'), ('6', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '6', '0', '1'), ('7', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '7', '0', '1'), ('8', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '8', '0', '1'), ('9', '1', '140', '800', '0', '24', '85', '2017-06-01 23:13:22', '9', '0', '1'), ('10', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '10', '0', '1'), ('11', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '11', '0', '1'), ('12', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '12', '0', '1'), ('14', '1', '120', '800', '1', '22', '10', '2018-01-18 10:44:39', '10', '20', '1');
+INSERT INTO `sys_light` VALUES ('1', '1', '110', '800', '1', '6', '65', '2017-12-01 17:40:40', '1', '0', '1', null), ('2', '1', '100', '600', '1', '16', '85', '2017-12-01 12:00:06', '2', '0', '1', null), ('3', '1', '110', '100', '0', '60', '120', '2017-12-31 22:00:36', '3', '8', '1', null), ('4', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '4', '0', '1', null), ('5', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '5', '0', '1', null), ('6', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '6', '0', '1', null), ('7', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '7', '0', '1', null), ('8', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '8', '0', '1', null), ('9', '1', '140', '800', '0', '24', '85', '2017-06-01 23:13:22', '9', '0', '1', null), ('10', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '10', '0', '1', null), ('11', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '11', '0', '1', null), ('12', '1', '140', '800', '1', '24', '85', '2017-06-01 23:13:22', '12', '0', '1', null), ('14', '1', '120', '800', '1', '22', '10', '2018-01-18 10:44:39', '10', '20', '1', null), ('15', '0', '110', '800', '0', '-1', '19', '2018-01-25 18:20:40', '10', '10', '1', '2018-01-25 18:22:49');
 COMMIT;
 
 -- ----------------------------
@@ -104,7 +105,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=13
+AUTO_INCREMENT=14
 
 ;
 
@@ -112,7 +113,7 @@ AUTO_INCREMENT=13
 -- Records of sys_light_info
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_light_info` VALUES ('1', '1001', 'xx1路灯', '0', '0', '1', '4', '2', '5205020', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('2', '1002', 'xx2路灯', '1', '0', '0', '4', '2', '5205021', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('3', '1003', 'xx3路灯', '1', '0', '0', '4', '2', '5202010', '60000', '1', '160', '0', '0', '0', '0', '0', '90', '0', '0', '0', '1'), ('4', '1004', 'xx4路灯', '0', '0', '0', '4', '2', '5203030', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('5', '1005', 'xx5路灯', '0', '0', '0', '4', '3', '5203031', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('6', '1006', 'xx6路灯', '0', '0', '0', '4', '3', '3101040', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('7', '1007', 'xx7路灯', '0', '0', '0', '4', '3', '3101040', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('8', '1008', 'xx8路灯', '1', '0', '0', '4', '3', '3101041', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('9', '1009', 'xx9路灯', '1', '0', '0', '4', '4', '3101041', '60000', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('10', '1010', 'xx10路灯', '1', '0', '0', '4', '4', '3101120', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('11', '1011', 'xx11路灯', '1', '0', '0', '4', '4', '3101121', '60000', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('12', '1012', 'xx12路灯', '0', '0', '0', '4', '4', '3101121', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
+INSERT INTO `sys_light_info` VALUES ('1', '1001', 'xx1路灯', '0', '0', '1', '4', '2', '5205020', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('2', '1002', 'xx2路灯', '1', '0', '0', '4', '2', '5205021', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('3', '1003', 'xx3路灯', '1', '0', '0', '4', '2', '5202010', '60000', '1', '160', '0', '0', '0', '0', '0', '90', '0', '0', '0', '1'), ('4', '1004', 'xx4路灯', '0', '0', '0', '4', '2', '5203030', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('5', '1005', 'xx5路灯', '0', '0', '0', '4', '3', '5203031', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('6', '1006', 'xx6路灯', '0', '0', '0', '4', '3', '3101040', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('7', '1007', 'xx7路灯', '0', '0', '0', '4', '3', '3101040', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('8', '1008', 'xx8路灯', '1', '0', '0', '4', '3', '3101041', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('9', '1009', 'xx9路灯', '1', '0', '0', '4', '4', '3101041', '60000', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('10', '1010', 'xx10路灯', '1', '0', '0', '4', '4', '3101120', '60000', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('11', '1011', 'xx11路灯', '1', '0', '0', '4', '4', '3101121', '60000', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('12', '1012', 'xx12路灯', '0', '0', '0', '4', '4', '3101121', '60000', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'), ('13', '1013', 'xx13路灯', '1', '0', '0', '4', '3', '3101121', '60000', '1', '0', '0', '0', '0', '0', null, '0', '0', '0', '0', '1');
 COMMIT;
 
 -- ----------------------------
@@ -125,8 +126,10 @@ CREATE TABLE `sys_light_record` (
 `record_status`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录状态' ,
 `record_operation`  varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录操作' ,
 `record_user_id`  bigint(20) NULL DEFAULT NULL COMMENT '谁进行了操作' ,
-`flag`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 `light_info_id`  bigint(10) NULL DEFAULT NULL COMMENT '对应路灯id' ,
+`last_update_user_id`  bigint(10) NULL DEFAULT NULL COMMENT '最后修改的用户' ,
+`last_update_time`  datetime NULL DEFAULT NULL COMMENT '最后修改日期' ,
+`exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -139,7 +142,7 @@ AUTO_INCREMENT=17
 -- Records of sys_light_record
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_light_record` VALUES ('1', '2016-06-16 11:15:33', '更新路灯', '对路灯位置进行了修改', '1', '1', '1'), ('2', '2017-12-22 11:01:56', '指派路灯', '指派了维修员张三', '2', '1', '1'), ('3', '2018-01-16 20:15:14', '维修路灯', '对路灯进行了维修', '3', '1', '2'), ('4', '2018-01-01 20:16:12', '更新路灯', '调低了路灯亮度', '2', '1', '3'), ('5', '2017-12-29 20:17:17', '更新路灯', '精确了路灯的具体位置', '1', '1', '4'), ('6', '2017-12-05 20:17:57', '指派路灯', '指派了维修员张三', '2', '1', '4'), ('7', '2017-11-22 20:18:03', '维修路灯', '对路灯电流不稳定进行了维修', '3', '1', '5'), ('8', '2018-01-10 20:18:12', '维修路灯', '对路灯电压不稳定进行了维修', '3', '1', '5'), ('9', '2017-12-02 20:18:17', '指派路灯', '指派了维修员李四', '2', '1', '6'), ('10', '2017-12-06 20:18:24', '指派路灯', '指派了维修员李四', '1', '1', '7'), ('11', '2017-11-15 20:18:33', '更新路灯', '更新了路灯的编号', '2', '1', '8'), ('12', '2017-11-24 20:18:40', '维修路灯', '对路灯无法检测湿度进行维修', '3', '1', '8'), ('13', '2017-10-18 20:18:47', '指派路灯', '指派了维修员李四', '2', '1', '9'), ('14', '2017-09-01 20:18:54', '维修路灯', '维修了路灯无法亮灯的情况', '3', '1', '10'), ('15', '2018-01-01 20:19:01', '更新路灯', '修改了亮度阈值', '2', '1', '11'), ('16', '2017-07-12 20:19:07', '更新路灯', '修改了湿度阈值', '2', '1', '12');
+INSERT INTO `sys_light_record` VALUES ('1', '2018-01-22 11:01:56', '指派路灯', '指派了维修员张三', '2', '1', null, null, '1'), ('2', '2018-01-16 20:15:14', '维修路灯', '对路灯进行了维修', '3', '2', null, null, '1'), ('3', '2018-01-01 20:16:12', '更新路灯', '调低了路灯亮度', '2', '3', null, null, '1'), ('4', '2018-01-01 20:17:17', '更新路灯', '精确了路灯的具体位置', '1', '4', null, null, '1'), ('5', '2018-01-01 20:17:57', '指派路灯', '指派了维修员张三', '2', '4', null, null, '1'), ('6', '2017-11-22 20:18:03', '维修路灯', '对路灯电流不稳定进行了维修', '3', '5', null, null, '1'), ('7', '2018-01-10 20:18:12', '维修路灯', '对路灯电压不稳定进行了维修', '3', '5', null, null, '1'), ('8', '2018-01-01 20:18:17', '指派路灯', '指派了维修员李四', '2', '6', null, null, '1'), ('9', '2017-12-06 20:18:24', '指派路灯', '指派了维修员李四', '1', '7', null, null, '1'), ('10', '2017-11-15 20:18:33', '更新路灯', '更新了路灯的编号', '2', '8', null, null, '1'), ('11', '2017-11-24 20:18:40', '维修路灯', '对路灯无法检测湿度进行维修', '3', '8', null, null, '1'), ('12', '2017-10-18 20:18:47', '指派路灯', '指派了维修员李四', '2', '9', null, null, '1'), ('13', '2017-09-01 20:18:54', '维修路灯', '维修了路灯无法亮灯的情况', '3', '10', null, null, '1'), ('14', '2018-01-01 20:19:01', '更新路灯', '修改了亮度阈值', '2', '11', null, null, '1'), ('15', '2017-07-12 20:19:07', '更新路灯', '修改了湿度阈值', '2', '12', null, null, '1');
 COMMIT;
 
 -- ----------------------------
@@ -151,6 +154,8 @@ CREATE TABLE `sys_light_strategy` (
 `smooth_level`  int(10) NULL DEFAULT NULL COMMENT '车流量少时的亮度' ,
 `traffic_level`  int(10) NULL DEFAULT NULL COMMENT '车流量多时的亮度' ,
 `open_time`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '打开时间' ,
+`strategy_open_time`  date NULL DEFAULT NULL COMMENT '策略打开日期' ,
+`strategy_close_time`  date NULL DEFAULT NULL COMMENT '策略关闭日期' ,
 `close_time`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关闭时间' ,
 `type`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '冬季，夏季' ,
 `exist`  int(1) NULL DEFAULT 1 COMMENT '是否可见' ,
@@ -166,7 +171,7 @@ AUTO_INCREMENT=6
 -- Records of sys_light_strategy
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_light_strategy` VALUES ('1', '200', '255', '18:00:00', '07:00:00', '春季', '1'), ('2', '180', '255', '19:45:00', '05:30:00', '夏季', '1'), ('3', '180', '255', '19:00:00', '06:00:00', '秋季', '1'), ('4', '220', '255', '17:45:00', '07:25:00', '冬季', '1');
+INSERT INTO `sys_light_strategy` VALUES ('1', '200', '255', '18:00:00', '2018-01-01', '2018-03-31', '07:00:00', '春季', '1'), ('2', '180', '255', '19:45:00', '2018-04-01', '2018-06-30', '05:30:00', '夏季', '1'), ('3', '180', '255', '19:00:00', '2018-07-01', '2018-09-30', '06:00:00', '秋季', '1'), ('4', '220', '255', '17:45:00', '2018-10-01', '2018-12-31', '07:25:00', '冬季', '1');
 COMMIT;
 
 -- ----------------------------
@@ -183,7 +188,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=31
+AUTO_INCREMENT=36
 
 ;
 
@@ -191,7 +196,7 @@ AUTO_INCREMENT=31
 -- Records of sys_permission
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_permission` VALUES ('1', '/user/user.jsp', '用户列表', 'sys:user:list,sys:user:info', '1'), ('2', '/user/edit.jsp', '用户添加', 'sys:user:save,sys:role:select', '1'), ('3', '/user/edit.jsp', '用户删除', 'sys:user:delete', '1'), ('4', '/user/edit.jsp', '用户更新', 'sys:user:update,sys:role:select', '1'), ('5', '', '用户Session踢出', 'sys:user:kickout', '1'), ('6', '', '用户激活&禁止', 'sys:user:status', '1'), ('7', '/role/role.jsp', '角色列表', 'sys:role:list,sys:role:info', '1'), ('8', '/role/edit.jsp', '角色删除', 'sys:role:delete', '1'), ('9', '/role/edit.jsp', '角色添加', 'sys:role:save', '1'), ('10', '/role/edit.jsp', '角色更新', 'sys:role:update', '1'), ('11', '/permission/permission.jsp', '权限列表', 'sys:permission:list,sys:permission:info', '1'), ('12', '/permission/edit.jsp', '权限添加', 'sys:permission:save', '1'), ('13', '/permission/edit.jsp', '权限删除', 'sys:permission:delete', '1'), ('14', '/permission/edit.jsp', '权限更新', 'sys:permission:update', '1'), ('15', '/lightinfo/lightinfo.jsp', '路灯信息列表', 'sys:lightInfo:list,sys:lightInfo:info', '1'), ('16', '/lightinfo/edit.jsp', '路灯信息添加', 'sys:lightInfo:save', '1'), ('17', '/lightinfo/edit.jsp', '路灯信息删除', 'sys:lightInfo:delete', '1'), ('18', '/lightinfo/edit.jsp', '路灯信息更新', 'sys:lightInfo:update', '1'), ('19', '/region/region.jsp', '地区列表', 'sys:region:list,sys:region:info', '1'), ('20', '/region/edit.jsp', '地区添加', 'sys:region.save', '1'), ('21', '/region/edit.jsp', '地区删除', 'sys:region:delete', '1'), ('22', '/region/edit.jsp', '地区更新', 'sys:region:update', '1'), ('23', '/light/light.jsp', '路灯列表', 'sys:light:list,sys:light:info', '1'), ('24', '/light/edit.jsp', '路灯添加', 'sys:light:save', '1'), ('25', '/light/edit.jsp', '路灯删除', 'sys:light:delete', '1'), ('26', '/light/edit.jsp', '路灯更新', 'sys:light:update', '1'), ('27', '/strategy/strategy.jsp', '路灯策略列表', 'sys:strategy:list,sys:strategy:info', '1'), ('28', '/strategy/edit.jsp', '路灯策略添加', 'sys:strategy:save', '1'), ('29', '/strategy/edit.jsp', '路灯策略删除', 'sys:strategy:delete', '1'), ('30', '/strategy/edit.jsp', '路灯策略更新', 'sys:strategy:update', '1');
+INSERT INTO `sys_permission` VALUES ('1', '/user/user.jsp', '用户列表', 'sys:user:list,sys:user:info', '1'), ('2', '/user/edit.jsp', '用户添加', 'sys:user:save,sys:role:select', '1'), ('3', '/user/edit.jsp', '用户删除', 'sys:user:delete', '1'), ('4', '/user/edit.jsp', '用户更新', 'sys:user:update,sys:role:select', '1'), ('5', '', '用户Session踢出', 'sys:user:kickout', '1'), ('6', '', '用户激活&禁止', 'sys:user:status', '1'), ('7', '/role/role.jsp', '角色列表', 'sys:role:list,sys:role:info', '1'), ('8', '/role/edit.jsp', '角色删除', 'sys:role:delete', '1'), ('9', '/role/edit.jsp', '角色添加', 'sys:role:save', '1'), ('10', '/role/edit.jsp', '角色更新', 'sys:role:update', '1'), ('11', '/permission/permission.jsp', '权限列表', 'sys:permission:list,sys:permission:info', '1'), ('12', '/permission/edit.jsp', '权限添加', 'sys:permission:save', '1'), ('13', '/permission/edit.jsp', '权限删除', 'sys:permission:delete', '1'), ('14', '/permission/edit.jsp', '权限更新', 'sys:permission:update', '1'), ('15', '/lightinfo/lightinfo.jsp', '路灯信息列表', 'sys:lightInfo:list,sys:lightInfo:info', '1'), ('16', '/lightinfo/edit.jsp', '路灯信息添加', 'sys:lightInfo:save', '1'), ('17', '/lightinfo/edit.jsp', '路灯信息删除', 'sys:lightInfo:delete', '1'), ('18', '/lightinfo/edit.jsp', '路灯信息更新', 'sys:lightInfo:update', '1'), ('19', '/region/region.jsp', '地区列表', 'sys:region:list,sys:region:info', '1'), ('20', '/region/edit.jsp', '地区添加', 'sys:region:save', '1'), ('21', '/region/edit.jsp', '地区删除', 'sys:region:delete', '1'), ('22', '/region/edit.jsp', '地区更新', 'sys:region:update', '1'), ('23', '/light/light.jsp', '路灯列表', 'sys:light:list,sys:light:info', '1'), ('24', '/light/edit.jsp', '路灯添加', 'sys:light:save', '1'), ('25', '/light/edit.jsp', '路灯删除', 'sys:light:delete', '1'), ('26', '/light/edit.jsp', '路灯更新', 'sys:light:update', '1'), ('27', '/strategy/strategy.jsp', '路灯策略列表', 'sys:strategy:list,sys:strategy:info', '1'), ('28', '/strategy/edit.jsp', '路灯策略添加', 'sys:strategy:save', '1'), ('29', '/strategy/edit.jsp', '路灯策略删除', 'sys:strategy:delete', '1'), ('30', '/strategy/edit.jsp', '路灯策略更新', 'sys:strategy:update', '1'), ('32', null, '路灯记录列表', 'sys:lightRecord:list', '1'), ('33', null, '路灯记录添加', 'sys:lightRecord:save', '1'), ('34', null, '路灯记录删除', 'sys:lightRecord:delete', '1'), ('35', null, '路灯记录更新', 'sys:lightRecord:update', '1');
 COMMIT;
 
 -- ----------------------------
@@ -215,7 +220,7 @@ AUTO_INCREMENT=15
 -- Records of sys_permission_init
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_permission_init` VALUES ('1', '/static/**', 'anon', '1'), ('2', '/ajaxLogin', 'anon', '2'), ('3', '/logout', 'logout', '3'), ('4', '/**', 'kickout,perms[sys:user:list],authc', '3'), ('5', '/getGifCode', 'anon', '2'), ('6', '/kickout', 'anon', '2'), ('7', '/userLogin', 'anon', '2'), ('12', '/favicon.ico', 'anon', '2'), ('13', '/login', 'anon', '2'), ('14', '/403', 'anon', '2');
+INSERT INTO `sys_permission_init` VALUES ('1', '/static/**', 'anon', '1'), ('2', '/ajaxLogin', 'anon', '2'), ('3', '/logout', 'logout', '3'), ('4', '/**', 'kickout,authc', '3'), ('5', '/getGifCode', 'anon', '2'), ('6', '/kickout', 'anon', '2'), ('7', '/userLogin', 'anon', '2'), ('12', '/favicon.ico', 'anon', '2'), ('13', '/login', 'anon', '2'), ('14', '/403', 'anon', '2');
 COMMIT;
 
 -- ----------------------------
@@ -234,7 +239,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=19
+AUTO_INCREMENT=29
 
 ;
 
@@ -242,7 +247,7 @@ AUTO_INCREMENT=19
 -- Records of sys_region
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_region` VALUES ('1', '520500', '毕节市', '', '地级市', '551700', '1'), ('2', '520300', '遵义市', '', '地级市', '563000', '1'), ('3', '520200', '六盘水市', '', '地级市', '553000', '1'), ('4', '310000', '上海市', '', '直辖市', '200000', '1'), ('5', '520502', '七星关区', '520500', '市辖区', '551700', '1'), ('6', '520201', '钟山区', '520200', '市辖区', '553000', '1'), ('7', '520303', '汇川区', '520300', '市辖区', '563000', '1'), ('8', '310104', '徐汇区', '310000', '市辖区', '200030', '1'), ('9', '310112', '闵行区', '310000', '市辖区', '201100', '1'), ('10', '5205020', '市东街道', '520502', '街道', '551700', '1'), ('11', '5205021', '三板桥街道', '520502', '街道', '551700', '1'), ('12', '5202010', '黄土坡街道', '520201', '街道', '553000', '1'), ('13', '5203030', '洗马路街道', '520303', '街道', '563000', '1'), ('14', '5203031', '大连路街道', '520303', '街道', '563000', '1'), ('15', '3101040', '天平路街道', '310104', '街道', '200030', '1'), ('16', '3101041', '枫林路街道', '310104', '街道', '200030', '1'), ('17', '3101120', '江川路街道', '310112', '街道', '201100', '1'), ('18', '3101121', '古美路街道', '310112', '街道', '201100', '1');
+INSERT INTO `sys_region` VALUES ('1', '520500', '毕节市', '', '地级市', '551700', '1'), ('2', '520300', '遵义市', '', '地级市', '563000', '1'), ('3', '520200', '六盘水市', '', '地级市', '553000', '1'), ('4', '310000', '上海市', '', '直辖市', '200000', '1'), ('5', '520502', '七星关区', '520500', '市辖区', '551700', '1'), ('6', '520201', '钟山区', '520200', '市辖区', '553000', '1'), ('7', '520303', '汇川区', '520300', '市辖区', '563000', '1'), ('8', '310104', '徐汇区', '310000', '市辖区', '200030', '1'), ('9', '310112', '闵行区', '310000', '市辖区', '201100', '1'), ('10', '5205020', '市东街道', '520502', '街道', '551700', '1'), ('11', '5205021', '三板桥街道', '520502', '街道', '551700', '1'), ('12', '5202010', '黄土坡街道', '520201', '街道', '553000', '1'), ('13', '5203030', '洗马路街道', '520303', '街道', '563000', '1'), ('14', '5203031', '大连路街道', '520303', '街道', '563000', '1'), ('15', '3101040', '天平路街道', '310104', '街道', '200030', '1'), ('16', '3101041', '枫林路街道', '310104', '街道', '200030', '1'), ('17', '3101120', '江川路街道', '310112', '街道', '201100', '1'), ('18', '3101121', '古美路街道', '310112', '街道', '201100', '1'), ('19', '310101', '黄浦区', '310000', '市辖区', '210100', '1'), ('28', '3101011', '黄埔大道', '310101', '街道', '210100', '1');
 COMMIT;
 
 -- ----------------------------
@@ -266,7 +271,7 @@ AUTO_INCREMENT=4
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES ('1', '管理员', 'admin', '1'), ('2', '用户', 'user', '1'), ('3', '维修员', 'worder', '1');
+INSERT INTO `sys_role` VALUES ('1', '管理员', 'admin', '1'), ('2', '用户', 'user', '1'), ('3', '维修员', 'worker', '1');
 COMMIT;
 
 -- ----------------------------
@@ -282,7 +287,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=59
+AUTO_INCREMENT=48
 
 ;
 
@@ -315,7 +320,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=14
+AUTO_INCREMENT=15
 
 ;
 
@@ -323,7 +328,7 @@ AUTO_INCREMENT=14
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES ('1', 'admin', 'admin', 'l9a0lajfwQ3VRSh4jUUJSQ==', '15565567776', 'admin@admin.com', '2018-01-12 15:34:06', '2018-01-18 19:40:32', '1', '26', null, null, '1'), ('2', '张三', 'zhang', 'eC/MmhASeJBCbfh7W0YU1A==', '13316998986', '123@123.com', '2017-12-24 19:37:40', null, '1', '1', null, null, '1'), ('3', '李四', 'lisi', 'bR28UodwBWRDm+buWIaZbg==', '15575590909', '321@123.com', '2017-12-24 19:38:06', null, '1', '1', null, null, '1'), ('4', '王五', 'wangwu', 'Yb7Dc8/cPeCL8NwOjnYSRA==', '13317979888', '456@123.com', '2017-12-24 19:38:30', null, '1', '1', null, null, '1'), ('6', '权哥', 'quan', '7NjQPajcVm1dzbZMJvVcRA==', '15475878981', '132@123.com', '2017-12-25 10:34:26', '2018-01-15 09:51:15', '1', '1', null, null, '1'), ('7', '老司机', 'laosiji', '7NjQPajcVm1PC6tJMaodpQxtrQrzzUma', '15585858585', '123@123.com', '2017-12-25 10:34:55', '2018-01-11 16:31:05', '1', '1', null, null, '1'), ('8', '赵总', 'zxb', '7NjQPajcVm3rcjWOTacgxQ==', '13816214814', '460837364@qq.com', '2017-12-26 11:11:50', '2018-01-15 09:40:57', '1', '20', null, null, '1'), ('9', '哈哈哈哈哈', 'sunyy', '8AetwF4m3o3Y4JDqkLIeLA==', '13145678961', '2222@11.COM', '2017-12-27 13:59:21', '2018-01-12 14:18:37', '1', '1', '2018-01-03 15:09:37', '1', '1'), ('10', '武因生', '武因生', '7NjQPajcVm05iEcgH3wDZ/3531yNGT4C', '15821361405', 'wys484112@163.com', '2017-12-28 00:00:00', '2017-12-28 19:45:58', '1', null, null, null, '1'), ('11', '黑哥', 'darkface', 'Ysrp0xWBcJDSXzqMlWwNag==', '15545457777', '123@123.com', '2018-01-08 17:53:16', '2018-01-11 16:06:02', '1', '1', null, null, '1'), ('12', 'zzzz', 'zzzz', null, '11111111', 'zzzzzz@viroyal-elec.com', '2018-01-09 09:09:14', null, '0', '29', null, null, '1'), ('13', '罗宝娟', 'luo345', 'g+tTx+DfnBsHMANo9jgcZA==', '13512312312', '123@123.com', '2018-01-09 16:07:53', '2018-01-15 09:41:02', '1', '1', null, null, '1');
+INSERT INTO `sys_user` VALUES ('1', 'admin', 'admin', 'l9a0lajfwQ3VRSh4jUUJSQ==', '15565567776', 'admin@admin.com', '2018-01-12 15:34:06', '2018-01-26 00:09:12', '1', '26', null, null, '1'), ('2', '张三', 'zhang', 'eC/MmhASeJBCbfh7W0YU1A==', '13316998986', '123@123.com', '2017-12-24 19:37:40', '2018-01-22 23:01:51', '1', '1', null, null, '1'), ('3', '李四', 'lisi', 'bR28UodwBWRDm+buWIaZbg==', '15575590909', '321@123.com', '2017-12-24 19:38:06', null, '1', '1', null, null, '1'), ('4', '王五', 'wangwu', 'Yb7Dc8/cPeCL8NwOjnYSRA==', '13317979888', '456@123.com', '2017-12-24 19:38:30', null, '1', '1', null, null, '1'), ('6', '权哥', 'quan', '7NjQPajcVm1dzbZMJvVcRA==', '15475878981', '132@123.com', '2017-12-25 10:34:26', '2018-01-15 09:51:15', '1', '1', null, null, '1'), ('7', '老司机', 'laosiji', '7NjQPajcVm1PC6tJMaodpQxtrQrzzUma', '15585858585', '123@123.com', '2017-12-25 10:34:55', '2018-01-11 16:31:05', '1', '1', null, null, '1'), ('8', '赵总', 'zxb', '7NjQPajcVm3rcjWOTacgxQ==', '13816214814', '460837364@qq.com', '2017-12-26 11:11:50', '2018-01-15 09:40:57', '1', '20', null, null, '1'), ('9', '哈哈哈哈哈', 'sunyy', '8AetwF4m3o3Y4JDqkLIeLA==', '13145678961', '2222@11.COM', '2017-12-27 13:59:21', '2018-01-12 14:18:37', '1', '1', '2018-01-03 15:09:37', '1', '1'), ('10', '武因生', '武因生', '7NjQPajcVm05iEcgH3wDZ/3531yNGT4C', '15821361405', 'wys484112@163.com', '2017-12-28 00:00:00', '2017-12-28 19:45:58', '1', null, null, null, '1'), ('11', '黑哥', 'darkface', 'Ysrp0xWBcJDSXzqMlWwNag==', '15545457777', '123@123.com', '2018-01-08 17:53:16', '2018-01-11 16:06:02', '1', '1', null, null, '1'), ('12', 'zzzz', 'zzzz', null, '11111111', 'zzzzzz@viroyal-elec.com', '2018-01-09 09:09:14', null, '0', '29', null, null, '1'), ('13', '罗宝娟', 'luo345', 'g+tTx+DfnBsHMANo9jgcZA==', '13512312312', '123@123.com', '2018-01-09 16:07:53', '2018-01-15 09:41:02', '1', '1', null, null, '1'), ('14', '张三丰', 'tests', 'awTRVGVqQRVw1WvtUEvUSA==', '13319691360', 'test@132.com', '2018-01-24 22:24:44', null, '1', '1', '2018-01-24 22:25:23', '1', '1');
 COMMIT;
 
 -- ----------------------------
@@ -339,7 +344,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=28
+AUTO_INCREMENT=34
 
 ;
 
@@ -347,13 +352,13 @@ AUTO_INCREMENT=28
 -- Records of sys_user_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user_role` VALUES ('1', '1', '1', '1'), ('2', '2', '3', '1'), ('3', '3', '3', '1'), ('4', '4', '3', '1'), ('13', '6', '1', '1'), ('15', '7', '1', '1'), ('22', '8', '1', '1'), ('23', '9', '1', '1'), ('24', '10', '1', '1'), ('25', '11', '1', '1'), ('26', '12', '1', '0'), ('27', '13', '1', '1');
+INSERT INTO `sys_user_role` VALUES ('1', '1', '1', '1'), ('2', '2', '3', '1'), ('3', '3', '3', '1'), ('4', '4', '3', '1'), ('13', '6', '1', '1'), ('15', '7', '1', '1'), ('22', '8', '1', '1'), ('23', '9', '1', '1'), ('24', '10', '1', '1'), ('25', '11', '1', '1'), ('26', '12', '1', '0'), ('27', '13', '1', '1'), ('28', '14', null, '1'), ('29', '15', null, '1'), ('30', '16', null, '1'), ('31', '17', '1', '1'), ('32', '18', '1', '1'), ('33', '14', '1', '1');
 COMMIT;
 
 -- ----------------------------
 -- Auto increment value for sys_light
 -- ----------------------------
-ALTER TABLE `sys_light` AUTO_INCREMENT=15;
+ALTER TABLE `sys_light` AUTO_INCREMENT=16;
 
 -- ----------------------------
 -- Auto increment value for sys_light_group
@@ -363,7 +368,7 @@ ALTER TABLE `sys_light_group` AUTO_INCREMENT=13;
 -- ----------------------------
 -- Auto increment value for sys_light_info
 -- ----------------------------
-ALTER TABLE `sys_light_info` AUTO_INCREMENT=13;
+ALTER TABLE `sys_light_info` AUTO_INCREMENT=14;
 
 -- ----------------------------
 -- Auto increment value for sys_light_record
@@ -378,7 +383,7 @@ ALTER TABLE `sys_light_strategy` AUTO_INCREMENT=6;
 -- ----------------------------
 -- Auto increment value for sys_permission
 -- ----------------------------
-ALTER TABLE `sys_permission` AUTO_INCREMENT=31;
+ALTER TABLE `sys_permission` AUTO_INCREMENT=36;
 
 -- ----------------------------
 -- Auto increment value for sys_permission_init
@@ -388,7 +393,7 @@ ALTER TABLE `sys_permission_init` AUTO_INCREMENT=15;
 -- ----------------------------
 -- Auto increment value for sys_region
 -- ----------------------------
-ALTER TABLE `sys_region` AUTO_INCREMENT=19;
+ALTER TABLE `sys_region` AUTO_INCREMENT=29;
 
 -- ----------------------------
 -- Auto increment value for sys_role
@@ -398,14 +403,14 @@ ALTER TABLE `sys_role` AUTO_INCREMENT=4;
 -- ----------------------------
 -- Auto increment value for sys_role_permission
 -- ----------------------------
-ALTER TABLE `sys_role_permission` AUTO_INCREMENT=59;
+ALTER TABLE `sys_role_permission` AUTO_INCREMENT=48;
 
 -- ----------------------------
 -- Auto increment value for sys_user
 -- ----------------------------
-ALTER TABLE `sys_user` AUTO_INCREMENT=14;
+ALTER TABLE `sys_user` AUTO_INCREMENT=15;
 
 -- ----------------------------
 -- Auto increment value for sys_user_role
 -- ----------------------------
-ALTER TABLE `sys_user_role` AUTO_INCREMENT=28;
+ALTER TABLE `sys_user_role` AUTO_INCREMENT=34;
