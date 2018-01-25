@@ -8,6 +8,7 @@ import com.viroyal.light.common.page.CustomPage;
 import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.user.entity.SysPermission;
+import com.viroyal.light.module.user.entity.vo.SysPermissionVo;
 import com.viroyal.light.module.user.service.ISysPermissionService;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -39,29 +40,6 @@ public class SysPermissionController {
     @Autowired
     ISysPermissionService sysPermissionService;
 
-    // 跳转到用户管理页面
-    @RequestMapping(value = "/permissionPage", method = RequestMethod.GET)
-    public String permissionPage(String edit, Model model){
-        // edit判断是否编辑成功
-        model.addAttribute("edit", edit);
-        return "permission/permission";
-    }
-
-    @RequestMapping(value = "/getPermissionListWithPager", method = RequestMethod.GET)
-    @ResponseBody
-    @RequiresPermissions("sys:permission:list")
-    public String getPermissionListWithPager(FrontPage<SysPermission> page){
-        page.setPageSize(10);
-        Wrapper<SysPermission> wrapper = new EntityWrapper<SysPermission>();
-        String keyWords = page.getKeywords();
-        if(keyWords != null &&!keyWords.equals("")){
-            wrapper.like("name", keyWords);
-        }
-        Page<SysPermission> pageList = sysPermissionService.selectPage(page.getPagePlus(), wrapper);
-        CustomPage<SysPermission> customPage = new CustomPage<SysPermission>(pageList);
-        return JSON.toJSONString(customPage);
-    }
-
     @ApiOperation("移动端获得权限列表")
     @ApiResponses({
             @ApiResponse(code=200,message="查询成功"),
@@ -75,41 +53,6 @@ public class SysPermissionController {
         return sysPermissionService.queryAll();
     }
 
-    @RequestMapping(value = "/editPage/{Id}", method = RequestMethod.GET)
-    public String editPage(@PathVariable("Id") String id, Model model){
-        if(!id.equals("add")){
-            SysPermission permission = sysPermissionService.selectById(id);
-            model.addAttribute("permission", permission);
-        }
-        return "permission/edit";
-    }
-
-    // 增加和修改
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(SysPermission permission, Model model) {
-        if (sysPermissionService.insertOrUpdate(permission)) {
-            return "forward:permissionPage?edit=true";
-        } else {
-            return "forward:permissionPage?edit=false";
-        }
-    }
-
-    // 刪除
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    @ResponseBody
-    public String delete(@RequestParam(value = "ids[]") String[] ids) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try {
-            sysPermissionService.deleteBatchIds(Arrays.asList(ids));
-            resultMap.put("flag", true);
-            resultMap.put("msg", "刪除成功！");
-        } catch (Exception e) {
-            resultMap.put("flag", false);
-            resultMap.put("msg", e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
-    }
-
     @ApiOperation("移动端添加权限")
     @ApiResponses({
             @ApiResponse(code=200,message="添加成功"),
@@ -119,7 +62,7 @@ public class SysPermissionController {
     @RequestMapping(value = "/permissionSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:permission:save")
-    public String permissionSave(SysPermission permission){
+    public String permissionSave(SysPermissionVo permission){
         return sysPermissionService.savePermission(permission);
     }
 
@@ -145,7 +88,7 @@ public class SysPermissionController {
     @RequestMapping(value = "/permissionUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:permission:update")
-    public String permissionUpdate(SysPermission permission){
+    public String permissionUpdate(SysPermissionVo permission){
        return sysPermissionService.update(permission);
     }
 

@@ -9,6 +9,7 @@ import com.viroyal.light.module.user.entity.SysUser;
 import com.viroyal.light.module.user.dao.SysUserMapper;
 import com.viroyal.light.module.user.entity.SysUserRole;
 import com.viroyal.light.module.user.entity.UserOnlineBo;
+import com.viroyal.light.module.user.entity.vo.SysUserVo;
 import com.viroyal.light.module.user.service.ISysRoleService;
 import com.viroyal.light.module.user.service.ISysUserRoleService;
 import com.viroyal.light.module.user.service.ISysUserService;
@@ -174,68 +175,67 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional
     @Override
-    public String save(SysUser user) {
+    public String save(SysUserVo userVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if (StringUtils.isBlank(user.getNickname())) {
+        if (StringUtils.isBlank(userVo.getNickname())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_NAME_IS_EMPTY);
             return JSON.toJSONString(resultMap);
-        } else if (!CommonUtil.rightLength(user.getNickname(), 2, 5)) {
+        } else if (!CommonUtil.rightLength(userVo.getNickname(), 2, 5)) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_NAME_LENGTH, 2, 5));
             return JSON.toJSONString(resultMap);
-        } else if (!CommonUtil.isRightNameFormat(user.getNickname())) {
+        } else if (!CommonUtil.isRightNameFormat(userVo.getNickname())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_NAME_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if (StringUtils.isBlank(user.getUsername())) {
+        } else if (StringUtils.isBlank(userVo.getUsername())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_ACCOUNT_IS_EMPTY);
             return JSON.toJSONString(resultMap);
-        } else if (!CommonUtil.rightLength(user.getUsername().trim(), 5, 15)) {
+        } else if (!CommonUtil.rightLength(userVo.getUsername().trim(), 5, 15)) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_ACCOUNT_LENGTH, 5, 15));
             return JSON.toJSONString(resultMap);
-        } else if (sysUserMapper.getUser(user.getUsername()) != 0) {
+        } else if (sysUserMapper.getUser(userVo.getUsername()) != 0) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_EXIST);
             return JSON.toJSONString(resultMap);
-        } else if (StringUtils.isBlank(user.getPswd())) {
+        } else if (StringUtils.isBlank(userVo.getPswd())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_PASSWORD_IS_EMPTY);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(user.getPswd(), 6, 15)){
+        } else if(!CommonUtil.rightLength(userVo.getPswd(), 6, 15)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_PASSWORD_LENGTH, 6, 15));
             return JSON.toJSONString(resultMap);
-        } else if (!StringUtils.isBlank(user.getPhone()) && !CommonUtil.isPhone(user.getPhone().trim())) {
+        } else if (!StringUtils.isBlank(userVo.getPhone()) && !CommonUtil.isPhone(userVo.getPhone().trim())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_PHONE_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if (!StringUtils.isBlank(user.getEmail()) && !CommonUtil.isEmail(user.getEmail().trim())) {
+        } else if (!StringUtils.isBlank(userVo.getEmail()) && !CommonUtil.isEmail(userVo.getEmail().trim())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_EMAIL_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(user.getStatus())){
+        } else if(StringUtils.isBlank(userVo.getStatus())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_NO_STATUS);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(user.getStatus().trim(), 0, 2)){
+        } else if(!CommonUtil.rightLength(userVo.getStatus().trim(), 0, 2)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_STATUS_LENGTH, 0, 2));
             return JSON.toJSONString(resultMap);
-        } else if (user.getRoleId() == null) {
+        } else if (userVo.getRoleId() == null) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.USER_ROLE_ID_IS_EMPTY);
             return JSON.toJSONString(resultMap);
         } else {
             //添加用户
+            SysUser user = new SysUser();
+            CommonUtil.copyProperties(user, userVo, new String[]{"pswd","createTime","lastLoginTime","createNameId"
+                    ,"lastUpdateTime","lastUpdateNameId","exist"});
             user.setCreateTime(new Date());
-            if (StringUtils.isBlank(user.getPswd())) {
-                user.setPswd(null);
-            } else {
-                user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
-            }
+            user.setPswd(MyDES.encryptBasedDes(userVo.getPswd() + userVo.getUsername()));
             user.setCreateNameId(String.valueOf(ShiroUtils.getUserId()));
             sysUserMapper.save(user);
             SysUserRole userRole = new SysUserRole();
@@ -301,55 +301,58 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional
     @Override
-    public String update(SysUser user) {
+    public String update(SysUserVo userVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if (user.getId() == null) {
+        if (userVo.getId() == null) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if (!StringUtils.isBlank(user.getNickname()) && !CommonUtil.rightLength(user.getNickname(), 2, 5)) {
+        } else if (!StringUtils.isBlank(userVo.getNickname()) && !CommonUtil.rightLength(userVo.getNickname(), 2, 5)) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.USER_NAME_LENGTH, 2, 5));
             return JSON.toJSONString(resultMap);
-        } else if (!StringUtils.isBlank(user.getNickname()) && !CommonUtil.isRightNameFormat(user.getNickname())) {
+        } else if (!StringUtils.isBlank(userVo.getNickname()) && !CommonUtil.isRightNameFormat(userVo.getNickname())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.USER_NAME_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if (!StringUtils.isBlank(user.getUsername()) && !CommonUtil.rightLength(user.getUsername().trim(), 5, 15)) {
+        } else if (!StringUtils.isBlank(userVo.getUsername()) && !CommonUtil.rightLength(userVo.getUsername().trim(), 5, 15)) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.USER_ACCOUNT_LENGTH, 5, 15));
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(user.getPswd()) && !CommonUtil.rightLength(user.getPswd(), 6, 15)){
+        } else if(!StringUtils.isBlank(userVo.getPswd()) && !CommonUtil.rightLength(userVo.getPswd(), 6, 15)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_PASSWORD_LENGTH, 6, 15));
             return JSON.toJSONString(resultMap);
-        } else if (!StringUtils.isBlank(user.getPhone()) && !CommonUtil.isPhone(user.getPhone().trim())) {
+        } else if (!StringUtils.isBlank(userVo.getPhone()) && !CommonUtil.isPhone(userVo.getPhone().trim())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.USER_PHONE_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if (!StringUtils.isBlank(user.getEmail()) && !CommonUtil.isEmail(user.getEmail().trim())) {
+        } else if (!StringUtils.isBlank(userVo.getEmail()) && !CommonUtil.isEmail(userVo.getEmail().trim())) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.USER_EMAIL_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(user.getStatus()) && !CommonUtil.rightLength(user.getStatus(),0,2)){
+        } else if(!StringUtils.isBlank(userVo.getStatus()) && !CommonUtil.rightLength(userVo.getStatus(),0,2)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.USER_STATUS_LENGTH, 0, 2));
             return JSON.toJSONString(resultMap);
         } else {
             //更新用户
-            if (StringUtils.isBlank(user.getPswd())) {
-                user.setPswd(null);
-            } else {
-                user.setPswd(MyDES.encryptBasedDes(user.getPswd() + user.getUsername()));
+            SysUser user = new SysUser();
+            CommonUtil.copyProperties(user, userVo, new String[]{"pswd","createTime","lastLoginTime","createNameId"
+                    ,"lastUpdateTime","lastUpdateNameId","exist"});
+            if (!StringUtils.isBlank(userVo.getPswd())) {
+                user.setPswd(MyDES.encryptBasedDes(userVo.getPswd() + userVo.getUsername()));
             }
             user.setLastUpdateTime(new Date());
             user.setLastUpdateNameId(String.valueOf(ShiroUtils.getUserId()));
+
+            System.out.print("user = " + user);
             sysUserMapper.update(user);
 
             SysUserRole userRole = new SysUserRole();
-            if(user.getRoleId() != null){
-                userRole.setUid(user.getId());
-                userRole.setRid(user.getRoleId());
+            if(userVo.getRoleId() != null){
+                userRole.setUid(userVo.getId());
+                userRole.setRid(userVo.getRoleId());
                 //更新用户与角色关系
                 sysUserRoleService.updateUserRole(userRole);
             }

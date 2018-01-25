@@ -2,6 +2,7 @@ package com.viroyal.light.module.user.service;
 
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.baomidou.mybatisplus.service.IService;
+import com.viroyal.light.module.user.entity.vo.SysPermissionVo;
 
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * @param permission 权限对象
      * @return json格式的结果集
      */
-    String savePermission(SysPermission permission);
+    String savePermission(SysPermissionVo permission);
 
 
     /**
@@ -42,7 +43,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * @param permission 权限对象
      * @return json格式的结果集
      */
-    String update(SysPermission permission);
+    String update(SysPermissionVo permission);
 
     /**
      * 通过id删除权限

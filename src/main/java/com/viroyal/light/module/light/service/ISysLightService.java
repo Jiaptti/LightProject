@@ -2,6 +2,7 @@ package com.viroyal.light.module.light.service;
 
 import com.viroyal.light.module.light.entity.SysLight;
 import com.baomidou.mybatisplus.service.IService;
+import com.viroyal.light.module.light.entity.vo.SysLightVo;
 
 import java.util.Map;
 
@@ -19,14 +20,14 @@ public interface ISysLightService extends IService<SysLight> {
      * @param  light 路灯数据对象
      * @return json格式的结果集
      */
-    String save(SysLight light);
+    String save(SysLightVo light);
 
     /**
      * 更新路灯数据
      * @param  light 路灯数据对象
      * @return json格式的结果集
      */
-    String update(SysLight light);
+    String update(SysLightVo light);
 
     /**
      * 删除路灯数据

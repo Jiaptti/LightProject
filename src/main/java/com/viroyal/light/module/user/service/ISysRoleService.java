@@ -2,6 +2,7 @@ package com.viroyal.light.module.user.service;
 
 import com.viroyal.light.module.user.entity.SysRole;
 import com.baomidou.mybatisplus.service.IService;
+import com.viroyal.light.module.user.entity.vo.SysRoleVo;
 
 import java.util.Map;
 
@@ -20,14 +21,14 @@ public interface ISysRoleService extends IService<SysRole> {
      * @param role 角色对象
      * @return json格式的结果
      */
-    String save(SysRole role);
+    String save(SysRoleVo role);
 
     /**
      * 更新角色
      * @param role 角色对象
      * @return json格式的结果
      */
-    String update(SysRole role);
+    String update(SysRoleVo role);
 
     /**
      * 删除角色

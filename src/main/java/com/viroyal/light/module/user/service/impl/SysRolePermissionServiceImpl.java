@@ -2,9 +2,11 @@ package com.viroyal.light.module.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.utils.BaseConstant;
+import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.entity.SysRolePermission;
 import com.viroyal.light.module.user.dao.SysRolePermissionMapper;
+import com.viroyal.light.module.user.entity.vo.SysRolePermissionVo;
 import com.viroyal.light.module.user.service.ISysRolePermissionService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +44,6 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
         }
         try {
             sysRolePermissionMapper.deleteAllPerms(Long.parseLong(roleId));
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             List<SysRolePermission> rolePermissionList = new ArrayList<>();
             String[] ids = permissionId.split(",");
             if (ids.length > 1) {
@@ -59,6 +60,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
                 rolePermissionList.add(rolePermission);
             }
             sysRolePermissionMapper.save(rolePermissionList);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,18 +72,20 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 
     @Transactional
     @Override
-    public String update(SysRolePermission rolePermission) {
+    public String update(SysRolePermissionVo rolePermissionVo) {
         Map<String, Object> resultMap = new HashMap<>();
-        if(rolePermission.getId() == null){
+        if(rolePermissionVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(rolePermission.getRid() == null && rolePermission.getPid() == null){
+        } else if(rolePermissionVo.getRid() == null && rolePermissionVo.getPid() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);
         }
         try {
+            SysRolePermission rolePermission = new SysRolePermission();
+            CommonUtil.copyProperties(rolePermission, rolePermissionVo, new String[]{"exist"});
             sysRolePermissionMapper.update(rolePermission);
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);

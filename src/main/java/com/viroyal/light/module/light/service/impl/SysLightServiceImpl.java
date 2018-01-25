@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
+import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.light.entity.SysLight;
 import com.viroyal.light.module.light.dao.SysLightMapper;
+import com.viroyal.light.module.light.entity.vo.SysLightVo;
 import com.viroyal.light.module.light.service.ISysLightService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,45 +36,47 @@ public class SysLightServiceImpl extends ServiceImpl<SysLightMapper, SysLight> i
 
     @Transactional
     @Override
-    public String save(SysLight light) {
+    public String save(SysLightVo lightVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(light.getStatus() == null){
+        if(lightVo.getStatus() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_STATUS_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(light.getVoltage() == null){
+        } else if(lightVo.getVoltage() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_VOLTAGE_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(light.getCurrent() == null){
+        } else if(lightVo.getCurrent() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_CURRENT_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(light.getTrafficFlow() == null){
+        } else if(lightVo.getTrafficFlow() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_TRAFFIC_FLOW_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(light.getTemperature() == null){
+        } else if(lightVo.getTemperature() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_TEMPERATURE_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(light.getHumidity() == null){
+        } else if(lightVo.getHumidity() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_HUMIDITY_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(light.getLightness() == null){
+        } else if(lightVo.getLightness() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_LIGHTNESS_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(light.getInfoId() == null){
+        } else if(lightVo.getInfoId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.LIGHT_INFO_ID_NOT_NULL);
             return JSON.toJSONString(resultMap);
         } else {
             try{
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                SysLight light = new SysLight();
+                CommonUtil.copyProperties(light,lightVo,new String[]{"datetime","lastUpdateTime","code","lightInfo","exist"});
                 light.setDatetime(new Date());
                 sysLightMapper.save(light);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e){
                 e.printStackTrace();
@@ -85,16 +89,25 @@ public class SysLightServiceImpl extends ServiceImpl<SysLightMapper, SysLight> i
 
     @Transactional
     @Override
-    public String update(SysLight light) {
+    public String update(SysLightVo lightVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(light.getId() == null){
+        if(lightVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
-        } else {
+            return JSON.toJSONString(resultMap);
+        } else if(lightVo.getStatus() == null && lightVo.getCurrent() == null && lightVo.getVoltage() == null
+                && lightVo.getTrafficFlow() == null && lightVo.getTemperature() == null && lightVo.getHumidity() == null
+                && lightVo.getInfoId() == null && lightVo.getLightness() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
+            return JSON.toJSONString(resultMap);
+        }else {
             try{
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                SysLight light = new SysLight();
+                CommonUtil.copyProperties(light,lightVo,new String[]{"datetime","lastUpdateTime","code","lightInfo","exist"});
                 light.setLastUpdateTime(new Date());
                 sysLightMapper.update(light);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e){
                 e.printStackTrace();

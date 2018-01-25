@@ -2,6 +2,8 @@ package com.viroyal.light.module.location.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.viroyal.light.module.location.entity.SysRegion;
+import com.viroyal.light.module.location.entity.vo.SysRegionVo;
+import com.viroyal.light.module.location.entity.vo.SysStreetVo;
 
 import java.util.Map;
 
@@ -49,20 +51,20 @@ public interface ISysRegionService extends IService<SysRegion> {
      * @param sysRegion 地区对象
      * @return json格式的结果集
      */
-    String save(SysRegion sysRegion);
+    String save(SysRegionVo sysRegion);
     /**
      * 存储街道
-     * @param sysRegion 街道对象
+     * @param streetVo 街道对象
      * @return json格式的结果集
      */
-    String saveStreet(SysRegion sysRegion);
+    String saveStreet(SysStreetVo streetVo);
 
     /**
      * 更新地区
      * @param sysRegion 地区对象
      * @return json格式的结果集
      */
-    String update(SysRegion sysRegion);
+    String update(SysRegionVo sysRegion);
 
     /**
      * 删除地区

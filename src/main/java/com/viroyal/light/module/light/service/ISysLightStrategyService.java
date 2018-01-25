@@ -1,9 +1,8 @@
 package com.viroyal.light.module.light.service;
 
-import com.viroyal.light.common.page.DataPage;
-import com.viroyal.light.module.light.entity.LightStrategyVo;
 import com.viroyal.light.module.light.entity.SysLightStrategy;
 import com.baomidou.mybatisplus.service.IService;
+import com.viroyal.light.module.light.entity.vo.SysLightStrategyVo;
 
 import java.util.Map;
 
@@ -21,14 +20,14 @@ public interface ISysLightStrategyService extends IService<SysLightStrategy> {
      * @param  lightStrategy 路灯策略对象
      * @return json格式的结果集
      */
-    String save(LightStrategyVo lightStrategy);
+    String save(SysLightStrategyVo lightStrategy);
 
     /**
      * 更新路灯策略
      * @param  lightStrategy 路灯策略对象
      * @return json格式的结果集
      */
-    String update(SysLightStrategy lightStrategy);
+    String update(SysLightStrategyVo lightStrategy);
 
     /**
      * 删除路灯策略

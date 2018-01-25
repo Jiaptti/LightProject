@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
+import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.dao.SysLightInfoMapper;
+import com.viroyal.light.module.light.entity.vo.SysLightInfoVo;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -34,36 +36,39 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
 
     @Transactional
     @Override
-    public String saveLightInfo(SysLightInfo lightInfo) {
+    public String saveLightInfo(SysLightInfoVo lightInfoVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(StringUtils.isBlank(lightInfo.getCode())){
+        if(StringUtils.isBlank(lightInfoVo.getCode())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_CODE_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(lightInfo.getLightInfo())){
+        } else if(StringUtils.isBlank(lightInfoVo.getLightInfo())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(lightInfo.getStatus())){
+        } else if(StringUtils.isBlank(lightInfoVo.getStatus())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_STATUS_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(lightInfo.getLongitude() == null){
+        } else if(lightInfoVo.getLongitude() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_LONGITUDE_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(lightInfo.getLatitude() == null){
+        } else if(lightInfoVo.getLatitude() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_LATITUDE_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(lightInfo.getStreetId() == null){
+        } else if(lightInfoVo.getStreetId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_STREET_ID_NOT_NULL);
             return JSON.toJSONString(resultMap);
         } else {
             try{
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                SysLightInfo lightInfo = new SysLightInfo();
+                CommonUtil.copyProperties(lightInfo, lightInfoVo,
+                        new String[]{"strategyCloseTime","strategyOpenTime","closeTime","openTime","exist"});
                 sysLightInfoMapper.save(lightInfo);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e){
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
@@ -97,28 +102,39 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
 
     @Transactional
     @Override
-    public String updateLightInfo(SysLightInfo lightInfo) {
+    public String updateLightInfo(SysLightInfoVo lightInfoVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(lightInfo.getId() == null){
+        if(lightInfoVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
+            return JSON.toJSONString(resultMap);
+        } else if(StringUtils.isBlank(lightInfoVo.getCode()) && StringUtils.isBlank(lightInfoVo.getLightInfo())
+                && StringUtils.isBlank(lightInfoVo.getStatus()) && lightInfoVo.getLongitude() == null
+                && lightInfoVo.getLatitude() == null && lightInfoVo.getAutoReport() == null
+                && lightInfoVo.getCurrentOverload() == null && lightInfoVo.getGroupId() == null
+                && lightInfoVo.getCurrentThreshold() == null && lightInfoVo.getHumidityOverload() == null
+                && lightInfoVo.getLightnessOverload() == null && lightInfoVo.getLightnessThreshold() == null
+                && StringUtils.isBlank(lightInfoVo.getLightInfo()) && lightInfoVo.getTemperatureOverload() == null
+                && StringUtils.isBlank(lightInfoVo.getStrategyId()) && lightInfoVo.getUserId() == null
+                && lightInfoVo.getVoltageOverload() == null && lightInfoVo.getVoltageThreshold() == null
+                && lightInfoVo.getTemperatureThreshold() == null && lightInfoVo.getHumidityThreshold() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
+            return JSON.toJSONString(resultMap);
         } else {
             try{
-                if(sysLightInfoMapper.update(lightInfo) == 0){
-                    resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
-                } else {
-                    resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-                }
-
+                SysLightInfo lightInfo = new SysLightInfo();
+                CommonUtil.copyProperties(lightInfo, lightInfoVo,
+                        new String[]{"strategyCloseTime","strategyOpenTime","closeTime","openTime","exist"});
+                sysLightInfoMapper.update(lightInfo);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e){
                 e.printStackTrace();
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
             }
         }
-
         return JSON.toJSONString(resultMap);
     }
 

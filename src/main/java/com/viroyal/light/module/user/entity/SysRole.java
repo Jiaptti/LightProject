@@ -22,27 +22,22 @@ import java.io.Serializable;
  * @author jiaptti
  * @since 2017-12-01
  */
-@ApiModel(value="角色信息")
 @Data
 @TableName("sys_role")
 public class SysRole extends Model<SysRole> {
-
     private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty("主键id,自增长(不用填，更新的时候带上)")
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
 
     /**
      * 角色名称
      */
-	@ApiModelProperty("角色名称(添加时候必填，更新不用)")
 	private String name;
 
     /**
      * 角色类型
      */
-	@ApiModelProperty("角色类型(添加时候必填，更新不用)")
 	private String type;
 
 	/**

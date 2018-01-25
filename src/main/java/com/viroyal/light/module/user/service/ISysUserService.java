@@ -5,6 +5,7 @@ import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.module.user.entity.SysUser;
 import com.baomidou.mybatisplus.service.IService;
 import com.viroyal.light.module.user.entity.UserOnlineBo;
+import com.viroyal.light.module.user.entity.vo.SysUserVo;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -35,7 +36,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param user 用户对象
      * @return json格式的结果
      */
-    String save(SysUser user);
+    String save(SysUserVo user);
 
     /**
      * 查询所有用户
@@ -51,7 +52,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param user 用户对象
      * @return json格式的结果
      */
-    String update(SysUser user);
+    String update(SysUserVo user);
 
     /**
      * 批量删除用户

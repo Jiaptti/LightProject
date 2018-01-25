@@ -3,6 +3,8 @@ package com.viroyal.light.module.location.controller;
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.location.entity.SysRegion;
+import com.viroyal.light.module.location.entity.vo.SysRegionVo;
+import com.viroyal.light.module.location.entity.vo.SysStreetVo;
 import com.viroyal.light.module.location.service.ISysRegionService;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -77,7 +79,7 @@ public class SysRegionController {
     @RequestMapping(value = "/regionSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:region:save")
-    public String saveRegion(SysRegion region) {
+    public String saveRegion(SysRegionVo region) {
        return sysRegionService.save(region);
     }
 
@@ -89,8 +91,8 @@ public class SysRegionController {
     @RequestMapping(value = "/saveStreet", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:region:save")
-    public String saveStreet(SysRegion region) {
-        return sysRegionService.saveStreet(region);
+    public String saveStreet(SysStreetVo streetVo) {
+        return sysRegionService.saveStreet(streetVo);
     }
 
     @ApiOperation("删除地区")
@@ -113,7 +115,7 @@ public class SysRegionController {
     @RequestMapping(value = "/regionUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:region:update")
-    public String updateRegion(SysRegion region) {
+    public String updateRegion(SysRegionVo region) {
         return sysRegionService.update(region);
     }
 

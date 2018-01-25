@@ -64,12 +64,12 @@
 	</select>
 
     <!-- 通过区查询街道数 -->
-    <select id="queryStreetCount" parameterType="Long" resultType="Int">
-        select count(*) from sys_region as region left join sys_region as sr on region.up_region_id = sr.common_region_id
+    <select id="queryOneStreet" parameterType="Long" resultMap="BaseResultMap">
+        select region.common_region_id from sys_region as region left join sys_region as sr on region.up_region_id = sr.common_region_id
         left join sys_region as ssr on sr.up_region_id = ssr.common_region_id
         where region.up_region_id = #{areaId}  and region.region_desc = '街道'
         and region.exist = 1 and sr.exist = 1 and ssr.exist = 1
-        order by region.id asc
+        order by region.id desc LIMIT 1
     </select>
 
     <!-- 街道是否存在 -->
@@ -78,7 +78,7 @@
         from sys_region as region
         left join sys_region as sr on region.up_region_id = sr.common_region_id
         left join sys_region as ssr on sr.up_region_id = ssr.common_region_id
-        where region.up_region_id = #{areaId} and region.region_name like CONCAT(#{streetName}, '%')
+        where region.up_region_id = #{areaId} and region.region_name = #{streetName}
         and region.exist = 1 and sr.exist = 1 and ssr.exist = 1
         order by region.id asc
     </select>

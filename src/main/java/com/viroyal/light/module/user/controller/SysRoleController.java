@@ -9,6 +9,8 @@ import com.viroyal.light.common.page.FrontPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.user.entity.SysRole;
 import com.viroyal.light.module.user.entity.SysRolePermission;
+import com.viroyal.light.module.user.entity.vo.SysRolePermissionVo;
+import com.viroyal.light.module.user.entity.vo.SysRoleVo;
 import com.viroyal.light.module.user.service.ISysRolePermissionService;
 import com.viroyal.light.module.user.service.ISysRoleService;
 import io.swagger.annotations.*;
@@ -42,91 +44,6 @@ public class SysRoleController {
     @Autowired
     ISysRolePermissionService sysRolePermissionService;
 
-    //跳转到role管理页面
-    @RequestMapping(value = "/rolePage", method = RequestMethod.GET)
-    public String role(String edit, Model modle) {
-        //edit判断是否编辑成功
-        modle.addAttribute("edit", edit);
-        return "role/role";
-    }
-
-    //获取角色分页对象
-    @RequestMapping(value = "/getRoleListWithPager", method = RequestMethod.GET)
-    @ResponseBody
-    @RequiresPermissions("sys:role:list")
-    public String getRoleListWithPager(FrontPage<SysRole> page) {
-        page.setPageSize(10);
-        Wrapper<SysRole> wrapper = new EntityWrapper<SysRole>();
-        String keyWords = page.getKeywords();
-        if (keyWords != null && keyWords != "") wrapper.like("name", keyWords);
-        Page<SysRole> pageList = sysRoleService.selectPage(page.getPagePlus(), wrapper);
-        CustomPage<SysRole> customPage = new CustomPage<SysRole>(pageList);
-        return JSON.toJSONString(customPage);
-    }
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    @RequiresPermissions("sys:role:list")
-    public String getRoleList(){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<SysRole> roleList = sysRoleService.selectByMap(new HashMap<String, Object>());
-        if(roleList.size() > 0){
-            resultMap.put("status", "200");
-            resultMap.put("roleList", roleList);
-            resultMap.put("message", "success");
-        }
-        return JSON.toJSONString(resultMap);
-    }
-
-
-
-    //跳轉到編輯頁面edit
-    @RequestMapping(value = "/editPage/{Id}", method = RequestMethod.GET)
-    public String editPage(@PathVariable("Id") String Id, Model model) {
-        SysRole role = sysRoleService.selectById(Id);
-        model.addAttribute("role", role);
-        return "role/edit";
-    }
-
-
-    //刪除
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    @ResponseBody
-    @RequiresPermissions("sys:role:delete")
-    public String deleteRole(@RequestParam(value = "ids[]") String[] ids) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        try {
-            sysRoleService.deleteBatchIds(Arrays.asList(ids));
-            resultMap.put("flag", true);
-            resultMap.put("msg", "刪除成功！");
-        } catch (Exception e) {
-            resultMap.put("flag", false);
-            resultMap.put("msg", e.getMessage());
-        }
-        return JSON.toJSONString(resultMap);
-    }
-
-    //增加和修改
-    @RequestMapping(value = "/forward/save", method = RequestMethod.GET)
-    @RequiresPermissions("sys:role:save")
-    public String save() {
-        return "role/edit";
-    }
-
-    //增加和修改
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    @RequiresPermissions("sys:role:update")
-    public String editRole(SysRole role) {
-        sysRoleService.update(role);
-        return "redirect:rolePage?edit=true";
-    }
-
-    @RequestMapping(value = "/save", method = RequestMethod.GET)
-    public String saveRole(SysRole role) {
-        sysRoleService.save(role);
-        return "redirect:rolePage?edit=true";
-    }
-
     @ApiOperation("移动端添加角色")
     @ApiResponses({
             @ApiResponse(code=200,message="添加成功"),
@@ -136,7 +53,7 @@ public class SysRoleController {
     @RequestMapping(value = "/saveRole", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:role:save")
-    public String save(SysRole role){
+    public String save(SysRoleVo role){
         return sysRoleService.save(role);
     }
 
@@ -168,7 +85,7 @@ public class SysRoleController {
     @RequestMapping(value = "/updateRole", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:role:update")
-    public String update(SysRole role){
+    public String update(SysRoleVo role){
         return sysRoleService.update(role);
     }
 
@@ -181,7 +98,7 @@ public class SysRoleController {
     @RequestMapping(value = "/updateRolePermission", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:role:update")
-    public String updateRolePermission(SysRolePermission rolePermission){
+    public String updateRolePermission(SysRolePermissionVo rolePermission){
        return sysRolePermissionService.update(rolePermission);
     }
 

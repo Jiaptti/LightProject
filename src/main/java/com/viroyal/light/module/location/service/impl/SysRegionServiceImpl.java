@@ -8,6 +8,8 @@ import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.viroyal.light.module.location.dao.SysRegionMapper;
+import com.viroyal.light.module.location.entity.vo.SysRegionVo;
+import com.viroyal.light.module.location.entity.vo.SysStreetVo;
 import com.viroyal.light.module.location.service.ISysRegionService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -120,44 +122,46 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
 
     @Transactional
     @Override
-    public String save(SysRegion sysRegion) {
+    public String save(SysRegionVo sysRegionVo) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        if(StringUtils.isBlank(sysRegion.getCommonRegionId())){
+        if(StringUtils.isBlank(sysRegionVo.getCommonRegionId())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_ID_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(sysRegion.getCommonRegionId(),6,10)){
+        } else if(!CommonUtil.rightLength(sysRegionVo.getCommonRegionId(),6,10)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.REGION_COMMON_ID_LENGTH, 6, 10));
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(sysRegion.getRegionName())){
+        } else if(StringUtils.isBlank(sysRegionVo.getRegionName())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_NAME_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(sysRegion.getRegionName(),3,25)){
+        } else if(!CommonUtil.rightLength(sysRegionVo.getRegionName(),3,25)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.REGION_NAME_LENGTH, 3, 25));
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getUpRegionId()) && !CommonUtil.rightLength(sysRegion.getUpRegionId(),6,10)){
+        } else if(!StringUtils.isBlank(sysRegionVo.getUpRegionId()) && !CommonUtil.rightLength(sysRegionVo.getUpRegionId(),6,10)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.REGION_UP_REGION_ID_LENGTH, 6, 10));
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(sysRegion.getRegionDesc())){
+        } else if(StringUtils.isBlank(sysRegionVo.getRegionDesc())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_DESC_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.isRightRegionDesc(sysRegion.getRegionDesc())){
+        } else if(!CommonUtil.isRightRegionDesc(sysRegionVo.getRegionDesc())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_DESC_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getPostalcode()) && !CommonUtil.isRightPostalCode(sysRegion.getPostalcode())){
+        } else if(!StringUtils.isBlank(sysRegionVo.getPostalcode()) && !CommonUtil.isRightPostalCode(sysRegionVo.getPostalcode())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_POSTAL_CODE_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
         } else {
             try {
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                SysRegion sysRegion = new SysRegion();
+                CommonUtil.copyProperties(sysRegion,sysRegionVo,new String[]{"exist"});
                 sysRegionMapper.save(sysRegion);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e) {
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
@@ -170,48 +174,50 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
 
     @Transactional
     @Override
-    public String saveStreet(SysRegion sysRegion) {
+    public String saveStreet(SysStreetVo streetVo) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        if(StringUtils.isBlank(sysRegion.getCommonRegionId())){
+        if(StringUtils.isBlank(streetVo.getAreaId())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_STREET_ID_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(sysRegion.getCommonRegionId(),6,10)){
+        } else if(!CommonUtil.rightLength(streetVo.getAreaId(),6,10)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.REGION_STREET_ID_LENGTH, 6, 10));
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(sysRegion.getRegionName())){
+        } else if(StringUtils.isBlank(streetVo.getStreetName())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_STRETT_NAME_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(sysRegion.getRegionName(),3,25)){
+        } else if(!CommonUtil.rightLength(streetVo.getStreetName(),3,25)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.REGION_STREET_NAME_LENGTH, 3, 25));
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getPostalcode()) && !CommonUtil.isRightPostalCode(sysRegion.getPostalcode())){
+        } else if(!StringUtils.isBlank(streetVo.getPostalcode()) && !CommonUtil.isRightPostalCode(streetVo.getPostalcode())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_POSTAL_CODE_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
         } else {
             try {
                 Map<String, Object> params = new LinkedHashMap<String, Object>();
-                params.put("areaId", sysRegion.getCommonRegionId());
-                params.put("streetName", sysRegion.getRegionName());
+                params.put("areaId", streetVo.getAreaId());
+                params.put("streetName", streetVo.getStreetName());
                 SysRegion region = sysRegionMapper.queryStreet(params);
                 if(region != null){
                     resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
                     resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_STREET_EXIST);
                 } else {
-                    resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-                    int size =sysRegionMapper.queryStreetCount(Long.parseLong(sysRegion.getCommonRegionId())) + 1;
-                    sysRegion.setUpRegionId(sysRegion.getCommonRegionId());
-                    if(size == 0){
-                        sysRegion.setCommonRegionId(sysRegion.getCommonRegionId() + "0");
-                    } else {
-                        sysRegion.setCommonRegionId(sysRegion.getCommonRegionId() + size);
+                    SysRegion sysRegion = new SysRegion();
+                    if(!StringUtils.isBlank(streetVo.getPostalcode())){
+                        sysRegion.setPostalcode(streetVo.getPostalcode());
                     }
+                    SysRegion oneStreet = sysRegionMapper.queryOneStreet(Long.parseLong(streetVo.getAreaId()));
+                    String regionId = String.valueOf(Integer.parseInt(oneStreet.getCommonRegionId()) + 1);
+                    sysRegion.setUpRegionId(streetVo.getAreaId());
+                    sysRegion.setRegionName(streetVo.getStreetName());
+                    sysRegion.setCommonRegionId(regionId);
                     sysRegion.setRegionDesc("街道");
                     sysRegionMapper.save(sysRegion);
+                    resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                     resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
                 }
             } catch (Exception e) {
@@ -225,36 +231,38 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
 
     @Transactional
     @Override
-    public String update(SysRegion sysRegion) {
+    public String update(SysRegionVo sysRegionVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if(sysRegion.getId() == null){
+        if(sysRegionVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getCommonRegionId()) && !CommonUtil.rightLength(sysRegion.getCommonRegionId(),6,10)){
+        } else if(!StringUtils.isBlank(sysRegionVo.getCommonRegionId()) && !CommonUtil.rightLength(sysRegionVo.getCommonRegionId(),6,10)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.REGION_STREET_ID_LENGTH, 6, 10));
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getRegionName()) && !CommonUtil.rightLength(sysRegion.getRegionName(),3,25)){
+        } else if(!StringUtils.isBlank(sysRegionVo.getRegionName()) && !CommonUtil.rightLength(sysRegionVo.getRegionName(),3,25)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.REGION_STREET_NAME_LENGTH, 3, 25));
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getRegionDesc()) && !CommonUtil.isRightRegionDesc(sysRegion.getRegionDesc())){
+        } else if(!StringUtils.isBlank(sysRegionVo.getRegionDesc()) && !CommonUtil.isRightRegionDesc(sysRegionVo.getRegionDesc())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.REGION_DESC_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getUpRegionId()) && !CommonUtil.rightLength(sysRegion.getUpRegionId(),6,10)){
+        } else if(!StringUtils.isBlank(sysRegionVo.getUpRegionId()) && !CommonUtil.rightLength(sysRegionVo.getUpRegionId(),6,10)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.REGION_STREET_UP_REGION_ID_LENGTH, 6, 10));
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(sysRegion.getPostalcode()) && !CommonUtil.isRightPostalCode(sysRegion.getPostalcode())){
+        } else if(!StringUtils.isBlank(sysRegionVo.getPostalcode()) && !CommonUtil.isRightPostalCode(sysRegionVo.getPostalcode())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.REGION_POSTAL_CODE_RIGHT_FORMAT);
             return JSON.toJSONString(resultMap);
         } else {
             try {
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                SysRegion sysRegion = new SysRegion();
+                CommonUtil.copyProperties(sysRegion, sysRegionVo, new String[]{"exist"});
                 sysRegionMapper.update(sysRegion);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e) {
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);

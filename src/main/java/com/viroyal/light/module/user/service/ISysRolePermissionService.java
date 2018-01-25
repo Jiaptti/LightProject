@@ -2,6 +2,7 @@ package com.viroyal.light.module.user.service;
 
 import com.viroyal.light.module.user.entity.SysRolePermission;
 import com.baomidou.mybatisplus.service.IService;
+import com.viroyal.light.module.user.entity.vo.SysRolePermissionVo;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface ISysRolePermissionService extends IService<SysRolePermission> {
      * @param  rolePermission 角色权限对象
      * @return json格式的结果
      */
-    String update(SysRolePermission rolePermission);
+    String update(SysRolePermissionVo rolePermission);
 
     /**
      * 删除角色权限关联

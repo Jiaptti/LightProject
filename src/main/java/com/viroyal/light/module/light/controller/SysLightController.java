@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLight;
+import com.viroyal.light.module.light.entity.vo.SysLightVo;
 import com.viroyal.light.module.light.service.ISysLightService;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -42,7 +43,7 @@ public class SysLightController {
     @RequestMapping(value = "/lightSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:light:save")
-    public String saveLight(SysLight sysLight){
+    public String saveLight(SysLightVo sysLight){
        return sysLightService.save(sysLight);
     }
 
@@ -56,7 +57,7 @@ public class SysLightController {
     @RequestMapping(value = "/lightUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:light:update")
-    public String updateLight(SysLight sysLight){
+    public String updateLight(SysLightVo sysLight){
        return sysLightService.update(sysLight);
     }
 

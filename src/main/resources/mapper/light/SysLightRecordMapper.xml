@@ -10,7 +10,70 @@
 		<result column="record_operation" property="recordOperation" />
 		<result column="record_user_id" property="recordUserId" />
 		<result column="light_info_id" property="lightInfoId" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="nickname" property="nickName" />
+		<result column="code" property="code" />
+		<result column="light_info" property="lightInfo" />
 		<result column="exist" property="exist" />
 	</resultMap>
+
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select lr.id, lr.record_date,lr.record_status,lr.record_operation,u.nickname,li.code,li.light_info from sys_light_record as lr
+		left join sys_light_info as li on lr.light_info_id = li.id
+		left join sys_user as u on u.id = lr.record_user_id
+		where 1 = 1 and lr.exist = 1
+		<if test="infoId != null"> li.id = #{infoId} and li.exist = 1</if>
+		<if test="userId != null"> u.id = #{userId} and u.id = 1</if>
+		<if test="startTime != null"><![CDATA[ and DATE_FORMAT(lr.record_date, '%Y-%m-%d %H:%i:%s') >=  DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%s')]]></if>
+		<if test="endTime != null"><![CDATA[ and DATE_FORMAT(lr.record_date, '%Y-%m-%d %H:%i:%s') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%s')]]></if>
+	</select>
+
+	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLightRecord"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_light_record
+		(
+		`id`,
+		`record_date`,
+		`record_status`,
+		`record_operation`,
+		`record_user_id`,
+		`light_info_id`,
+		`last_update_user_id`,
+		`last_update_time`
+		)
+		values
+		(
+		#{id},
+		#{recordDate},
+		#{recordStatus},
+		#{recordOperation},
+		#{recordUserId},
+		#{lightInfoId},
+		#{lastUpdateUserId},
+		#{lastUpdateTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.viroyal.light.module.light.entity.SysLightRecord">
+		update sys_light_record
+		<set>
+			<if test="recordDate != null">`record_date` = #{recordDate}, </if>
+			<if test="recordStatus != null">`record_status` = #{recordStatus}, </if>
+			<if test="recordOperation != null">`record_operation` = #{recordOperation}, </if>
+			<if test="recordUserId != null">`record_user_id` = #{recordUserId}, </if>
+			<if test="lightInfoId != null">`light_info_id` = #{lightInfoId}, </if>
+			<if test="lastUpdateUserId != null">`last_update_user_id` = #{lastUpdateUserId}, </if>
+			<if test="lastUpdateTime != null">`last_update_time` = #{lastUpdateTime} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="deleteBatch">
+		update sys_light_record set exist = 0 where id in
+		<foreach item="lightId" collection="array" open="(" separator="," close=")">
+			#{lightId}
+		</foreach>
+	</update>
 
 </mapper>

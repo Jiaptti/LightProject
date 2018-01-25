@@ -9,6 +9,7 @@ import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.dao.SysRolePermissionMapper;
 import com.viroyal.light.module.user.entity.SysPermission;
 import com.viroyal.light.module.user.dao.SysPermissionMapper;
+import com.viroyal.light.module.user.entity.vo.SysPermissionVo;
 import com.viroyal.light.module.user.service.ISysPermissionService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -101,38 +102,31 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Transactional
     @Override
-    public String savePermission(SysPermission permission) {
+    public String savePermission(SysPermissionVo permissionVo) {
         Map<String, Object> resultMap = new HashMap<>();
-        if(!StringUtils.isBlank(permission.getUrl()) && !CommonUtil.rightLength(permission.getUrl(),5,20)){
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.PERMISSION_URL_LENGTH, 5,20));
-            return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(permission.getName())){
+         if(StringUtils.isBlank(permissionVo.getName())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.PERMISSION_NAME_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(permission.getName(),3,20)){
+        } else if(!CommonUtil.rightLength(permissionVo.getName(),3,20)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.PERMISSION_NAME_LENGTH, 3,20));
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(permission.getPerms())){
+        } else if(StringUtils.isBlank(permissionVo.getPerms())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.PERMISSION_PERMS_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        } else if(!CommonUtil.rightLength(permission.getPerms(),5,30)){
+        } else if(!CommonUtil.rightLength(permissionVo.getPerms(),5,30)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + String.format(BaseConstant.PERMISSION_PERMS_LENGTH, 5,30));
             return JSON.toJSONString(resultMap);
         } else {
             try {
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                SysPermission permission = new SysPermission();
+                CommonUtil.copyProperties(permission, permissionVo,new String[]{"url","exist"});
                 //添加权限
                 sysPermissionMapper.save(permission);
-//                //设置权限角色关系
-//                SysRolePermission rolePermission = new SysRolePermission();
-//                rolePermission.setPid(permission.getId());
-//                rolePermission.setRid(1L);
-//                sysRolePermissionMapper.insert(rolePermission);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e){
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
@@ -144,27 +138,25 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Transactional
     @Override
-    public String update(SysPermission permission) {
+    public String update(SysPermissionVo permissionVo) {
         Map<String, Object> resultMap = new HashMap<>();
-        if(permission.getId() == null){
+        if(permissionVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_PERMISSION_ID);
-        } else if(!StringUtils.isBlank(permission.getUrl()) && !CommonUtil.rightLength(permission.getUrl(),5,20)){
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.PERMISSION_URL_LENGTH, 5,20));
-            return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(permission.getName()) && !CommonUtil.rightLength(permission.getName(),3,20)){
+        } else if(!StringUtils.isBlank(permissionVo.getName()) && !CommonUtil.rightLength(permissionVo.getName(),3,20)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.PERMISSION_NAME_LENGTH, 3,20));
             return JSON.toJSONString(resultMap);
-        } else if(!StringUtils.isBlank(permission.getPerms()) && !CommonUtil.rightLength(permission.getPerms(),5,30)){
+        } else if(!StringUtils.isBlank(permissionVo.getPerms()) && !CommonUtil.rightLength(permissionVo.getPerms(),5,30)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + String.format(BaseConstant.PERMISSION_PERMS_LENGTH, 5,30));
             return JSON.toJSONString(resultMap);
         } else {
             try {
-                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                SysPermission permission = new SysPermission();
+                CommonUtil.copyProperties(permission, permissionVo,new String[]{"url","exist"});
                 sysPermissionMapper.update(permission);
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
             } catch (Exception e){
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);

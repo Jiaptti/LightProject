@@ -210,4 +210,13 @@ public class BaseConstant {
     public static final String LIGHT_STRATEGY_CLOSE_TIME_NOT_NULL = "关闭时间不能为空";
     //策略类型不能为空
     public static final String LIGHT_STRATEGY_TYPE_NOT_NULL = "策略类型不能为空";
+
+
+    //路灯记录所对应的路灯id不能为空
+    public static final String LIGHT_RECORD_INFO_ID_NOT_NULL = "路灯记录所对应的路灯id不能为空";
+    //请输入做了何种操作
+    public static final String LIGHT_RECORD_OPERATION_NOT_NULL = "请输入做了何种操作";
+    //请输入记录状态
+    public static final String LIGHT_RECORD_STATUS_NOT_NULL = "请输入记录状态";
+
 }

@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
+import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
 import com.viroyal.light.module.user.entity.SysRole;
 import com.viroyal.light.module.user.dao.SysRoleMapper;
+import com.viroyal.light.module.user.entity.vo.SysRoleVo;
 import com.viroyal.light.module.user.service.ISysRoleService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -34,19 +36,20 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Transactional
     @Override
-    public String save(SysRole role) {
+    public String save(SysRoleVo roleVo) {
         Map<String, Object> resultMap = new HashMap<>();
-        if(StringUtils.isBlank(role.getName())){
+        if(StringUtils.isBlank(roleVo.getName())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.ROLE_NAME_IS_EMPTY);
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(role.getType())){
+        } else if(StringUtils.isBlank(roleVo.getType())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.ROLE_TYPE_IS_EMPTY);
             return JSON.toJSONString(resultMap);
         }
-
         try {
+            SysRole role = new SysRole();
+            CommonUtil.copyProperties(role,roleVo,new String[]{"exist"});
             sysRoleMapper.save(role);
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
@@ -60,18 +63,20 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Transactional
     @Override
-    public String update(SysRole role) {
+    public String update(SysRoleVo roleVo) {
         Map<String, Object> resultMap = new HashMap<>();
-        if(role.getId() == null){
+        if(roleVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(role.getName()) && StringUtils.isBlank(role.getType())){
+        } else if(StringUtils.isBlank(roleVo.getName()) && StringUtils.isBlank(roleVo.getType())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);
         }
         try {
+            SysRole role = new SysRole();
+            CommonUtil.copyProperties(role, roleVo, new String[]{"exist"});
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             sysRoleMapper.update(role);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
@@ -82,7 +87,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         return JSON.toJSONString(resultMap);
     }
-
 
     @Override
     public String deleteBatch(Object[] ids) {

@@ -1,7 +1,6 @@
 package com.viroyal.light.module.light.controller;
 
-import com.viroyal.light.module.light.entity.LightStrategyVo;
-import com.viroyal.light.module.light.entity.SysLightStrategy;
+import com.viroyal.light.module.light.entity.vo.SysLightStrategyVo;
 import com.viroyal.light.module.light.service.ISysLightStrategyService;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -38,8 +37,8 @@ public class SysLightStrategyController {
     @RequestMapping(value = "/strategySave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:strategy:save")
-    public String saveStrategy(LightStrategyVo lightStrategyVo){
-        return sysLightStrategyService.save(lightStrategyVo);
+    public String saveStrategy(SysLightStrategyVo sysLightStrategyVo){
+        return sysLightStrategyService.save(sysLightStrategyVo);
     }
 
 
@@ -51,7 +50,7 @@ public class SysLightStrategyController {
     @RequestMapping(value = "/strategyUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:strategy:update")
-    public String updateStrategy(SysLightStrategy lightStrategy){
+    public String updateStrategy(SysLightStrategyVo lightStrategy){
         return sysLightStrategyService.update(lightStrategy);
     }
 
@@ -77,6 +76,7 @@ public class SysLightStrategyController {
             @ApiImplicitParam(paramType="query", name="openTime", dataType="String", value="打开时间(格式为hh:mm:ss)"),
             @ApiImplicitParam(paramType="query", name="closeTime", dataType="String", value="打开时间(格式为hh:mm:ss)"),
             @ApiImplicitParam(paramType="query", name="type", dataType="String", value="季节(冬季，夏季等)"),
+            @ApiImplicitParam(paramType="query", name="strategyDate", dataType="String", value="属于哪条策略的日期范围(格式为yyyy-mm-dd)"),
             @ApiImplicitParam(paramType="query", name="sort", dataType="String" ,value="排序方式(asc升序，desc降序)")
     })
     @ApiResponses({

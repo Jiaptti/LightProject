@@ -26,6 +26,8 @@
 		<if test="trafficLevel != null">  and strategy.traffic_level = #{trafficLevel}</if>
 		<if test="openTime != null">  and strategy.open_time = #{openTime}</if>
 		<if test="closeTime != null">  and strategy.close_time = #{closeTime}</if>
+		<if test="strategyDate != null"><![CDATA[  and DATE_FORMAT(#{strategyDate}, '%Y-%m-%d') >=  DATE_FORMAT(strategy.strategy_open_time, '%Y-%m-%d')
+									and DATE_FORMAT(#{strategyDate}, '%Y-%m-%d') <=  DATE_FORMAT(strategy.strategy_close_time, '%Y-%m-%d') ]]></if>
 		<if test="type != null">  and strategy.`type` = #{type}</if>
 		<if test="sort == 'asc' "> order by strategy.id asc</if>
 		<if test="sort == 'desc' "> order by strategy.id desc</if>
@@ -66,6 +68,8 @@
 			<if test="trafficLevel != null">`traffic_level` = #{trafficLevel}, </if>
 			<if test="openTime != null">`open_time` = #{openTime}, </if>
 			<if test="closeTime != null">`close_time` = #{closeTime}, </if>
+			<if test="strategyOpenTime != null">`strategy_open_time` = #{strategyOpenTime}, </if>
+			<if test="strategyCloseTime != null">`strategy_close_time` = #{strategyCloseTime}, </if>
 			<if test="type != null">`type` = #{type}</if>
 		</set>
 		where id = #{id}

@@ -43,13 +43,10 @@ public interface SysLightMapper extends BaseMapper<SysLight> {
      */
     List<SysLight> queryWithCondition(Map<String,Object> params, Pagination page);
 
-
     /**
      * 通过条件查询路灯数据
      * @param params 条件参数
      * @return 路灯数据列表
      */
     List<SysLight> queryWithCondition(Map<String,Object> params);
-
-
 }

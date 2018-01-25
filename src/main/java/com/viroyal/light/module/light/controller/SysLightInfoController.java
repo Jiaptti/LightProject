@@ -3,6 +3,7 @@ package com.viroyal.light.module.light.controller;
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLightInfo;
+import com.viroyal.light.module.light.entity.vo.SysLightInfoVo;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -40,7 +41,7 @@ public class SysLightInfoController {
     @RequestMapping(value = "/lightInfoSave", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:save")
-    public String saveLightInfo(SysLightInfo lightInfo){
+    public String saveLightInfo(SysLightInfoVo lightInfo){
         return sysLightInfoService.saveLightInfo(lightInfo);
     }
 
@@ -68,7 +69,7 @@ public class SysLightInfoController {
     @RequestMapping(value = "/lightInfoUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:update")
-    public String updateLightInfo(SysLightInfo lightInfo){
+    public String updateLightInfo(SysLightInfoVo lightInfo){
        return sysLightInfoService.updateLightInfo(lightInfo);
     }
 

@@ -1,8 +1,6 @@
-package com.viroyal.light.module.light.entity;
+package com.viroyal.light.module.light.entity.vo;
 
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,34 +9,32 @@ import lombok.Data;
 @ApiModel(value="路灯决策信息")
 @Data
 @TableName("sys_light_strategy")
-public class LightStrategyVo {
+public class SysLightStrategyVo {
 
+    @ApiModelProperty("主键id,自增长(不用填，更新的时候带上)")
+    private Long id;
     /**
      * 车流量少时的亮度
      */
     @ApiModelProperty("车流量少时的亮度(添加时候必填，更新不用)")
-    @TableField("smooth_level")
     private Integer smoothLevel;
 
     /**
      * 车流量多时的亮度
      */
     @ApiModelProperty("车流量多时的亮度(添加时候必填，更新不用)")
-    @TableField("traffic_level")
     private Integer trafficLevel;
 
     /**
      * 打开时间
      */
-    @ApiModelProperty("打开时间(添加时候必填，更新不用)")
-    @TableField("open_time")
+    @ApiModelProperty("打开时间格式为hh:mm:ss(添加时候必填，更新不用)")
     private String openTime;
 
     /**
      * 关闭时间
      */
-    @ApiModelProperty("关闭时间(添加时候必填，更新不用)")
-    @TableField("close_time")
+    @ApiModelProperty("关闭时间格式为hh:mm:ss(添加时候必填，更新不用)")
     private String closeTime;
 
     /**
@@ -50,17 +46,12 @@ public class LightStrategyVo {
     /**
      * 策略开始时间
      */
-    @ApiModelProperty("格式为yyyy-mm-dd(添加时候必填，更新不用)")
-    @TableField("strategy_open_time")
-    @JSONField(format="yyyy-MM-dd")
+    @ApiModelProperty("开启日期格式为yyyy-mm-dd(添加时候必填，更新不用)")
     private String strategyOpenTime;
 
     /**
      * 策略结束时间
      */
-    @ApiModelProperty("格式为yyyy-mm-dd(添加时候必填，更新不用)")
-    @TableField("strategy_close_time")
-    @JSONField(format="yyyy-MM-dd")
+    @ApiModelProperty("关闭日期格式为yyyy-mm-dd(添加时候必填，更新不用)")
     private String strategyCloseTime;
-
 }
