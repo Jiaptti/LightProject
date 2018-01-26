@@ -73,6 +73,19 @@ public class SysLightInfoController {
        return sysLightInfoService.updateLightInfo(lightInfo);
     }
 
+    @ApiOperation("移动端将路灯添加分组")
+    @ApiResponses({
+            @ApiResponse(code=200,message="分组成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="分组失败")
+    })
+    @RequestMapping(value = "/lightInfoGroup", method = RequestMethod.GET)
+    @ResponseBody
+    @RequiresPermissions("sys:lightInfo:update")
+    public String lightInfoGroup(@RequestParam(value = "groupId") String groupId, @RequestParam(value = "infoIds") String infoIds){
+        return sysLightInfoService.dispatchLightToGroup(groupId, infoIds);
+    }
+
 
     @ApiOperation("移动端通过条件查询所有路灯(标记required的就是必填)pageId,pageSize为必填项,param参数接口填一个1就行，请求的时候不需要带")
     @ApiImplicitParams({
@@ -90,7 +103,7 @@ public class SysLightInfoController {
             @ApiImplicitParam(paramType="query", name="status", dataType="String", value="是否启用(1表示启用，0表示没启用)"),
             @ApiImplicitParam(paramType="query", name="longitude", dataType="Float", value="经度"),
             @ApiImplicitParam(paramType="query", name="latitude", dataType="Float", value="维度"),
-            @ApiImplicitParam(paramType="query", name="strategyId", dataType="Float", value="决策id，具体看sys_strategy表"),
+            @ApiImplicitParam(paramType="query", name="strategyId", dataType="Double", value="决策id，具体看sys_strategy表"),
             @ApiImplicitParam(paramType="query", name="voltageThresholdGt", dataType="Int", value="电压报警阀值(这里表示大于)"),
             @ApiImplicitParam(paramType="query", name="voltageThresholdLt", dataType="Int", value="电压报警阀值(这里表示小于)"),
             @ApiImplicitParam(paramType="query", name="currentThresholdGt", dataType="Int", value="电流报警阀值(这里表示大于)"),

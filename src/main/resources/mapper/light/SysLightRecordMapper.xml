@@ -19,12 +19,12 @@
 	</resultMap>
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
-		select lr.id, lr.record_date,lr.record_status,lr.record_operation,u.nickname,li.code,li.light_info from sys_light_record as lr
+		select distinct  lr.id, lr.record_date,lr.record_status,lr.record_operation,u.nickname,li.code,li.light_info from sys_light_record as lr
 		left join sys_light_info as li on lr.light_info_id = li.id
 		left join sys_user as u on u.id = lr.record_user_id
 		where 1 = 1 and lr.exist = 1
-		<if test="infoId != null"> li.id = #{infoId} and li.exist = 1</if>
-		<if test="userId != null"> u.id = #{userId} and u.id = 1</if>
+		<if test="infoId != null"> and li.id = #{infoId} and li.exist = 1</if>
+		<if test="userId != null">  and  u.id = #{userId} and u.id = 1</if>
 		<if test="startTime != null"><![CDATA[ and DATE_FORMAT(lr.record_date, '%Y-%m-%d %H:%i:%s') >=  DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%s')]]></if>
 		<if test="endTime != null"><![CDATA[ and DATE_FORMAT(lr.record_date, '%Y-%m-%d %H:%i:%s') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%s')]]></if>
 	</select>

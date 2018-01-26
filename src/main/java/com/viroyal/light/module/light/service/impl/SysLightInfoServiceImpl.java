@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +116,7 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
                 && lightInfoVo.getCurrentThreshold() == null && lightInfoVo.getHumidityOverload() == null
                 && lightInfoVo.getLightnessOverload() == null && lightInfoVo.getLightnessThreshold() == null
                 && StringUtils.isBlank(lightInfoVo.getLightInfo()) && lightInfoVo.getTemperatureOverload() == null
-                && StringUtils.isBlank(lightInfoVo.getStrategyId()) && lightInfoVo.getUserId() == null
+                && lightInfoVo.getStrategyId()==null && lightInfoVo.getUserId() == null
                 && lightInfoVo.getVoltageOverload() == null && lightInfoVo.getVoltageThreshold() == null
                 && lightInfoVo.getTemperatureThreshold() == null && lightInfoVo.getHumidityThreshold() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
@@ -134,6 +135,41 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + e.getMessage());
             }
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    @Override
+    public String dispatchLightToGroup(String groupId, String infoIds) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(infoIds)) {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.Light_INFO_DISPATCH_GROUP_FAILUER + " : " + BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }try {
+            List<SysLightInfo> infoList = new ArrayList<>();
+            String[] ids = infoIds.split(",");
+            sysLightInfoMapper.updateGroupBatch(Long.parseLong(groupId));
+            if (ids.length > 1) {
+                for (int i = 0; i < ids.length; i++) {
+                    SysLightInfo sysLightInfo = new SysLightInfo();
+                    sysLightInfo.setId(Long.parseLong(ids[i]));
+                    sysLightInfo.setGroupId(Long.valueOf(groupId));
+                    infoList.add(sysLightInfo);
+                }
+            } else {
+                SysLightInfo sysLightInfo = new SysLightInfo();
+                sysLightInfo.setId(Long.parseLong(infoIds));
+                sysLightInfo.setGroupId(Long.valueOf(groupId));
+                infoList.add(sysLightInfo);
+            }
+            sysLightInfoMapper.updateBatch(infoList);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.Light_INFO_DISPATCH_GROUP_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.Light_INFO_DISPATCH_GROUP_FAILUER + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }

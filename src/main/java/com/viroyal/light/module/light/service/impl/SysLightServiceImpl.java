@@ -182,4 +182,44 @@ public class SysLightServiceImpl extends ServiceImpl<SysLightMapper, SysLight> i
         }
         return JSON.toJSONString(dataPage);
     }
+
+    @Override
+    public String queryCurrentDate(Map<String,Object> params) {
+        DataPage<SysLight> dataPage = null;
+        Page<SysLight> page = new Page<SysLight>();
+        int pageId = 0, pageSize = 0;
+        if((!params.containsKey("pageId") && params.containsKey("pageSize"))
+                || (params.containsKey("pageId") && !params.containsKey("pageSize"))){
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
+        } else {
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if(entry.getKey().toString().equals("pageId")){
+                    pageId = Integer.parseInt(entry.getValue().toString());
+                } else if(entry.getKey().toString().equals("pageSize")){
+                    pageSize = Integer.parseInt(entry.getValue().toString());
+                }
+            }
+            if(pageId == 0 || pageSize == 0){
+                List<SysLight> data = sysLightMapper.queryCurrentDate();
+                page.setSize(data.size());
+                page.setTotal(data.size());
+                page.setRecords(data);
+            } else {
+                page.setCurrent(pageId);
+                page.setSize(pageSize);
+                page.setRecords(sysLightMapper.queryCurrentDate(page));
+            }
+            dataPage = new DataPage<SysLight>(page);
+            if(dataPage.getRecords() == 0){
+                dataPage.setCode(BaseConstant.ERROR_CODE);
+                dataPage.setMessage(BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
+            } else {
+                dataPage.setCode(BaseConstant.SUCCESS_CODE);
+                dataPage.setMessage(BaseConstant.SUCCESS_RESULT);
+            }
+        }
+        return JSON.toJSONString(dataPage);
+    }
 }

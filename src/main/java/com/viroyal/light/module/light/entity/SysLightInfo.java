@@ -49,17 +49,17 @@ public class SysLightInfo extends Model<SysLightInfo> {
      * 经度
      */
 	@TableField("longitude")
-	private Float longitude;
+	private Double longitude;
     /**
      * 纬度
      */
 	@TableField("latitude")
-	private Float latitude;
+	private Double latitude;
 	/**
 	 * 引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间
 	 */
 	@TableField("strategy_id")
-	private String strategyId;
+	private Long strategyId;
 	/**
 	 * 所属用户id
 	 */

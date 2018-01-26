@@ -72,7 +72,7 @@ public class SysRoleController {
     @RequestMapping(value = "/dispatchPermission", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:role:save")
-    public String dispatchPermission(String roleId, String permissionId){
+    public String dispatchPermission(@RequestParam(value = "roleId") String roleId, @RequestParam(value = "permissionId") String permissionId){
         return sysRolePermissionService.save(roleId, permissionId);
     }
 

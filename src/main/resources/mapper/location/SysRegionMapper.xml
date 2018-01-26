@@ -92,14 +92,14 @@
         left join sys_region as ssr on sr.up_region_id = ssr.common_region_id
         left join sys_light_info as i
         on i.street_id = region.common_region_id
-        where 1 = 1 and region.region_desc = '街道' and region.exist = 1 and i.exist = 1
+        where 1 = 1 and region.region_desc = '街道' and region.exist = 1
         and sr.exist = 1 and ssr.exist = 1
         <if test="cityId != null"> and region.common_region_id like CONCAT(#{cityId}, '%')</if>
         <if test="cityName != null"> and region.region_name = #{cityName} </if>
         <if test="areaId != null"> and region.up_region_id = #{areaId}</if>
         <if test="areaName != null"> and region.region_name = #{areaName} </if>
         <if test="streetName != null"> and region.region_name like CONCAT(#{streetName}, '%')</if>
-        <if test="userId != null"> and i.user_id = #{userId}</if>
+        <if test="userId != null"> and i.user_id = #{userId} and i.exist = 1</if>
         <if test="sort == 'asc' "> order by region.id asc</if>
         <if test="sort == 'desc' "> order by region.id desc</if>
     </select>

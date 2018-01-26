@@ -2,53 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.viroyal.light.module.light.dao.SysLightMapper">
 
-	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.viroyal.light.module.light.entity.SysLight">
-		<id column="id" property="id" />
-		<result column="status" property="status" />
-		<result column="voltage" property="voltage" />
-		<result column="current" property="current" />
-		<result column="traffic_flow" property="trafficFlow" />
-		<result column="temperature" property="temperature" />
-		<result column="humidity" property="humidity" />
-		<result column="datetime" property="datetime" />
-		<result column="info_id" property="infoId" />
-		<result column="lightness" property="lightness" />
-		<result column="last_update_time" property="lastUpdateTime"/>
-		<result column="code" property="code" />
-		<result column="light_info" property="lightInfo" />
-		<result column="exist" property="exist" />
-	</resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.viroyal.light.module.light.entity.SysLight">
+        <id column="id" property="id"/>
+        <result column="status" property="status"/>
+        <result column="voltage" property="voltage"/>
+        <result column="current" property="current"/>
+        <result column="traffic_flow" property="trafficFlow"/>
+        <result column="temperature" property="temperature"/>
+        <result column="humidity" property="humidity"/>
+        <result column="datetime" property="datetime"/>
+        <result column="info_id" property="infoId"/>
+        <result column="lightness" property="lightness"/>
+        <result column="last_update_time" property="lastUpdateTime"/>
+        <result column="code" property="code"/>
+        <result column="light_info" property="lightInfo"/>
+        <result column="exist" property="exist"/>
+    </resultMap>
 
-	<select id="queryWithCondition" resultMap="BaseResultMap">
-		select distinct light.id, light.status, light.`current`,light.datetime,
+    <select id="queryWithCondition" resultMap="BaseResultMap">
+        select distinct light.id, light.status, light.`current`,light.datetime,
+        light.humidity, light.lightness,light.temperature,
+        light.traffic_flow,light.voltage, i.`code`, i.light_info
+        from sys_light as light
+        left join sys_light_info as i on i.id = light.info_id
+        where 1 = 1 and light.exist = 1 and i.exist = 1
+        <if test="lightId != null">and light.id = #{lightId}</if>
+        <if test="status != null">and light.`status` = #{status}</if>
+        <if test="voltageGt != null"> <![CDATA[ and light.voltage >= #{voltageGt} ]]></if>
+        <if test="voltageLt != null"> <![CDATA[ and light.voltage <= #{voltageLt} ]]></if>
+        <if test="currentGt != null"> <![CDATA[ and light.`current` >= #{currentGt} ]]></if>
+        <if test="currentLt != null"> <![CDATA[ and light.`current` <= #{currentLt} ]]></if>
+        <if test="trafficFlow != null"> <![CDATA[ and light.traffic_flow = #{trafficFlow} ]]></if>
+        <if test="temperatureGt != null"> <![CDATA[ and light.temperature >= #{temperatureGt} ]]></if>
+        <if test="temperatureLt != null">  <![CDATA[ and light.temperature <= #{temperatureLt} ]]></if>
+        <if test="humidityGt != null">  <![CDATA[ and light.humidity >= #{humidityGt} ]]></if>
+        <if test="humidityLt != null">  <![CDATA[ and light.humidity <= #{humidityLt} ]]> </if>
+        <if test="startTime != null">
+            <![CDATA[   and DATE_FORMAT(light.datetime, '%Y-%m-%d') >=  DATE_FORMAT(#{startTime}, '%Y-%m-%d')]]></if>
+        <if test="endTime != null">
+            <![CDATA[   and DATE_FORMAT(light.datetime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')  ]]> </if>
+        <if test="lightnessGt != null">  <![CDATA[ and light.lightness >= #{lightnessGt} ]]></if>
+        <if test="lightnessLt != null">  <![CDATA[ and light.lightness <= #{lightnessLt} ]]> </if>
+        <if test="infoId != null">and light.info_id = #{infoId}</if>
+        <if test="sort == 'asc' ">order by light.id asc</if>
+        <if test="sort == 'desc' ">order by light.id desc</if>
+    </select>
+
+    <select id="queryCurrentDate" resultMap="BaseResultMap">
+        select distinct light.id, light.status, light.`current`,light.datetime,
 		light.humidity, light.lightness,light.temperature,
 		light.traffic_flow,light.voltage, i.`code`, i.light_info
 		from sys_light as light
 		left join sys_light_info as i on i.id = light.info_id
 		where 1 = 1 and light.exist = 1 and i.exist = 1
-		<if test="lightId != null"> and light.id = #{lightId}</if>
-		<if test="status != null"> and light.`status` = #{status}</if>
-		<if test="voltageGt != null"> <![CDATA[ and light.voltage >= #{voltageGt} ]]></if>
-		<if test="voltageLt != null"> <![CDATA[ and light.voltage <= #{voltageLt} ]]></if>
-		<if test="currentGt != null"> <![CDATA[ and light.`current` >= #{currentGt} ]]></if>
-		<if test="currentLt != null"> <![CDATA[ and light.`current` <= #{currentLt} ]]></if>
-		<if test="trafficFlow != null"> <![CDATA[ and light.traffic_flow = #{trafficFlow} ]]></if>
-		<if test="temperatureGt != null"> <![CDATA[ and light.temperature >= #{temperatureGt} ]]></if>
-		<if test="temperatureLt != null">  <![CDATA[ and light.temperature <= #{temperatureLt} ]]></if>
-		<if test="humidityGt != null">  <![CDATA[ and light.humidity >= #{humidityGt} ]]></if>
-		<if test="humidityLt != null">  <![CDATA[ and light.humidity <= #{humidityLt} ]]> </if>
-		<if test="startTime != null"> <![CDATA[   and DATE_FORMAT(light.datetime, '%Y-%m-%d') >=  DATE_FORMAT(#{startTime}, '%Y-%m-%d')]]></if>
-		<if test="endTime != null"> <![CDATA[   and DATE_FORMAT(light.datetime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')  ]]> </if>
-		<if test="lightnessGt != null">  <![CDATA[ and light.lightness >= #{lightnessGt} ]]></if>
-		<if test="lightnessLt != null">  <![CDATA[ and light.lightness <= #{lightnessLt} ]]> </if>
-		<if test="infoId != null"> and light.info_id = #{infoId}</if>
-		<if test="sort == 'asc' ">order by light.id asc</if>
-		<if test="sort == 'desc' ">order by light.id desc</if>
+		group by light.info_id
+	    order by light.id asc , light.datetime desc
 	</select>
 
-	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLight"
-			useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLight"
+            useGeneratedKeys="true" keyProperty="id">
 		insert into sys_light
 		(
 		`id`,
@@ -77,28 +90,28 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.viroyal.light.module.user.entity.SysUser">
-		update sys_light
-		<set>
-			<if test="status != null">`status` = #{status}, </if>
-			<if test="voltage != null">`voltage` = #{voltage}, </if>
-			<if test="current != null">`current` = #{current}, </if>
-			<if test="trafficFlow != null">`traffic_flow` = #{trafficFlow}, </if>
-			<if test="temperature != null">`temperature` = #{temperature}, </if>
-			<if test="humidity != null">`humidity` = #{humidity}, </if>
-			<if test="infoId != null">`info_id` = #{infoId}, </if>
-			<if test="lightness != null">`lightness` = #{lightness},</if>
-			<if test="datetime != null">`datetime` = #{datetime},</if>
-			<if test="lastUpdateTime != null">`last_update_time` = #{lastUpdateTime} </if>
-		</set>
-		where id = #{id}
-	</update>
+    <update id="update" parameterType="com.viroyal.light.module.user.entity.SysUser">
+        update sys_light
+        <set>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="voltage != null">`voltage` = #{voltage},</if>
+            <if test="current != null">`current` = #{current},</if>
+            <if test="trafficFlow != null">`traffic_flow` = #{trafficFlow},</if>
+            <if test="temperature != null">`temperature` = #{temperature},</if>
+            <if test="humidity != null">`humidity` = #{humidity},</if>
+            <if test="infoId != null">`info_id` = #{infoId},</if>
+            <if test="lightness != null">`lightness` = #{lightness},</if>
+            <if test="datetime != null">`datetime` = #{datetime},</if>
+            <if test="lastUpdateTime != null">`last_update_time` = #{lastUpdateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
 
-	<update id="deleteBatch">
-		update sys_light set exist = 0 where id in
-		<foreach item="lightId" collection="array" open="(" separator="," close=")">
-			#{lightId}
-		</foreach>
-	</update>
+    <update id="deleteBatch">
+        update sys_light set exist = 0 where id in
+        <foreach item="lightId" collection="array" open="(" separator="," close=")">
+            #{lightId}
+        </foreach>
+    </update>
 
 </mapper>

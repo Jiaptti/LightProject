@@ -108,6 +108,24 @@ public class SysLightController {
         return sysLightService.queryWithCondition(params);
     }
 
+
+    @ApiOperation("移动端获得路灯实时数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name="pageId", dataType="Int", value="第几页"),
+            @ApiImplicitParam(paramType="query", name="pageSize", dataType="Int", value="多少条")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/queryCurrentDate", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:light:list")
+    public String queryCurrentDate(@RequestParam Map<String, Object> params){
+        return sysLightService.queryCurrentDate(params);
+    }
+
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody

@@ -65,21 +65,21 @@
         <if test="currentThresholdGt != null"><![CDATA[ and i.current_threshold >= #{currentThresholdGt} ]]></if>
         <if test="currentThresholdLt != null"><![CDATA[ and i.current_threshold <= #{currentThresholdLt} ]]></if>
         <if test="temperatureThresholdGt != null"><![CDATA[ and i.temperature_threshold >= #{temperatureThresholdGt} ]]></if>
-        <if test="temperatureThresholdLt != null"><![CDATA[ and i.temperature_threshold @lt;= #{temperatureThresholdLt} ]]></if>
-        <if test="humidityThresholdGt != null"><![CDATA[ and i.humidity_threshold @gt;= #{humidityThresholdGt} ]]></if>
-        <if test="humidityThresholdLt != null"><![CDATA[ and i.humidity_threshold @lt;= #{humidityThresholdLt} ]]></if>
-        <if test="lightnessThresholdGt != null"><![CDATA[ and i.lightness_threshold @gt;= #{lightnessThresholdGt} ]]></if>
-        <if test="lightnessThresholdLt != null"><![CDATA[ and i.lightness_threshold @lt;= #{lightnessThresholdLt} ]]></if>
-        <if test="voltageOverloadGt != null"><![CDATA[ and i.voltage_overload @gt;= #{voltageOverloadGt} ]]></if>
-        <if test="voltageOverloadLt != null"><![CDATA[ and i.voltage_overload @lt;= #{voltageOverloadLt} ]]></if>
-        <if test="currentOverloadGt != null"><![CDATA[ and i.current_overload @gt;= #{currentOverloadGt} ]]></if>
-        <if test="currentOverloadLt != null"><![CDATA[ and i.current_overload @lt;= #{currentOverloadLt} ]]></if>
-        <if test="temperatureOverloadGt != null"><![CDATA[ and i.temperature_overload @gt;= #{temperatureOverloadGt} ]]></if>
-        <if test="temperatureOverloadLt != null"><![CDATA[ and i.temperature_overload @lt;= #{temperatureOverloadLt} ]]></if>
-        <if test="humidityOverloadGt != null"><![CDATA[ and i.humidity_overload @gt;= #{humidityOverloadGt} ]]></if>
-        <if test="humidityOverloadLt != null"><![CDATA[ and i.humidity_overload @lt;= #{humidityOverloadLt} ]]></if>
-        <if test="lightnessOverloadGt != null"><![CDATA[ and i.lightness_overload @gt;= #{lightnessOverloadGt} ]]></if>
-        <if test="lightnessOverloadLt != null"><![CDATA[ and i.lightness_overload @lt;= #{lightnessOverloadLt} ]]></if>
+        <if test="temperatureThresholdLt != null"><![CDATA[ and i.temperature_threshold <= #{temperatureThresholdLt} ]]></if>
+        <if test="humidityThresholdGt != null"><![CDATA[ and i.humidity_threshold >= #{humidityThresholdGt} ]]></if>
+        <if test="humidityThresholdLt != null"><![CDATA[ and i.humidity_threshold <= #{humidityThresholdLt} ]]></if>
+        <if test="lightnessThresholdGt != null"><![CDATA[ and i.lightness_threshold >= #{lightnessThresholdGt} ]]></if>
+        <if test="lightnessThresholdLt != null"><![CDATA[ and i.lightness_threshold <= #{lightnessThresholdLt} ]]></if>
+        <if test="voltageOverloadGt != null"><![CDATA[ and i.voltage_overload >= #{voltageOverloadGt} ]]></if>
+        <if test="voltageOverloadLt != null"><![CDATA[ and i.voltage_overload <= #{voltageOverloadLt} ]]></if>
+        <if test="currentOverloadGt != null"><![CDATA[ and i.current_overload >= #{currentOverloadGt} ]]></if>
+        <if test="currentOverloadLt != null"><![CDATA[ and i.current_overload <= #{currentOverloadLt} ]]></if>
+        <if test="temperatureOverloadGt != null"><![CDATA[ and i.temperature_overload >= #{temperatureOverloadGt} ]]></if>
+        <if test="temperatureOverloadLt != null"><![CDATA[ and i.temperature_overload <= #{temperatureOverloadLt} ]]></if>
+        <if test="humidityOverloadGt != null"><![CDATA[ and i.humidity_overload >= #{humidityOverloadGt} ]]></if>
+        <if test="humidityOverloadLt != null"><![CDATA[ and i.humidity_overload <= #{humidityOverloadLt} ]]></if>
+        <if test="lightnessOverloadGt != null"><![CDATA[ and i.lightness_overload >= #{lightnessOverloadGt} ]]></if>
+        <if test="lightnessOverloadLt != null"><![CDATA[ and i.lightness_overload <= #{lightnessOverloadLt} ]]></if>
         <if test="sort == 'asc' ">order by i.id asc</if>
         <if test="sort == 'desc' ">order by i.id desc</if>
     </select>
@@ -162,6 +162,23 @@
             <if test="lightnessOverload != null">`lightness_overload` = #{lightnessOverload}</if>
         </set>
         where id = #{id}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        update sys_light_info set `group_id`=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.groupId}
+        </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <update id="updateGroupBatch" parameterType="Long">
+        update sys_light_info set group_id = 0 where group_id = #{groupId}
     </update>
 
     <update id="deleteBatch">

@@ -43,4 +43,12 @@ public interface ISysLightInfoService extends IService<SysLightInfo> {
      * @return json格式的结果集
      */
     String updateLightInfo(SysLightInfoVo lightInfo);
+
+    /**
+     * 将路灯进行分组
+     * @param groupId 路灯分组id
+     * @param infoIds 路灯info的id列表，用逗号隔开
+     * @return json格式的结果集
+     */
+    String dispatchLightToGroup(String groupId, String infoIds);
 }

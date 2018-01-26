@@ -49,4 +49,16 @@ public interface SysLightMapper extends BaseMapper<SysLight> {
      * @return 路灯数据列表
      */
     List<SysLight> queryWithCondition(Map<String,Object> params);
+
+    /**
+     * 获得分页实时路灯数据列表
+     * @return 实时路灯数据列表
+     */
+    List<SysLight> queryCurrentDate(Pagination page);
+
+    /**
+     * 获得实时路灯数据列表
+     * @return 实时路灯数据列表
+     */
+    List<SysLight> queryCurrentDate();
 }

@@ -124,8 +124,6 @@ public class BaseConstant {
     public static final String NO_QUERY_RESULT = "没有数据";
 
 
-    //权限请求路径超过指定长度，需在{min} - {max}之间
-    public static final String PERMISSION_URL_LENGTH = "权限请求路径超过指定长度，需在{%1$d}~{%2$d}之间";
     //权限名超过指定长度，需在{min} - {max}之间
     public static final String PERMISSION_NAME_LENGTH = "权限名超过指定长度，需在{%1$d}~{%2$d}之间";
     //授权超过指定长度，需在{min} - {max}之间
@@ -180,6 +178,10 @@ public class BaseConstant {
     public static final String LIGHT_INFO_LONGITUDE_NOT_NULL = "请输入路灯的经度";
     //请输入路灯的纬度
     public static final String LIGHT_INFO_LATITUDE_NOT_NULL = "请输入路灯的纬度";
+    //指派分组成功
+    public static final String Light_INFO_DISPATCH_GROUP_SUCCESS = "指派分组成功";
+    //指派分组失败
+    public static final String Light_INFO_DISPATCH_GROUP_FAILUER = "指派分组失败";
 
 
     //路灯开启状态不能为空
@@ -219,4 +221,11 @@ public class BaseConstant {
     //请输入记录状态
     public static final String LIGHT_RECORD_STATUS_NOT_NULL = "请输入记录状态";
 
+
+    //路灯分组id不能为空
+    public static final String LIGHT_GROUP_ID_NOT_NULL = "路灯分组id不能为空";
+    //请输入路灯分组名
+    public static final String LIGHT_GROUP_NAME_NOT_NULL = "请输入路灯分组名";
+    //请输入路灯分组的负责人id
+    public static final String LIGHT_GROUP_RESPONSE_ID_NOT_NULL = "请输入路灯分组的负责人id";
 }

@@ -38,7 +38,7 @@ public class SysLightInfoVo {
 	 * 引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间
 	 */
 	@ApiModelProperty("策略id(引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间),详细看sys_strategy表(添加时候必填，更新选填)")
-	private String strategyId;
+	private Long strategyId;
 	/**
 	 * 所属用户id
 	 */

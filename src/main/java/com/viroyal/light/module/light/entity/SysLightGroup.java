@@ -1,5 +1,6 @@
 package com.viroyal.light.module.light.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -51,7 +52,23 @@ public class SysLightGroup extends Model<SysLightGroup> {
      * 创建时间
      */
 	@TableField("create_time")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
+
+	/**
+	 * 最后被修改时间
+	 */
+	@TableField("last_update_time")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	private Date lastUpdateTime;
+
+	/**
+	 * 最后被修改的用户id
+	 */
+	@TableField("last_update_user_id")
+	private Long lastUpdateUserId;
+
+
 
 	@Override
 	protected Serializable pkVal() {

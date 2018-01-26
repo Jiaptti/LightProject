@@ -43,4 +43,10 @@ public interface ISysLightService extends IService<SysLight> {
      */
     String queryWithCondition(Map<String,Object> params);
 
+    /**
+     * 分页路灯实时数据列表
+     * @param params 分页条件
+     * @return json格式的路灯实时数据列表
+     */
+    String queryCurrentDate(Map<String,Object> params);
 }

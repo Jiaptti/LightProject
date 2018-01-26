@@ -87,7 +87,7 @@ public class SysLightRecordController {
             @ApiImplicitParam(paramType = "query", name = "endTime",
                     dataType = "Int", value = "记录结束时间(格式为yyyy-mm-dd hh:mm:ss)"),
             @ApiImplicitParam(paramType = "query", name = "sort",
-                    dataType = "String", value = "排序方式"),
+                    dataType = "String", value = "排序方式")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "查询成功"),
