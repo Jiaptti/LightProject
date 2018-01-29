@@ -88,6 +88,8 @@ public class BaseConstant {
     public static final String CHECKOUT_USER_PASSWORD = "请确认密码是否正确";
     //请添加更新对象的id
     public static final String NO_UPDATE_ID = "请添加更新对象的id";
+    //没有要分派的id
+    public static final String NO_DISPATCH_ID = "没有要分派的id";
     //账号密码不能为空
     public static final String USER_ACCOUNT_NOT_NULL = "用户名密码不能为空";
     //用户不存在错误
@@ -179,9 +181,17 @@ public class BaseConstant {
     //请输入路灯的纬度
     public static final String LIGHT_INFO_LATITUDE_NOT_NULL = "请输入路灯的纬度";
     //指派分组成功
-    public static final String Light_INFO_DISPATCH_GROUP_SUCCESS = "指派分组成功";
+    public static final String LIGHT_INFO_DISPATCH_GROUP_SUCCESS = "指派分组成功";
     //指派分组失败
-    public static final String Light_INFO_DISPATCH_GROUP_FAILUER = "指派分组失败";
+    public static final String LIGHT_INFO_DISPATCH_GROUP_FAILUER = "指派分组失败";
+    //分组指派决策成功
+    public static final String LIGHT_INFO_DISPATCH_STRATEGY_SUCCESS = "分组指派决策成功";
+    //分组指派决策失败
+    public static final String LIGHT_INFO_DISPATCH_STRATEGY_FAILUER = "分组指派决策失败";
+    //指派决策成功
+    public static final String LIGHT_INFO_DISPATCH_SUCCESS = "指派决策成功";
+    //指派决策失败
+    public static final String LIGHT_INFO_DISPATCH_FAILUER = "指派决策失败";
 
 
     //路灯开启状态不能为空

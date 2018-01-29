@@ -144,7 +144,7 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
         Map<String, Object> resultMap = new HashMap<>();
         if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(infoIds)) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.Light_INFO_DISPATCH_GROUP_FAILUER + " : " + BaseConstant.REQUEST_ERROR);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_GROUP_SUCCESS + " : " + BaseConstant.REQUEST_ERROR);
             return JSON.toJSONString(resultMap);
         }try {
             List<SysLightInfo> infoList = new ArrayList<>();
@@ -165,11 +165,80 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
             }
             sysLightInfoMapper.updateBatch(infoList);
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.Light_INFO_DISPATCH_GROUP_SUCCESS);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_GROUP_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.Light_INFO_DISPATCH_GROUP_FAILUER + " : " + e.getMessage());
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_GROUP_FAILUER + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    @Override
+    public String dispatchGroupStrategy(String strategyId, String groupId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (StringUtils.isEmpty(strategyId) || StringUtils.isEmpty(groupId)) {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_STRATEGY_FAILUER + " : " + BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }try {
+            List<SysLightInfo> infoList = new ArrayList<>();
+            String[] ids = groupId.split(",");
+//            sysLightInfoMapper.updateStrategyBatch(Long.parseLong(strategyId));
+            if (ids.length > 1) {
+                for (int i = 0; i < ids.length; i++) {
+                    SysLightInfo sysLightInfo = new SysLightInfo();
+                    sysLightInfo.setStrategyId(Long.valueOf(strategyId));
+                    sysLightInfo.setGroupId(Long.valueOf(ids[i]));
+                    infoList.add(sysLightInfo);
+                }
+            } else {
+                SysLightInfo sysLightInfo = new SysLightInfo();
+                sysLightInfo.setStrategyId(Long.valueOf(strategyId));
+                sysLightInfo.setGroupId(Long.valueOf(groupId));
+                infoList.add(sysLightInfo);
+            }
+            sysLightInfoMapper.updateBatchByGroup(infoList);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_STRATEGY_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_STRATEGY_FAILUER + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    @Override
+    public String dispatchStrategy(String strategyId, String lightInfoIds) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (StringUtils.isEmpty(strategyId) || StringUtils.isEmpty(lightInfoIds)) {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_FAILUER + " : " + BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }try {
+            List<SysLightInfo> infoList = new ArrayList<>();
+            String[] ids = lightInfoIds.split(",");
+            if (ids.length > 1) {
+                for (int i = 0; i < ids.length; i++) {
+                    SysLightInfo sysLightInfo = new SysLightInfo();
+                    sysLightInfo.setStrategyId(Long.valueOf(strategyId));
+                    sysLightInfo.setId(Long.valueOf(ids[i]));
+                    infoList.add(sysLightInfo);
+                }
+            } else {
+                SysLightInfo sysLightInfo = new SysLightInfo();
+                sysLightInfo.setStrategyId(Long.valueOf(strategyId));
+                sysLightInfo.setId(Long.valueOf(lightInfoIds));
+                infoList.add(sysLightInfo);
+            }
+            sysLightInfoMapper.dispatchStrategy(infoList);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_FAILUER + " : " + e.getMessage());
         }
         return JSON.toJSONString(resultMap);
     }

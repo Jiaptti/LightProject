@@ -53,7 +53,7 @@
         <if test="cityId != null">and r.common_region_id like CONCAT(#{cityId}, '%') and r.region_desc = '街道'</if>
         <if test="streetId != null">and i.street_id = #{streetId}</if>
         <if test="streetName != null">and r.region_name like CONCAT(#{streetName}, '%')</if>
-        <if test="userId != null"> and i.user_id = #{userId}</if>
+        <if test="userId != null">and i.user_id = #{userId}</if>
         <if test="userName != null">and us.nickname = #{userName}</if>
         <if test="groupId != null">and i.group_id = #{groupId}</if>
         <if test="code != null">and i.code like CONCAT('%', #{code}, '%')</if>
@@ -65,8 +65,10 @@
         <if test="voltageThresholdLt != null"><![CDATA[ and i.voltage_threshold <= #{voltageThresholdLt} ]]></if>
         <if test="currentThresholdGt != null"><![CDATA[ and i.current_threshold >= #{currentThresholdGt} ]]></if>
         <if test="currentThresholdLt != null"><![CDATA[ and i.current_threshold <= #{currentThresholdLt} ]]></if>
-        <if test="temperatureThresholdGt != null"><![CDATA[ and i.temperature_threshold >= #{temperatureThresholdGt} ]]></if>
-        <if test="temperatureThresholdLt != null"><![CDATA[ and i.temperature_threshold <= #{temperatureThresholdLt} ]]></if>
+        <if test="temperatureThresholdGt != null">
+            <![CDATA[ and i.temperature_threshold >= #{temperatureThresholdGt} ]]></if>
+        <if test="temperatureThresholdLt != null">
+            <![CDATA[ and i.temperature_threshold <= #{temperatureThresholdLt} ]]></if>
         <if test="humidityThresholdGt != null"><![CDATA[ and i.humidity_threshold >= #{humidityThresholdGt} ]]></if>
         <if test="humidityThresholdLt != null"><![CDATA[ and i.humidity_threshold <= #{humidityThresholdLt} ]]></if>
         <if test="lightnessThresholdGt != null"><![CDATA[ and i.lightness_threshold >= #{lightnessThresholdGt} ]]></if>
@@ -75,8 +77,10 @@
         <if test="voltageOverloadLt != null"><![CDATA[ and i.voltage_overload <= #{voltageOverloadLt} ]]></if>
         <if test="currentOverloadGt != null"><![CDATA[ and i.current_overload >= #{currentOverloadGt} ]]></if>
         <if test="currentOverloadLt != null"><![CDATA[ and i.current_overload <= #{currentOverloadLt} ]]></if>
-        <if test="temperatureOverloadGt != null"><![CDATA[ and i.temperature_overload >= #{temperatureOverloadGt} ]]></if>
-        <if test="temperatureOverloadLt != null"><![CDATA[ and i.temperature_overload <= #{temperatureOverloadLt} ]]></if>
+        <if test="temperatureOverloadGt != null">
+            <![CDATA[ and i.temperature_overload >= #{temperatureOverloadGt} ]]></if>
+        <if test="temperatureOverloadLt != null">
+            <![CDATA[ and i.temperature_overload <= #{temperatureOverloadLt} ]]></if>
         <if test="humidityOverloadGt != null"><![CDATA[ and i.humidity_overload >= #{humidityOverloadGt} ]]></if>
         <if test="humidityOverloadLt != null"><![CDATA[ and i.humidity_overload <= #{humidityOverloadLt} ]]></if>
         <if test="lightnessOverloadGt != null"><![CDATA[ and i.lightness_overload >= #{lightnessOverloadGt} ]]></if>
@@ -166,6 +170,7 @@
         where id = #{id}
     </update>
 
+    <!-- 给多个路灯进行分组 -->
     <update id="updateBatch" parameterType="java.util.List">
         update sys_light_info set `group_id`=
         <foreach collection="list" item="item" index="index"
@@ -178,10 +183,24 @@
             #{item.id,jdbcType=BIGINT}
         </foreach>
     </update>
-
+    <!-- 清除所有路灯分组 -->
     <update id="updateGroupBatch" parameterType="Long">
         update sys_light_info set group_id = 0 where group_id = #{groupId}
     </update>
+
+    <!-- 给多个组的路灯进行添加策略 -->
+    <update id="updateBatchByGroup" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            update sys_light_info set
+            strategy_id = #{item.strategyId}
+            where group_id = #{item.groupId}
+        </foreach>
+    </update>
+
+    <!-- 清除所有分组路灯的决策
+    <update id="updateStrategyBatch" parameterType="Long">
+        update sys_light_info set strategy_id = 0 where strategy_id = #{strategyId}
+    </update>-->
 
     <update id="deleteBatch">
         update sys_light_info set exist = 0 where id in
@@ -192,6 +211,15 @@
         update sys_light set exist = 0 where info_id in
         <foreach item="lightId" collection="array" open="(" separator="," close=")">
             #{lightId}
+        </foreach>
+    </update>
+
+    <!-- 给多个路灯添加策略 -->
+    <update id="dispatchStrategy" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            update sys_light_info set
+            strategy_id = #{item.strategyId}
+            where id = #{item.id}
         </foreach>
     </update>
 

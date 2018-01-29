@@ -71,7 +71,25 @@ public interface SysLightInfoMapper extends BaseMapper<SysLightInfo> {
 
     /**
      * 清除所有路灯分组
-     * @param groupId 要清楚的组id
+     * @param groupId 要清除的组id
      */
     void updateGroupBatch(Long groupId);
+
+
+    /**
+     * 给多个组的路灯进行添加策略
+     * @param  sysLightInfoList 路灯分组对象
+     */
+    @CacheEvict(value = "lightInfo", allEntries=true)
+    void updateBatchByGroup(List<SysLightInfo> sysLightInfoList);
+    /**
+     * 清除所有分组路灯的决策
+     * @param strategyId 决策id
+     */
+    void updateStrategyBatch(Long strategyId);
+    /**
+     * 给多个路灯添加策略
+     * @param  sysLightInfoList 路灯分组对象
+     */
+    void dispatchStrategy(List<SysLightInfo> sysLightInfoList);
 }

@@ -79,11 +79,37 @@ public class SysLightInfoController {
             @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="分组失败")
     })
-    @RequestMapping(value = "/lightInfoGroup", method = RequestMethod.POST)
+    @RequestMapping(value = "/dispatchGroupStrategy", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:update")
-    public String lightInfoGroup(@RequestParam(value = "groupId") String groupId, @RequestParam(value = "infoIds") String infoIds){
+    public String dispatchGroupStrategy(@RequestParam(value = "strategyId") String strategyId, @RequestParam(value = "groupId") String groupId){
+        return sysLightInfoService.dispatchGroupStrategy(strategyId, groupId);
+    }
+
+    @ApiOperation("移动端将分组的路灯指派决策")
+    @ApiResponses({
+            @ApiResponse(code=200,message="指派成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="指派失败")
+    })
+    @RequestMapping(value = "/lightInfoStrategyByGroup", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:lightInfo:update")
+    public String lightInfoStrategyByGroup (@RequestParam(value = "groupId") String groupId, @RequestParam(value = "infoIds") String infoIds){
         return sysLightInfoService.dispatchLightToGroup(groupId, infoIds);
+    }
+
+    @ApiOperation("移动端给多个路灯分配决策")
+    @ApiResponses({
+            @ApiResponse(code=200,message="指派成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="指派失败")
+    })
+    @RequestMapping(value = "/dispatchStrategy", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:lightInfo:update")
+    public String dispatchStrategy (@RequestParam(value = "strategyId") String strategyId, @RequestParam(value = "lightInfoIds") String lightInfoIds){
+        return sysLightInfoService.dispatchStrategy(strategyId, lightInfoIds);
     }
 
 

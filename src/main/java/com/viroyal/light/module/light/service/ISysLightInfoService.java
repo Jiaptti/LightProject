@@ -3,7 +3,9 @@ package com.viroyal.light.module.light.service;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.baomidou.mybatisplus.service.IService;
 import com.viroyal.light.module.light.entity.vo.SysLightInfoVo;
+import org.springframework.cache.annotation.CacheEvict;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,4 +53,21 @@ public interface ISysLightInfoService extends IService<SysLightInfo> {
      * @return json格式的结果集
      */
     String dispatchLightToGroup(String groupId, String infoIds);
+
+    /**
+     * 给多个组的路灯进行添加策略
+     * @param  strategyId 决策id
+     * @param  groupId 分组id
+     * @return json格式的结果集
+     */
+    @CacheEvict(value = "lightInfo", allEntries=true)
+    String dispatchGroupStrategy(String strategyId, String groupId);
+
+    /**
+     * 给多个路灯添加策略
+     * @param  strategyId 决策id
+     * @param  lightInfoIds 要分配的路灯id
+     * @return json格式的结果集
+     */
+    String dispatchStrategy(String strategyId, String lightInfoIds);
 }
