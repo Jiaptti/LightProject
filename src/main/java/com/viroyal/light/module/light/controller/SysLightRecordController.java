@@ -65,7 +65,7 @@ public class SysLightRecordController {
             @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="删除失败")
     })
-    @RequestMapping(value = "/lightRecordDelete", method = RequestMethod.GET)
+    @RequestMapping(value = "/lightRecordDelete", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightRecord:delete")
     public String lightRecordDelete(@RequestParam(value = "ids[]") String[] ids){

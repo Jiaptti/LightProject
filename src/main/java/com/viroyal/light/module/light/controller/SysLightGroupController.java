@@ -62,7 +62,7 @@ public class SysLightGroupController {
             @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="删除失败")
     })
-    @RequestMapping(value = "/lightGroupDelete", method = RequestMethod.GET)
+    @RequestMapping(value = "/lightGroupDelete", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightGroup:delete")
     public String lightGroupDelete(@RequestParam(value = "ids[]") String[] ids){
@@ -87,6 +87,8 @@ public class SysLightGroupController {
                     dataType = "String", value = "创建分组的时间的起始范围(格式为yyyy-mm-dd hh:mm:ss)"),
             @ApiImplicitParam(paramType = "query", name = "createEnd",
                     dataType = "Int", value = "创建分组的时间的结束范围(格式为yyyy-mm-dd hh:mm:ss)"),
+            @ApiImplicitParam(paramType = "query", name = "sort",
+                    dataType = "String", value = "排序方式(asc/desc)")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "查询成功"),

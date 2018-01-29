@@ -38,20 +38,20 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Autowired
     SysRolePermissionMapper sysRolePermissionMapper;
 
-    @Override
-    public String queryAll() {
-        Map<String, Object> resultMap = new HashMap<>();
-        List<SysPermission> permissions = sysPermissionMapper.queryAll();
-        if (permissions.size() > 0) {
-            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            resultMap.put(BaseConstant.VALUE_LIST, permissions);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
-        } else {
-            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
-        }
-        return JSON.toJSONString(resultMap);
-    }
+//    @Override
+//    public String queryAll() {
+//        Map<String, Object> resultMap = new HashMap<>();
+//        List<SysPermission> permissions = sysPermissionMapper.queryAll();
+//        if (permissions.size() > 0) {
+//            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+//            resultMap.put(BaseConstant.VALUE_LIST, permissions);
+//            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+//        } else {
+//            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+//            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
+//        }
+//        return JSON.toJSONString(resultMap);
+//    }
 
     @Override
     public String queryWithCondition(Map<String, Object> params) {

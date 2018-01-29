@@ -3,7 +3,12 @@ package com.viroyal.light.module.location.dao;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.viroyal.light.module.location.entity.SysRegion;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +21,8 @@ import java.util.Map;
  * @author jiaptti
  * @since 2018-01-09
  */
+@Mapper
+@CacheConfig(cacheNames = "region")
 public interface SysRegionMapper extends BaseMapper<SysRegion> {
 
     /**
@@ -68,6 +75,7 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
      * 存储地区
      * @param sysRegion 地区对象
      */
+    @CacheEvict(value = "sysRegion", allEntries=true)
     void save(SysRegion sysRegion);
 
     /**
@@ -75,12 +83,14 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
      * @param sysRegion 地区对象
      * @return 更新的记录条数
      */
+    @CacheEvict(value = "sysRegion", allEntries=true)
     int update(SysRegion sysRegion);
 
     /**
      * 删除地区
      * @param ids 地区对象数组
      */
+    @CacheEvict(value = "sysRegion", allEntries=true)
     void deleteBatch(Object[] ids);
 
     /**
@@ -89,6 +99,7 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
      * @param page 分页对象
      * @return 街道列表
      */
+    @Cacheable(value = "sysRegion")
     List<SysRegion> queryWithCondition(Map<String, Object> param, Pagination page);
 
     /**
@@ -96,5 +107,6 @@ public interface SysRegionMapper extends BaseMapper<SysRegion> {
      * @param param  参数
      * @return 街道列表
      */
+    @Cacheable(value = "sysRegion")
     List<SysRegion> queryWithCondition(Map<String, Object> param);
 }

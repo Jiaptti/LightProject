@@ -40,19 +40,6 @@ public class SysPermissionController {
     @Autowired
     ISysPermissionService sysPermissionService;
 
-    @ApiOperation("移动端获得权限列表")
-    @ApiResponses({
-            @ApiResponse(code=200,message="查询成功"),
-            @ApiResponse(code = 400, message = "请求错误"),
-            @ApiResponse(code=500,message="查询失败")
-    })
-    @RequestMapping(value = "/permissionList", method = RequestMethod.GET)
-    @ResponseBody
-    @RequiresPermissions("sys:permission:list")
-    public String permissionList(){
-        return sysPermissionService.queryAll();
-    }
-
     @ApiOperation("移动端添加权限")
     @ApiResponses({
             @ApiResponse(code=200,message="添加成功"),

@@ -47,6 +47,7 @@
         left join sys_region as r on r.common_region_id = i.street_id
         left join sys_region as sr on r.up_region_id = sr.common_region_id
         where 1 = 1 and i.exist = 1
+        <if test="infoId != null">and i.id = #{infoId}</if>
         <if test="areaId != null">and r.up_region_id = #{areaId}</if>
         <if test="areaName != null">and sr.region_name like CONCAT(#{areaName}, '%')</if>
         <if test="cityId != null">and r.common_region_id like CONCAT(#{cityId}, '%') and r.region_desc = '街道'</if>
@@ -156,6 +157,7 @@
             <if test="temperatureThreshold != null">`temperature_threshold` = #{temperatureThreshold},</if>
             <if test="humidityThreshold != null">`humidity_threshold` = #{humidityThreshold},</if>
             <if test="lightnessThreshold != null">`lightness_threshold` = #{lightnessThreshold},</if>
+            <if test="voltageOverload != null">`voltage_overload` = #{voltageOverload},</if>
             <if test="currentOverload != null">`current_overload` = #{currentOverload},</if>
             <if test="temperatureOverload != null">`temperature_overload` = #{temperatureOverload},</if>
             <if test="humidityOverload != null">`humidity_overload` = #{humidityOverload},</if>

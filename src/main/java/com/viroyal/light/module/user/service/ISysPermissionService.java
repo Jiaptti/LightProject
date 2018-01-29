@@ -20,7 +20,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * 查询所有权限
      * @return json格式的权限列表
      */
-    String queryAll();
+//    String queryAll();
 
     /**
      *通过各种条件查询权限

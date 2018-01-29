@@ -141,13 +141,13 @@
     </update>
 
     <update id="deleteBatch">
-        update sys_region set exist = 0 where id in
+        update sys_region as region set region.exist = 0 where region.id in
         <foreach item="regionId" collection="array" open="(" separator="," close=")">
             ${regionId}
         </foreach>
         ;
-        update sys_region as region,sys_region as sr
-        set sr.exist = 0,region.exist = 0
+        update sys_region as region, sys_region as sr
+        set sr.exist = 0, region.exist = 0
         where  sr.up_region_id = region.common_region_id and region.id in
         <foreach item="regionId" collection="array" open="(" separator="," close=")">
             ${regionId}

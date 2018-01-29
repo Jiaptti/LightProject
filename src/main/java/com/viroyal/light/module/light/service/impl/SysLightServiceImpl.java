@@ -199,17 +199,21 @@ public class SysLightServiceImpl extends ServiceImpl<SysLightMapper, SysLight> i
                     pageId = Integer.parseInt(entry.getValue().toString());
                 } else if(entry.getKey().toString().equals("pageSize")){
                     pageSize = Integer.parseInt(entry.getValue().toString());
+                } else {
+                    if(NumberUtils.isNumber(entry.getValue().toString())){
+                        params.put(entry.getKey(), Long.valueOf(entry.getValue().toString()));
+                    }
                 }
             }
             if(pageId == 0 || pageSize == 0){
-                List<SysLight> data = sysLightMapper.queryCurrentDate();
+                List<SysLight> data = sysLightMapper.queryCurrentDate(params);
                 page.setSize(data.size());
                 page.setTotal(data.size());
                 page.setRecords(data);
             } else {
                 page.setCurrent(pageId);
                 page.setSize(pageSize);
-                page.setRecords(sysLightMapper.queryCurrentDate(page));
+                page.setRecords(sysLightMapper.queryCurrentDate(params, page));
             }
             dataPage = new DataPage<SysLight>(page);
             if(dataPage.getRecords() == 0){

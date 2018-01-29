@@ -29,24 +29,22 @@
         where 1 = 1 and light.exist = 1 and i.exist = 1
         <if test="lightId != null">and light.id = #{lightId}</if>
         <if test="status != null">and light.`status` = #{status}</if>
-        <if test="voltageGt != null"> <![CDATA[ and light.voltage >= #{voltageGt} ]]></if>
-        <if test="voltageLt != null"> <![CDATA[ and light.voltage <= #{voltageLt} ]]></if>
-        <if test="currentGt != null"> <![CDATA[ and light.`current` >= #{currentGt} ]]></if>
-        <if test="currentLt != null"> <![CDATA[ and light.`current` <= #{currentLt} ]]></if>
-        <if test="trafficFlow != null"> <![CDATA[ and light.traffic_flow = #{trafficFlow} ]]></if>
-        <if test="temperatureGt != null"> <![CDATA[ and light.temperature >= #{temperatureGt} ]]></if>
-        <if test="temperatureLt != null">  <![CDATA[ and light.temperature <= #{temperatureLt} ]]></if>
-        <if test="humidityGt != null">  <![CDATA[ and light.humidity >= #{humidityGt} ]]></if>
-        <if test="humidityLt != null">  <![CDATA[ and light.humidity <= #{humidityLt} ]]> </if>
-        <if test="startTime != null">
-            <![CDATA[   and DATE_FORMAT(light.datetime, '%Y-%m-%d') >=  DATE_FORMAT(#{startTime}, '%Y-%m-%d')]]></if>
-        <if test="endTime != null">
-            <![CDATA[   and DATE_FORMAT(light.datetime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')  ]]> </if>
-        <if test="lightnessGt != null">  <![CDATA[ and light.lightness >= #{lightnessGt} ]]></if>
+        <if test="voltageGt != null"> and <![CDATA[ light.voltage >= #{voltageGt} ]]></if>
+        <if test="voltageLt != null"> and <![CDATA[light.voltage <= #{voltageLt} ]]></if>
+        <if test="currentGt != null"> and <![CDATA[ light.`current` >= #{currentGt} ]]></if>
+        <if test="currentLt != null"> and <![CDATA[ light.`current` <= #{currentLt} ]]></if>
+        <if test="trafficFlow != null"> and <![CDATA[ light.traffic_flow = #{trafficFlow} ]]></if>
+        <if test="temperatureGt != null"> and <![CDATA[ light.temperature >= #{temperatureGt} ]]></if>
+        <if test="temperatureLt != null"> and  <![CDATA[ light.temperature <= #{temperatureLt} ]]></if>
+        <if test="humidityGt != null">  and <![CDATA[ light.humidity >= #{humidityGt} ]]></if>
+        <if test="humidityLt != null">  and <![CDATA[ light.humidity <= #{humidityLt} ]]> </if>
+        <if test="startTime != null"> and <![CDATA[ DATE_FORMAT(light.datetime, '%Y-%m-%d') >=  DATE_FORMAT(#{startTime}, '%Y-%m-%d')]]></if>
+        <if test="endTime != null"> and <![CDATA[DATE_FORMAT(light.datetime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')  ]]> </if>
+        <if test="lightnessGt != null">  and <![CDATA[ light.lightness >= #{lightnessGt} ]]></if>
         <if test="lightnessLt != null">  <![CDATA[ and light.lightness <= #{lightnessLt} ]]> </if>
         <if test="infoId != null">and light.info_id = #{infoId}</if>
-        <if test="sort == 'asc' ">order by light.id asc</if>
-        <if test="sort == 'desc' ">order by light.id desc</if>
+        <if test="sort == 'asc' "> order by light.id asc</if>
+        <if test="sort == 'desc' "> order by light.id desc</if>
     </select>
 
     <select id="queryCurrentDate" resultMap="BaseResultMap">
@@ -56,8 +54,24 @@
 		from sys_light as light
 		left join sys_light_info as i on i.id = light.info_id
 		where 1 = 1 and light.exist = 1 and i.exist = 1
+        <if test="status != null">and light.`status` = #{status}</if>
+        <if test="voltageGt != null"> and <![CDATA[ light.voltage >= #{voltageGt} ]]></if>
+        <if test="voltageLt != null"> and <![CDATA[ light.voltage <= #{voltageLt} ]]></if>
+        <if test="currentGt != null"> and <![CDATA[ light.`current` >= #{currentGt} ]]></if>
+        <if test="currentLt != null"> and <![CDATA[ light.`current` <= #{currentLt} ]]></if>
+        <if test="trafficFlow != null"> and <![CDATA[ light.traffic_flow = #{trafficFlow} ]]></if>
+        <if test="temperatureGt != null"> and <![CDATA[ light.temperature >= #{temperatureGt} ]]></if>
+        <if test="temperatureLt != null">  and <![CDATA[ light.temperature <= #{temperatureLt} ]]></if>
+        <if test="humidityGt != null">  and <![CDATA[ light.humidity >= #{humidityGt} ]]></if>
+        <if test="humidityLt != null">  and <![CDATA[ light.humidity <= #{humidityLt} ]]> </if>
+        <if test="startTime != null"> and <![CDATA[    DATE_FORMAT(light.datetime, '%Y-%m-%d') >=  DATE_FORMAT(#{startTime}, '%Y-%m-%d')]]></if>
+        <if test="endTime != null">and <![CDATA[DATE_FORMAT(light.datetime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')  ]]> </if>
+        <if test="lightnessGt != null"> and <![CDATA[light.lightness >= #{lightnessGt} ]]></if>
+        <if test="lightnessLt != null"> and <![CDATA[light.lightness <= #{lightnessLt} ]]> </if>
+        <if test="infoId != null">and light.info_id = #{infoId}</if>
 		group by light.info_id
-	    order by light.id asc , light.datetime desc
+        <if test="sort == 'asc' "> order by light.id asc, light.datetime desc</if>
+        <if test="sort == 'desc' "> order by light.id desc, light.datetime desc</if>
 	</select>
 
     <insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLight"

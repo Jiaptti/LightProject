@@ -52,7 +52,7 @@ public class SysLightInfoController {
             @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="删除失败")
     })
-    @RequestMapping(value = "/lightInfoDelete", method = RequestMethod.GET)
+    @RequestMapping(value = "/lightInfoDelete", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:delete")
     public String deleteLightInfo(@RequestParam(value = "ids[]") String[] ids){
@@ -79,7 +79,7 @@ public class SysLightInfoController {
             @ApiResponse(code = 400, message = "请求错误"),
             @ApiResponse(code=500,message="分组失败")
     })
-    @RequestMapping(value = "/lightInfoGroup", method = RequestMethod.GET)
+    @RequestMapping(value = "/lightInfoGroup", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:update")
     public String lightInfoGroup(@RequestParam(value = "groupId") String groupId, @RequestParam(value = "infoIds") String infoIds){
@@ -91,6 +91,7 @@ public class SysLightInfoController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name="pageId", dataType="Int", value="第几页"),
             @ApiImplicitParam(paramType="query", name="pageSize", dataType="Int", value="多少条"),
+            @ApiImplicitParam(paramType="query", name="infoId", dataType="Long", value="路灯id"),
             @ApiImplicitParam(paramType="query", name="areaId", dataType="Long", value="区Id(common_region_id)"),
             @ApiImplicitParam(paramType="query", name="areaName", dataType="String", value="区名(模糊查询)"),
             @ApiImplicitParam(paramType="query", name="cityId", dataType="Long", value="城市Id(common_region_id)"),
@@ -101,8 +102,8 @@ public class SysLightInfoController {
             @ApiImplicitParam(paramType="query", name="groupId", dataType="Long", value="组Id"),
             @ApiImplicitParam(paramType="query", name="code", dataType="String", value="路灯编号(模糊查询)"),
             @ApiImplicitParam(paramType="query", name="status", dataType="String", value="是否启用(1表示启用，0表示没启用)"),
-            @ApiImplicitParam(paramType="query", name="longitude", dataType="Float", value="经度"),
-            @ApiImplicitParam(paramType="query", name="latitude", dataType="Float", value="维度"),
+            @ApiImplicitParam(paramType="query", name="longitude", dataType="Double", value="经度"),
+            @ApiImplicitParam(paramType="query", name="latitude", dataType="Double", value="维度"),
             @ApiImplicitParam(paramType="query", name="strategyId", dataType="Double", value="决策id，具体看sys_strategy表"),
             @ApiImplicitParam(paramType="query", name="voltageThresholdGt", dataType="Int", value="电压报警阀值(这里表示大于)"),
             @ApiImplicitParam(paramType="query", name="voltageThresholdLt", dataType="Int", value="电压报警阀值(这里表示小于)"),

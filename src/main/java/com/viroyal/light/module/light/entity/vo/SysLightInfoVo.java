@@ -27,17 +27,17 @@ public class SysLightInfoVo {
     /**
      * 经度
      */
-	@ApiModelProperty("经度(选填)")
-	private Float longitude;
+	@ApiModelProperty("经度(必填)")
+	private Double longitude;
     /**
      * 纬度
      */
-	@ApiModelProperty("纬度(选填)")
-	private Float latitude;
+	@ApiModelProperty("纬度(必填)")
+	private Double latitude;
 	/**
 	 * 引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间
 	 */
-	@ApiModelProperty("策略id(引用策略表的id，根据四季的不同，车流量的不同，来指派亮度以及打开时间),详细看sys_strategy表(添加时候必填，更新选填)")
+	@ApiModelProperty("策略id(必填)")
 	private Long strategyId;
 	/**
 	 * 所属用户id
@@ -47,7 +47,7 @@ public class SysLightInfoVo {
     /**
      * 所属街道id
      */
-	@ApiModelProperty("所属街道id(即sys_region表中的desc为街道的common_region_id)(添加时候必填，更新选填)")
+	@ApiModelProperty("所属街道id(必填)")
 	private Long streetId;
 	/**
 	 * 所属组的id

@@ -20,10 +20,6 @@ import java.util.Map;
 
 @Mapper
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
-
-
-    List<SysPermission> queryAll();
-
     /**
      *通过各种条件分页查询权限
      * @param params 条件

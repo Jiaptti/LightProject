@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
@@ -12,6 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         "com.viroyal.light.module.location.dao",
         "com.viroyal.light.module.user.dao"})
 @EnableSwagger2
+@EnableCaching
 @SpringBootApplication
 public class DemoApplication extends SpringBootServletInitializer {
 

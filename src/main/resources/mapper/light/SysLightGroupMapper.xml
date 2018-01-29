@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.viroyal.light.module.light.mapper.SysLightGroupMapper">
+<mapper namespace="com.viroyal.light.module.light.dao.SysLightGroupMapper">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.viroyal.light.module.light.entity.SysLightGroup">
@@ -23,10 +23,12 @@
 		where 1 = 1 and lg.exist = 1
 		<if test="groupId != null">and lg.group_id = #{groupId} </if>
 		<if test="groupName != null">and lg.group_name = #{groupName} </if>
-		<if test="createUserId != null"> lg.create_user_id = #{createUserId} </if>
-		<if test="responsibleId != null"> lg.responsible_id = #{responsibleId} </if>
+		<if test="createUserId != null"> and lg.create_user_id = #{createUserId} </if>
+		<if test="responsibleId != null"> and lg.responsible_id = #{responsibleId} </if>
 		<if test="createStart != null"><![CDATA[ and DATE_FORMAT(lg.createTime, '%Y-%m-%d %H:%i:%s') >=  DATE_FORMAT(#{createStart}, '%Y-%m-%d %H:%i:%s')]]></if>
 		<if test="createEnd != null"><![CDATA[ and DATE_FORMAT(lg.createTime, '%Y-%m-%d %H:%i:%s') <=  DATE_FORMAT(#{createEnd}, '%Y-%m-%d %H:%i:%s')]]></if>
+		<if test="sort == 'asc' "> order by lg.id asc</if>
+		<if test="sort == 'desc' "> order by lg.id desc</if>
 	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysLightGroup"
@@ -70,7 +72,7 @@
 	</update>
 
 	<update id="deleteBatch">
-		update sys_light_record set exist = 0 where id in
+		update sys_light_group set exist = 0 where id in
 		<foreach item="groupId" collection="array" open="(" separator="," close=")">
 			#{groupId}
 		</foreach>

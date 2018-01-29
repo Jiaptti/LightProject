@@ -1,4 +1,4 @@
-package com.viroyal.light.config;
+package com.viroyal.light.common.redis;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,5 +44,4 @@ public class RedisConfig extends CachingConfigurerSupport {
 
         return jedisPool;
     }
-
 }
