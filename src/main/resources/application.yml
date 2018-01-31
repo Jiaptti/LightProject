@@ -1,7 +1,7 @@
 spring:
     # 环境 dev|test|pro
     profiles:
-        active: pro
+        active: test
     # jackson时间格式化
     jackson:
         time-zone: GMT+8
@@ -45,4 +45,6 @@ logging:
     com.viroyal.viroyal.module.light.controller: 'off'
     com.viroyal.viroyal.module.user.controller: 'off'
     com.viroyal.viroyal.module.location.controller: 'off'
-
+server:
+  session:
+    timeout: 999999999

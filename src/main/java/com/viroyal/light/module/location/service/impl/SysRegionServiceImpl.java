@@ -211,14 +211,20 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
                         sysRegion.setPostalcode(streetVo.getPostalcode());
                     }
                     SysRegion oneStreet = sysRegionMapper.queryOneStreet(Long.parseLong(streetVo.getAreaId()));
-                    String regionId = String.valueOf(Integer.parseInt(oneStreet.getCommonRegionId()) + 1);
+                    String regionId;
+                    if(oneStreet == null){
+                        regionId = String.valueOf(Integer.parseInt(streetVo.getAreaId())) + 1;
+                    } else {
+                        regionId = String.valueOf(Integer.parseInt(oneStreet.getCommonRegionId()) + 1);
+                    }
                     sysRegion.setUpRegionId(streetVo.getAreaId());
                     sysRegion.setRegionName(streetVo.getStreetName());
                     sysRegion.setCommonRegionId(regionId);
                     sysRegion.setRegionDesc("街道");
                     sysRegionMapper.save(sysRegion);
                     resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+                    resultMap.put(BaseConstant.REGION_ID, sysRegion.getCommonRegionId());
+                    resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT );
                 }
             } catch (Exception e) {
                 resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);

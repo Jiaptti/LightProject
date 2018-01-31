@@ -7,6 +7,7 @@
 		<id column="id" property="id" />
 		<result column="group_id" property="groupId" />
 		<result column="group_name" property="groupName" />
+		<result column="group_strategy_id" property="groupStrategyId" />
 		<result column="create_user_id" property="createUserId" />
 		<result column="responsible_id" property="responsibleId" />
 		<result column="create_time" property="createTime" />
@@ -16,17 +17,19 @@
 	</resultMap>
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
-		select distinct  lg.id, lg.group_name, lg.create_user_id, lg.responsible_id, lg.create_time,
+		select distinct  lg.id, lg.group_name, lg.group_strategy_id,
+		lg.create_user_id, lg.responsible_id, lg.create_time,
 		lg.last_update_time, lg.last_update_user_id
 		from sys_light_group as lg
 		left join sys_light_info as info on info.group_id = lg.id
 		where 1 = 1 and lg.exist = 1
 		<if test="groupId != null">and lg.group_id = #{groupId} </if>
 		<if test="groupName != null">and lg.group_name = #{groupName} </if>
+		<if test="groupStrategyId != null">and lg.group_strategy_id   = #{groupStrategyId} </if>
 		<if test="createUserId != null"> and lg.create_user_id = #{createUserId} </if>
 		<if test="responsibleId != null"> and lg.responsible_id = #{responsibleId} </if>
-		<if test="createStart != null"><![CDATA[ and DATE_FORMAT(lg.createTime, '%Y-%m-%d %H:%i:%s') >=  DATE_FORMAT(#{createStart}, '%Y-%m-%d %H:%i:%s')]]></if>
-		<if test="createEnd != null"><![CDATA[ and DATE_FORMAT(lg.createTime, '%Y-%m-%d %H:%i:%s') <=  DATE_FORMAT(#{createEnd}, '%Y-%m-%d %H:%i:%s')]]></if>
+		<if test="createStart != null"> and <![CDATA[ DATE_FORMAT(lg.createTime, '%Y-%m-%d %H:%i:%s') >=  DATE_FORMAT(#{createStart}, '%Y-%m-%d %H:%i:%s')]]></if>
+		<if test="createEnd != null"> and <![CDATA[DATE_FORMAT(lg.createTime, '%Y-%m-%d %H:%i:%s') <=  DATE_FORMAT(#{createEnd}, '%Y-%m-%d %H:%i:%s')]]></if>
 		<if test="sort == 'asc' "> order by lg.id asc</if>
 		<if test="sort == 'desc' "> order by lg.id desc</if>
 	</select>
@@ -38,6 +41,7 @@
 		`id`,
 		`group_id`,
 		`group_name`,
+		`group_strategy_id`,
 		`create_user_id`,
 		`responsible_id`,
 		`create_time`,
@@ -49,6 +53,7 @@
 		#{id},
 		#{groupId},
 		#{groupName},
+		#{groupStrategyId},
 		#{createUserId},
 		#{responsibleId},
 		#{createTime},
@@ -62,6 +67,7 @@
 		<set>
 			<if test="groupId != null">`group_id` = #{groupId}, </if>
 			<if test="groupName != null">`group_name` = #{groupName}, </if>
+			<if test="groupStrategyId != null">`group_strategy_id` = #{groupStrategyId}, </if>
 			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
 			<if test="responsibleId != null">`responsible_id` = #{responsibleId}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
@@ -69,6 +75,15 @@
 			<if test="lastUpdateUserId != null">`last_update_user_id` = #{lastUpdateUserId} </if>
 		</set>
 		where id = #{id}
+	</update>
+
+	<!-- 给路灯分组添加策略 -->
+	<update id="dispatchStrategy"  parameterType="java.util.List">
+		<foreach collection="list" separator=";" item="item">
+			update sys_light_group set
+			group_strategy_id = #{item.groupStrategyId}
+			where id = #{item.id}
+		</foreach>
 	</update>
 
 	<update id="deleteBatch">

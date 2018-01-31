@@ -55,19 +55,18 @@ public interface ISysLightInfoService extends IService<SysLightInfo> {
     String dispatchLightToGroup(String groupId, String infoIds);
 
     /**
-     * 给多个组的路灯进行添加策略
-     * @param  strategyId 决策id
-     * @param  groupId 分组id
-     * @return json格式的结果集
-     */
-    @CacheEvict(value = "lightInfo", allEntries=true)
-    String dispatchGroupStrategy(String strategyId, String groupId);
-
-    /**
      * 给多个路灯添加策略
      * @param  strategyId 决策id
      * @param  lightInfoIds 要分配的路灯id
      * @return json格式的结果集
      */
     String dispatchStrategy(String strategyId, String lightInfoIds);
+
+    /**
+     * 给指定街道的路灯添加策略
+     * @param strategyId 决策id
+     * @param streetId 街道id
+     * @return json格式的结果集
+     */
+    String dispatchStreetStrategy(String strategyId, String streetId);
 }

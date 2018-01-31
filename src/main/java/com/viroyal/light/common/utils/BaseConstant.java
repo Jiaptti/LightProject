@@ -10,6 +10,8 @@ public class BaseConstant {
 
     //消息
     public static final String MESSAGE = "message";
+    //REGION_ID
+    public static final String REGION_ID = "common_region_id";
     //code
     public static final String CODE = "code";
     //Ajax成功返回的status

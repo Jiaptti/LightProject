@@ -79,6 +79,8 @@ public class SysLightGroupController {
                     dataType = "Int", value = "路灯分组id(对应的不是主键，是group_id字段)"),
             @ApiImplicitParam(paramType = "query", name = "groupName",
                     dataType = "String", value = "路灯分组名"),
+            @ApiImplicitParam(paramType = "query", name = "groupStrategyId",
+                    dataType = "Int", value = "路灯分组决策id"),
             @ApiImplicitParam(paramType = "query", name = "createUserId",
                     dataType = "Int", value = "创建路灯分组的用户id"),
             @ApiImplicitParam(paramType = "query", name = "responsibleId",
@@ -122,5 +124,24 @@ public class SysLightGroupController {
                     BaseConstant.EXCEPTION_MESSAGE + " = " + ex.getMessage());
         }
         return JSON.toJSONString(resultMap);
+    }
+
+    @ApiOperation("移动端给路灯分组添加策略")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "groupId", required = true,
+                    dataType = "Int", value = "路灯分组id(多个id用逗号隔开)"),
+            @ApiImplicitParam(paramType = "query", name = "strategyId", required = true,
+                    dataType = "Int", value = "要分配的策略id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="指派成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="指派失败")
+    })
+    @RequestMapping(value = "/dispatchStrategy", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:lightGroup:update")
+    public String dispatchStrategy (@RequestParam(value = "groupId") String groupId, @RequestParam(value = "strategyId") String strategyId){
+        return sysLightGroupService.dispatchStrategy(groupId, strategyId);
     }
 }

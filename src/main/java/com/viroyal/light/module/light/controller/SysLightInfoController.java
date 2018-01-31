@@ -74,19 +74,12 @@ public class SysLightInfoController {
     }
 
     @ApiOperation("移动端将路灯添加分组")
-    @ApiResponses({
-            @ApiResponse(code=200,message="分组成功"),
-            @ApiResponse(code = 400, message = "请求错误"),
-            @ApiResponse(code=500,message="分组失败")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "groupId", required = true,
+                    dataType = "Int", value = "需要分配策略的路灯组id(sys_light_group的id)多个用逗号隔开"),
+            @ApiImplicitParam(paramType = "query", name = "lightInfoIds", required = true,
+                    dataType = "Int", value = "要分配的策略id")
     })
-    @RequestMapping(value = "/dispatchGroupStrategy", method = RequestMethod.POST)
-    @ResponseBody
-    @RequiresPermissions("sys:lightInfo:update")
-    public String dispatchGroupStrategy(@RequestParam(value = "strategyId") String strategyId, @RequestParam(value = "groupId") String groupId){
-        return sysLightInfoService.dispatchGroupStrategy(strategyId, groupId);
-    }
-
-    @ApiOperation("移动端将分组的路灯指派决策")
     @ApiResponses({
             @ApiResponse(code=200,message="指派成功"),
             @ApiResponse(code = 400, message = "请求错误"),
@@ -95,11 +88,17 @@ public class SysLightInfoController {
     @RequestMapping(value = "/lightInfoStrategyByGroup", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("sys:lightInfo:update")
-    public String lightInfoStrategyByGroup (@RequestParam(value = "groupId") String groupId, @RequestParam(value = "infoIds") String infoIds){
-        return sysLightInfoService.dispatchLightToGroup(groupId, infoIds);
+    public String lightInfoStrategyByGroup (@RequestParam(value = "groupId") String groupId, @RequestParam(value = "lightInfoIds") String lightInfoIds){
+        return sysLightInfoService.dispatchLightToGroup(groupId, lightInfoIds);
     }
 
     @ApiOperation("移动端给多个路灯分配决策")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "strategyId", required = true,
+                    dataType = "Int", value = "要分配的策略id"),
+            @ApiImplicitParam(paramType = "query", name = "lightInfoIds", required = true,
+                    dataType = "Int", value = "路灯信息id(多个id用逗号隔开)")
+    })
     @ApiResponses({
             @ApiResponse(code=200,message="指派成功"),
             @ApiResponse(code = 400, message = "请求错误"),
@@ -110,6 +109,25 @@ public class SysLightInfoController {
     @RequiresPermissions("sys:lightInfo:update")
     public String dispatchStrategy (@RequestParam(value = "strategyId") String strategyId, @RequestParam(value = "lightInfoIds") String lightInfoIds){
         return sysLightInfoService.dispatchStrategy(strategyId, lightInfoIds);
+    }
+
+    @ApiOperation("移动端通过街道给路灯分配策略")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "strategyId", required = true,
+                    dataType = "Int", value = "要分配的策略id"),
+            @ApiImplicitParam(paramType = "query", name = "streetId", required = true,
+                    dataType = "Int", value = "街道的common_region_id(多个id用逗号隔开)")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="指派成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="指派失败")
+    })
+    @RequestMapping(value = "/dispatchStreetStrategy", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:lightInfo:update")
+    public String dispatchStreetStrategy (@RequestParam(value = "strategyId") String strategyId, @RequestParam(value = "streetId") String streetId){
+        return sysLightInfoService.dispatchStreetStrategy(strategyId, streetId);
     }
 
 
@@ -131,28 +149,6 @@ public class SysLightInfoController {
             @ApiImplicitParam(paramType="query", name="longitude", dataType="Double", value="经度"),
             @ApiImplicitParam(paramType="query", name="latitude", dataType="Double", value="维度"),
             @ApiImplicitParam(paramType="query", name="strategyId", dataType="Double", value="决策id，具体看sys_strategy表"),
-            @ApiImplicitParam(paramType="query", name="voltageThresholdGt", dataType="Int", value="电压报警阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="voltageThresholdLt", dataType="Int", value="电压报警阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="currentThresholdGt", dataType="Int", value="电流报警阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="currentThresholdLt", dataType="Int", value="电流报警阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="temperatureThresholdGt", dataType="Int", value="温度报警阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="temperatureThresholdLt", dataType="Int", value="温度报警阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="humidityThresholdGt", dataType="Int", value="湿度报警阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="humidityThresholdLt", dataType="Int", value="湿度报警阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="lightnessThresholdGt", dataType="Int", value="亮度报警阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="lightnessThresholdLt", dataType="Int", value="亮度报警阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="voltageOverloadGt", dataType="Int", value="电压过载阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="voltageOverloadLt", dataType="Int", value="电压过载阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="currentOverloadGt", dataType="Int", value="电流过载阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="currentOverloadLt", dataType="Int", value="电流过载阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="temperatureOverloadGt", dataType="Int", value="温度过载阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="temperatureOverloadLt", dataType="Int", value="温度过载阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="humidityOverloadGt", dataType="Int", value="湿度过载阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="humidityOverloadLt", dataType="Int", value="湿度过载阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="lightnessOverloadGt", dataType="Int", value="亮度过载阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="lightnessOverloadLt", dataType="Int", value="亮度过载阀值(这里表示小于)"),
-            @ApiImplicitParam(paramType="query", name="lightnessOverloadGt", dataType="Int", value="亮度过载阀值(这里表示大于)"),
-            @ApiImplicitParam(paramType="query", name="lightnessOverloadLt", dataType="Int", value="亮度过载阀值(这里表示小于)"),
             @ApiImplicitParam(paramType="query", name="sort", dataType="String" ,value="排序方式(asc升序，desc降序)")
     })
     @ApiResponses({

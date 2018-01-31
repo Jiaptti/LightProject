@@ -64,7 +64,7 @@ public interface SysLightInfoMapper extends BaseMapper<SysLightInfo> {
 
     /**
      * 将路灯分到指定的组
-     * @param  sysLightInfoList 路灯分组对象
+     * @param  sysLightInfoList 路灯信息列表对象
      */
     @CacheEvict(value = "lightInfo", allEntries=true)
     void updateBatch(List<SysLightInfo> sysLightInfoList);
@@ -77,16 +77,11 @@ public interface SysLightInfoMapper extends BaseMapper<SysLightInfo> {
 
 
     /**
-     * 给多个组的路灯进行添加策略
-     * @param  sysLightInfoList 路灯分组对象
+     * 给指定街道的路灯添加策略
+     * @param sysLightInfoList 路灯信息列表对象
      */
-    @CacheEvict(value = "lightInfo", allEntries=true)
-    void updateBatchByGroup(List<SysLightInfo> sysLightInfoList);
-    /**
-     * 清除所有分组路灯的决策
-     * @param strategyId 决策id
-     */
-    void updateStrategyBatch(Long strategyId);
+    void updateBatchByStreet(List<SysLightInfo> sysLightInfoList);
+
     /**
      * 给多个路灯添加策略
      * @param  sysLightInfoList 路灯分组对象

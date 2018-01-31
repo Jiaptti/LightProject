@@ -31,6 +31,11 @@ public class SysLightGroupVo {
      */
 	@ApiModelProperty("组名 eg:xx路的路灯组，xx区的路灯组，命名随意(添加的时候必填，修改不用)")
 	private String groupName;
+	/**
+	 * 路灯分组决策id
+	 */
+	@ApiModelProperty("路灯分组决策id(添加修改都是选填)")
+	private Long groupStrategyId;
     /**
      * 谁负责的组
      */

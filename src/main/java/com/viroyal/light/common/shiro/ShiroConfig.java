@@ -1,5 +1,6 @@
 package com.viroyal.light.common.shiro;
 
+import com.google.common.collect.Maps;
 import com.viroyal.light.module.user.entity.SysPermissionInit;
 import com.viroyal.light.module.user.service.ISysPermissionInitService;
 import com.viroyal.light.common.filter.KickoutSessionControlFilter;
@@ -36,6 +37,9 @@ public class ShiroConfig {
 
     @Value("${spring.redis.port}")
     private int port;
+
+    @Value("${server.session.timeout}")
+    private String serverSessionTimeout;
 
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。
@@ -83,6 +87,9 @@ public class ShiroConfig {
         //  该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理
         proxy.setTargetFilterLifecycle(true);
         filterRegistration.setFilter(proxy);
+        Map<String, String> initParameters = Maps.newHashMap();
+        initParameters.put("serverSessionTimeout", serverSessionTimeout);
+        filterRegistration.setInitParameters(initParameters);
 
         filterRegistration.setEnabled(true);
         return filterRegistration;

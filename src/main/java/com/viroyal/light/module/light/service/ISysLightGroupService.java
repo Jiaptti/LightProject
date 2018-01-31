@@ -4,6 +4,7 @@ import com.viroyal.light.module.light.entity.SysLightGroup;
 import com.baomidou.mybatisplus.service.IService;
 import com.viroyal.light.module.light.entity.vo.SysLightGroupVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,4 +43,12 @@ public interface ISysLightGroupService extends IService<SysLightGroup> {
      * @return json格式的路灯分组列表
      */
     String queryWithCondition(Map<String,Object> params);
+
+    /**
+     * 给路灯分组添加策略
+     * @param groupId 路灯分组id
+     * @param strategyId 决策id
+     * @return json格式的结果集
+     */
+    String dispatchStrategy(String groupId, String strategyId);
 }

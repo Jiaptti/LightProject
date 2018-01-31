@@ -80,57 +80,6 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	 */
 	@TableField("auto_report")
 	private Long autoReport;
-    /**
-     * 电压报警阀值
-     */
-	@TableField("voltage_threshold")
-	private Integer voltageThreshold;
-    /**
-     * 电流报警阀值
-     */
-	@TableField("current_threshold")
-	private Integer currentThreshold;
-    /**
-     * 温度报警阀值
-     */
-	@TableField("temperature_threshold")
-	private Integer temperatureThreshold;
-    /**
-     * 湿度报警阀值
-     */
-	@TableField("humidity_threshold")
-	private Integer humidityThreshold;
-    /**
-     * 亮度报警阀值
-     */
-	@TableField("lightness_threshold")
-	private Integer lightnessThreshold;
-    /**
-     * 电压过载阀值
-     */
-	@TableField("voltage_overload")
-	private Integer voltageOverload;
-    /**
-     * 电流过载阀值
-     */
-	@TableField("current_overload")
-	private Integer currentOverload;
-    /**
-     * 温度过载阀值
-     */
-	@TableField("temperature_overload")
-	private Integer temperatureOverload;
-    /**
-     * 湿度过载阀值
-     */
-	@TableField("humidity_overload")
-	private Integer humidityOverload;
-    /**
-     * 亮度过载阀值
-     */
-	@TableField("lightness_overload")
-	private Integer lightnessOverload;
-
 	/**
 	 * 是否可见
 	 */

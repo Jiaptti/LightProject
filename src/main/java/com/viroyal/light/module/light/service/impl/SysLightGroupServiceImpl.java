@@ -16,10 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -45,7 +42,7 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_GROUP_RESPONSE_ID_NOT_NULL);
             return JSON.toJSONString(resultMap);
-        }  else if(StringUtils.isBlank(lightGroupVo.getGroupName())){
+        } else if(StringUtils.isBlank(lightGroupVo.getGroupName())){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_GROUP_NAME_NOT_NULL);
             return JSON.toJSONString(resultMap);
@@ -70,7 +67,7 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
         } else if(lightGroupVo.getResponsibleId() == null && lightGroupVo.getGroupId() == null
-                && StringUtils.isBlank(lightGroupVo.getGroupName())){
+                && StringUtils.isBlank(lightGroupVo.getGroupName()) && lightGroupVo.getGroupStrategyId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);
@@ -145,5 +142,39 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
             }
         }
         return JSON.toJSONString(dataPage);
+    }
+
+    @Override
+    public String dispatchStrategy(String groupId, String strategyId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(strategyId)) {
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_FAILUER + " : " + BaseConstant.REQUEST_ERROR);
+            return JSON.toJSONString(resultMap);
+        }try {
+            List<SysLightGroup> infoList = new ArrayList<>();
+            String[] ids = groupId.split(",");
+            if (ids.length > 1) {
+                for (int i = 0; i < ids.length; i++) {
+                    SysLightGroup sysLightGroup = new SysLightGroup();
+                    sysLightGroup.setGroupStrategyId(Long.valueOf(strategyId));
+                    sysLightGroup.setId(Long.valueOf(ids[i]));
+                    infoList.add(sysLightGroup);
+                }
+            } else {
+                SysLightGroup sysLightGroup = new SysLightGroup();
+                sysLightGroup.setGroupStrategyId(Long.valueOf(strategyId));
+                sysLightGroup.setId(Long.valueOf(groupId));
+                infoList.add(sysLightGroup);
+            }
+            sysLightGroupMapper.dispatchStrategy(infoList);
+            resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_FAILUER + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
     }
 }

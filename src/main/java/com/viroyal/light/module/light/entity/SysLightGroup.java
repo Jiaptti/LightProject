@@ -38,6 +38,11 @@ public class SysLightGroup extends Model<SysLightGroup> {
      */
 	@TableField("group_name")
 	private String groupName;
+	/**
+	 * 路灯分组决策id
+	 */
+	@TableField("group_strategy_id")
+	private Long groupStrategyId;
     /**
      * 由谁创建的组
      */

@@ -60,4 +60,10 @@ public interface SysLightGroupMapper extends BaseMapper<SysLightGroup> {
      */
     @Cacheable(value = "lightGroup")
     List<SysLightGroup> queryWithCondition(Map<String,Object> params);
+
+    /**
+     * 给路灯分组添加策略
+     * @param lightGroupList 路灯分组对象集合
+     */
+    void dispatchStrategy(List<SysLightGroup> lightGroupList);
 }
