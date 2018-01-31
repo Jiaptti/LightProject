@@ -15,6 +15,10 @@
         <result column="street_id" property="streetId"/>
         <result column="group_id" property="groupId"/>
         <result column="auto_report" property="autoReport"/>
+        <result column="pole_id" property="poleId"/>
+        <result column="box_id" property="boxId"/>
+        <result column="basic_id" property="basicId"/>
+        <result column="alarm_id" property="alarmId"/>
         <result column="open_time" property="openTime"/>
         <result column="close_time" property="closeTime"/>
         <result column="strategy_open_time" property="strategyOpenTime"/>

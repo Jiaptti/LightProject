@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.viroyal.light.module.light.dao.SysBasicLightPoleMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.viroyal.light.module.light.entity.SysBasicLightPole">
+		<id column="id" property="id" />
+		<result column="pole_brand" property="poleBrand" />
+		<result column="pole_life" property="poleLife" />
+		<result column="pole_operating_voltage" property="poleOperatingVoltage" />
+		<result column="pole_frequency" property="poleFrequency" />
+		<result column="pole_temperature" property="poleTemperature" />
+		<result column="pole_type" property="poleType" />
+		<result column="pole_param_desc" property="poleParamDesc" />
+		<result column="exist" property="exist" />
+	</resultMap>
+
+</mapper>

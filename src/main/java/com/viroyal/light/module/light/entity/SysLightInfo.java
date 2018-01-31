@@ -81,6 +81,26 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	@TableField("auto_report")
 	private Long autoReport;
 	/**
+	 * 灯杆id
+	 */
+	@TableField("pole_id")
+	private Long poleId;
+	/**
+	 * 灯箱id
+	 */
+	@TableField("box_id")
+	private Long boxId;
+	/**
+	 * 安装路灯id
+	 */
+	@TableField("basic_id")
+	private Long basicId;
+	/**
+	 * 警报id
+	 */
+	@TableField("alarm_id")
+	private Long alarmId;
+	/**
 	 * 是否可见
 	 */
 	@TableField("exist")
