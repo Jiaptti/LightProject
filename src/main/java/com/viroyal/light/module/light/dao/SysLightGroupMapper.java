@@ -66,4 +66,10 @@ public interface SysLightGroupMapper extends BaseMapper<SysLightGroup> {
      * @param lightGroupList 路灯分组对象集合
      */
     void dispatchStrategy(List<SysLightGroup> lightGroupList);
+
+    /**
+     *  清除路灯分组的所有决策
+     *  @param ids 路灯分组对象id数组
+     * */
+    void clearGroupStrategy(Object[] ids);
 }

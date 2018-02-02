@@ -29,6 +29,8 @@
         where 1 = 1 and light.exist = 1 and i.exist = 1
         <if test="lightId != null">and light.id = #{lightId}</if>
         <if test="status != null">and light.`status` = #{status}</if>
+        <if test="infoCode != null">and i.`code` like CONCAT('%', #{infoCode}, '%')</if>
+        <if test="lightInfo != null">and i.`light_info` like CONCAT('%', #{lightInfo}, '%')</if>
         <if test="voltageGt != null"> and <![CDATA[ light.voltage >= #{voltageGt} ]]></if>
         <if test="voltageLt != null"> and <![CDATA[light.voltage <= #{voltageLt} ]]></if>
         <if test="currentGt != null"> and <![CDATA[ light.`current` >= #{currentGt} ]]></if>

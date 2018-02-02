@@ -186,10 +186,12 @@ public class BaseConstant {
     public static final String LIGHT_INFO_DISPATCH_GROUP_SUCCESS = "指派分组成功";
     //指派分组失败
     public static final String LIGHT_INFO_DISPATCH_GROUP_FAILUER = "指派分组失败";
-    //分组指派决策成功
-    public static final String LIGHT_INFO_DISPATCH_STRATEGY_SUCCESS = "分组指派决策成功";
-    //分组指派决策失败
-    public static final String LIGHT_INFO_DISPATCH_STRATEGY_FAILUER = "分组指派决策失败";
+    //灯杆id不能为空
+    public static final String LIGHT_INFO_POLE_NOT_NULL = "灯杆id不能为空";
+    //安装路灯id不能为空
+    public static final String LIGHT_INFO_BASIC_NOT_NULL = "安装路灯id不能为空";
+    //灯箱id不能为空
+    public static final String LIGHT_INFO_BOX_NOT_NULL = "灯箱id不能为空";
     //指派决策成功
     public static final String LIGHT_INFO_DISPATCH_SUCCESS = "指派决策成功";
     //指派决策失败
@@ -240,4 +242,54 @@ public class BaseConstant {
     public static final String LIGHT_GROUP_NAME_NOT_NULL = "请输入路灯分组名";
     //请输入路灯分组的负责人id
     public static final String LIGHT_GROUP_RESPONSE_ID_NOT_NULL = "请输入路灯分组的负责人id";
+
+
+    //路灯报警阈值上报时间间隔不能为空
+    public static final String BASIC_ALARM_REPORT_TIME_NOT_NULL = "路灯报警阈值上报时间间隔不能为空";
+    //路灯最大电压报警阈值不能为空
+    public static final String BASIC_ALARM_MAX_VOLTAGE_NOT_NULL = "最大电压报警阈值不能为空";
+    //路灯最小电压报警阈值不能为空
+    public static final String BASIC_ALARM_MIN_VOLTAGE_NOT_NULL = "最小电压报警阈值不能为空";
+    //路灯最大温度报警阈值
+    public static final String BASIC_ALARM_MAX_TEMPERATURE_NOT_NULL = "路灯最大温度报警阈值";
+    //路灯最小温度报警阈值
+    public static final String BASIC_ALARM_MIN_TEMPERATURE_NOT_NULL = "路灯最小温度报警阈值";
+    //路灯最大电流报警阈值
+    public static final String BASIC_ALARM_MAX_CURRENT_NOT_NULL = "路灯最大电流报警阈值";
+    //路灯最小电流报警阈值
+    public static final String BASIC_ALARM_MIN_CURRENT_NOT_NULL = "路灯最小电流报警阈值";
+    //路灯最大湿度报警阈值
+    public static final String BASIC_ALARM_MAX_HUMIDITY_NOT_NULL = "路灯最大湿度报警阈值";
+    //路灯最小湿度报警阈值
+    public static final String BASIC_ALARM_MIN_HUMIDITY_NOT_NULL = "路灯最小湿度报警阈值";
+    //路灯最大亮度报警阈值
+    public static final String BASIC_ALARM_MAX_BRIGHTNESS_NOT_NULL = "路灯最大亮度报警阈值";
+    //路灯最小亮度报警阈值
+    public static final String BASIC_ALARM_MIN_BRIGHTNESS_NOT_NULL = "路灯最小亮度报警阈值";
+    //路灯车流量报警阈值
+    public static final String BASIC_ALARM_TRAFFIC_NOT_NULL = "路灯车流量报警阈值";
+    //路灯报警阈值名称
+    public static final String BASIC_ALARM_NAME_NOT_NULL = "路灯报警阈值名称";
+
+
+    //路灯灯箱品牌不能为空
+    public static final String LIGHT_BOX_BRAND_NOT_NULL = "路灯灯箱品牌不能为空";
+    //路灯灯箱型号不能为空
+    public static final String LIGHT_BOX_TYPE_NOT_NULL = "路灯灯箱型号不能为空";
+    //路灯灯箱规格不能为空
+    public static final String LIGHT_BOX_SPECIFICATION_NOT_NULL = "路灯灯箱规格不能为空";
+
+
+    //安装路灯品牌不能为空
+    public static final String BASIC_LIGHT_BRAND_NOT_NULL = "安装路灯品牌不能为空";
+    //安装路灯型号不能为空
+    public static final String BASIC_LIGHT_TYPE_NOT_NULL = "安装路灯型号不能为空";
+    //安装路灯功率不能为空
+    public static final String BASIC_LIGHT_PROWER_NOT_NULL = "安装路灯功率不能为空";
+
+
+    //路灯灯杆品牌不能为空
+    public static final String LIGHT_POLE_BRAND_NOT_NULL = "路灯灯杆品牌不能为空";
+    //路灯灯杆型号不能为空
+    public static final String LIGHT_POLE_TYPE_NOT_NULL = "路灯灯杆型号不能为空";
 }

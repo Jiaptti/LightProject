@@ -9,9 +9,74 @@
 		<result column="box_type" property="boxType" />
 		<result column="box_specification" property="boxSpecification" />
 		<result column="box_work_voltage" property="boxWorkVoltage" />
+		<result column="box_work_current" property="boxWorkCurrent" />
 		<result column="box_work_temperature" property="boxWorkTemperature" />
 		<result column="box_param_desc" property="boxParamDesc" />
 		<result column="exist" property="exist" />
 	</resultMap>
 
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select distinct lb.id, lb.box_brand, lb.box_type,
+		lb.box_specification, lb.box_work_voltage,
+		lb.box_work_temperature,lb.box_param_desc
+		from sys_basic_light_box as lb
+		where 1 = 1 and lb.exist = 1
+		<if test="boxBrand != null"> and lb.box_brand like CONCAT('%', #{boxBrand}, '%')</if>
+		<if test="boxType != null"> and lb.box_type like CONCAT('%', #{boxType}, '%')</if>
+		<if test="boxSpecification != null"> and lb.box_specification like CONCAT('%', #{boxSpecification}, '%')</if>
+		<if test="sort == 'asc' "> order by lb.id asc</if>
+		<if test="sort == 'desc' ">  order by lb.id desc</if>
+	</select>
+
+	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysBasicLightBox"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_basic_light_box
+		(
+		`id`,
+		`box_brand`,
+		`box_type`,
+		`box_specification`,
+		`box_work_voltage`,
+		`box_work_current`,
+		`box_work_temperature`,
+		`box_param_desc`
+		)
+		values
+		(
+		#{id},
+		#{boxBrand},
+		#{boxType},
+		#{boxSpecification},
+		#{boxWorkVoltage},
+		#{boxWorkCurrent},
+		#{boxWorkTemperature},
+		#{boxParamDesc}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.viroyal.light.module.light.entity.SysBasicLightBox">
+		update sys_basic_light_box
+		<set>
+			<if test="boxBrand != null">`box_brand` = #{boxBrand}, </if>
+			<if test="boxType != null">`box_type` = #{boxType}, </if>
+			<if test="boxSpecification != null">`box_specification` = #{boxSpecification}, </if>
+			<if test="boxWorkVoltage != null">`box_work_voltage` = #{boxWorkVoltage}, </if>
+			<if test="boxWorkCurrent != null">`box_work_current` = #{boxWorkCurrent}, </if>
+			<if test="boxWorkTemperature != null">`box_work_temperature` = #{boxWorkTemperature}, </if>
+			<if test="boxParamDesc != null">`box_param_desc` = #{boxParamDesc} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="deleteBatch">
+		update sys_basic_light_box set exist = 0 where id in
+		<foreach item="alarmId" collection="array" open="(" separator="," close=")">
+			#{alarmId}
+		</foreach>
+		;
+		update sys_light_info set box_id = 0 where alarm_id in
+		<foreach item="alarmId" collection="array" open="(" separator="," close=")">
+			#{alarmId}
+		</foreach>
+	</update>
 </mapper>

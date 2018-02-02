@@ -23,4 +23,106 @@
 		<result column="exist" property="exist" />
 	</resultMap>
 
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select distinct bl.id, bl.light_brand, bl.light_power,
+		bl.light_max_temperature, bl.light_min_temperature, bl.light_max_voltage,
+		bl.light_min_voltage, bl.light_max_humidity, bl.light_min_humidity,
+		bl.light_life, bl.light_max_current, bl.light_min_current,
+		bl.light_type, bl.light_color_max_temperature, bl.light_color_min_temperature, bl.light_param_desc
+		from sys_basic_light as bl
+		where 1 = 1 and bl.exist = 1
+		<if test="lightBrand != null">and bl.light_brand = #{lightBrand} </if>
+		<if test="lightPower != null">and bl.light_power = #{lightPower} </if>
+		<if test="lightLife != null">and bl.light_life = #{lightLife} </if>
+		<if test="lightTemperature != null"> and <![CDATA[  #{lightTemperature} >= bl.light_max_temperature or
+			#{lightTemperature} <= bl.light_min_temperature ]]></if>
+		<if test="lightVoltage != null"> and <![CDATA[  #{lightVoltage} >= bl.light_max_voltage or
+			#{lightVoltage} <= bl.light_min_voltage ]]></if>
+		<if test="lightHumidity != null">  and <![CDATA[  #{lightHumidity} >= bl.light_max_humidity or
+			#{lightHumidity} <= bl.light_min_humidity ]]> </if>
+		<if test="lightCurrent != null">  and <![CDATA[  #{lightCurrent} >= bl.light_max_current or
+			#{alarmBrightness} <= bl.light_min_current ]]> </if>
+		<if test="lightColorTemperature != null">  and <![CDATA[  #{lightColorTemperature} >= bl.light_color_max_temperature or
+			#{lightColorTemperature} <= bl.light_color_min_temperature ]]> </if>
+		<if test="lightType != null">and bl.light_type like CONCAT('%', #{lightType}, '%')</if>
+		<if test="sort == 'asc' "> order by bl.id asc</if>
+		<if test="sort == 'desc' ">  order by bl.id desc</if>
+	</select>
+
+	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysBasicAlarm"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_basic_light
+		(
+		`id`,
+		`light_brand`,
+		`light_power`,
+		`light_max_temperature`,
+		`light_min_temperature`,
+		`light_max_voltage`,
+		`light_min_voltage`,
+		`light_max_humidity`,
+		`light_min_humidity`,
+		`light_life`,
+		`light_max_current`,
+		`light_min_current`,
+		`light_type`,
+		`light_color_max_temperature`,
+		`light_color_min_temperature`,
+		`light_param_desc`
+		)
+		values
+		(
+		#{id},
+		#{lightBrand},
+		#{lightPower},
+		#{lightMaxTemperature},
+		#{lightMinTemperature},
+		#{lightMaxVoltage},
+		#{lightMinVoltage},
+		#{lightMaxHumidity},
+		#{lightMinHumidity},
+		#{lightLife},
+		#{lightMaxCurrent},
+		#{lightMinCurrent},
+		#{lightType},
+		#{lightColorMaxTemperature},
+		#{lightColorMinTemperature},
+		#{lightParamDesc}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.viroyal.light.module.light.entity.SysBasicAlarm">
+		update sys_basic_light
+		<set>
+			<if test="lightBrand != null">`light_brand` = #{lightBrand}, </if>
+			<if test="lightPower != null">`light_power` = #{lightPower}, </if>
+			<if test="lightMaxTemperature != null">`light_max_temperature` = #{lightMaxTemperature}, </if>
+			<if test="lightMinTemperature != null">`light_min_temperature` = #{lightMinTemperature}, </if>
+			<if test="lightMaxVoltage != null">`light_max_voltage` = #{lightMaxVoltage}, </if>
+			<if test="lightMinVoltage != null">`light_min_voltage` = #{lightMinVoltage}, </if>
+			<if test="lightMaxHumidity != null">`light_max_humidity` = #{lightMaxHumidity}, </if>
+			<if test="lightMinHumidity != null">`light_min_humidity` = #{lightMinHumidity}, </if>
+			<if test="lightLife != null">`light_life` = #{lightLife}, </if>
+			<if test="lightMaxCurrent != null">`light_max_current` = #{lightMaxCurrent}, </if>
+			<if test="lightMinCurrent != null">`light_min_current` = #{lightMinCurrent}, </if>
+			<if test="lightType">`light_type` = #{lightType}</if>
+			<if test="lightColorMaxTemperature">`light_color_max_temperature` = #{lightColorMaxTemperature}</if>
+			<if test="lightColorMinTemperature">`light_color_min_temperature` = #{lightColorMinTemperature}</if>
+			<if test="lightParamDesc">`light_param_desc` = #{lightParamDesc}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="deleteBatch">
+		update sys_basic_light set exist = 0 where id in
+		<foreach item="basicId" collection="array" open="(" separator="," close=")">
+			#{basicId}
+		</foreach>
+		;
+		update sys_light_info set basic_id = 0 where basic_id in
+		<foreach item="basicId" collection="array" open="(" separator="," close=")">
+			#{basicId}
+		</foreach>
+	</update>
+
 </mapper>

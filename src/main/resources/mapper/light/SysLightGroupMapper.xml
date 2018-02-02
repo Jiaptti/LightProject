@@ -86,6 +86,14 @@
 		</foreach>
 	</update>
 
+	<!-- 清除路灯分组的策略 -->
+	<update id="clearGroupStrategy">
+		update sys_light_group set group_id = 0 where id in
+		<foreach item="groupId" collection="array" open="(" separator="," close=")">
+			#{groupId}
+		</foreach>
+	</update>
+
 	<update id="deleteBatch">
 		update sys_light_group set exist = 0 where id in
 		<foreach item="groupId" collection="array" open="(" separator="," close=")">

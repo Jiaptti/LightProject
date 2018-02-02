@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class SysLightRecordServiceImpl extends ServiceImpl<SysLightRecordMapper,
     @Autowired
     SysLightRecordMapper sysLightRecordMapper;
 
+    @Transactional
     @Override
     public String save(SysLightRecordVo lightRecordVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -62,6 +64,7 @@ public class SysLightRecordServiceImpl extends ServiceImpl<SysLightRecordMapper,
         return JSON.toJSONString(resultMap);
     }
 
+    @Transactional
     @Override
     public String update(SysLightRecordVo lightRecordVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -69,8 +72,7 @@ public class SysLightRecordServiceImpl extends ServiceImpl<SysLightRecordMapper,
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(lightRecordVo.getRecordOperation()) && StringUtils.isBlank(lightRecordVo.getRecordStatus())
-                && StringUtils.isBlank(lightRecordVo.getLightInfoId())){
+        } else if(CommonUtil.checkObjFieldIsNull(lightRecordVo)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);
@@ -86,6 +88,7 @@ public class SysLightRecordServiceImpl extends ServiceImpl<SysLightRecordMapper,
         return JSON.toJSONString(resultMap);
     }
 
+    @Transactional
     @Override
     public String deleteBatch(Object[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();

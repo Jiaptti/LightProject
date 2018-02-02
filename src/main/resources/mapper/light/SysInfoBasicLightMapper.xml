@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.viroyal.light.module.light.dao.SysInfoBasicLightMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.viroyal.light.module.light.entity.SysInfoBasicLight">
+		<id column="id" property="id" />
+		<result column="info_id" property="infoId" />
+		<result column="basic_id" property="basicId" />
+		<result column="exist" property="exist" />
+	</resultMap>
+
+
+	<insert id="save" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_info_basic_light
+		(
+		`id`,
+		`info_id`,
+		`basic_id`)
+		values
+		<foreach collection="list" item="basicLight" index="index" separator=",">
+			(
+			#{basicLight.id},
+			#{basicLight.infoId},
+			#{basicLight.basicId}
+			)
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.viroyal.light.module.light.entity.SysInfoBasicLight">
+		update sys_info_basic_light
+		<set>
+			<if test="infoId != null" >`info_id` = #{infoId},</if>
+			<if test="basicId != null" >`basic_id` = #{basicId}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="deleteBatch">
+		update sys_info_basic_light set exist = 0
+		where id in
+		<foreach item="ids" collection="array" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</update>
+
+</mapper>

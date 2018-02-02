@@ -69,4 +69,11 @@ public interface ISysLightInfoService extends IService<SysLightInfo> {
      * @return json格式的结果集
      */
     String dispatchStreetStrategy(String strategyId, String streetId);
+
+    /**
+     * 通过路灯信息id获得所有安装路灯
+     * @param  infoId 路灯信息id
+     * @return json格式的结果集
+     */
+    String getLightById(String infoId);
 }

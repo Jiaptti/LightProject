@@ -95,9 +95,7 @@ public class SysLightServiceImpl extends ServiceImpl<SysLightMapper, SysLight> i
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(lightVo.getStatus() == null && lightVo.getCurrent() == null && lightVo.getVoltage() == null
-                && lightVo.getTrafficFlow() == null && lightVo.getTemperature() == null && lightVo.getHumidity() == null
-                && lightVo.getInfoId() == null && lightVo.getLightness() == null){
+        } else if(CommonUtil.checkObjFieldIsNull(lightVo)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);

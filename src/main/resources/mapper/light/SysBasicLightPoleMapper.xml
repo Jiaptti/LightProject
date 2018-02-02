@@ -15,4 +15,67 @@
 		<result column="exist" property="exist" />
 	</resultMap>
 
+	<select id="queryWithCondition" resultMap="BaseResultMap">
+		select distinct lp.id, lp.pole_brand, lp.pole_life, lp.pole_operating_voltage,
+		lp.pole_frequency, lp.pole_temperature, lp.pole_type, lp.pole_param_desc
+		from sys_basic_light_pole as lp
+		where 1 = 1 and lp.exist = 1
+		<if test="poleBrand != null"> and lp.pole_brand like CONCAT('%', #{poleBrand}, '%')</if>
+		<if test="poleType != null"> and lp.pole_type like CONCAT('%', #{poleType}, '%')</if>
+		<if test="sort == 'asc' "> order by lp.id asc</if>
+		<if test="sort == 'desc' ">  order by lp.id desc</if>
+	</select>
+
+	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysBasicLightPole"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into sys_basic_light_pole
+		(
+		`id`,
+		`pole_brand`,
+		`pole_life`,
+		`pole_operating_voltage`,
+		`pole_frequency`,
+		`pole_temperature`,
+		`pole_type`,
+		`pole_param_desc`
+		)
+		values
+		(
+		#{id},
+		#{poleBrand},
+		#{poleLife},
+		#{poleOperatingVoltage},
+		#{poleFrequency},
+		#{poleTemperature},
+		#{poleType},
+		#{poleParamDesc}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.viroyal.light.module.light.entity.SysBasicLightBox">
+		update sys_basic_light_pole
+		<set>
+			<if test="poleBrand != null">`pole_brand` = #{poleBrand}, </if>
+			<if test="poleLife != null">`pole_life` = #{poleLife}, </if>
+			<if test="poleOperatingVoltage != null">`pole_operating_voltage` = #{poleOperatingVoltage}, </if>
+			<if test="poleFrequency != null">`pole_frequency` = #{poleFrequency}, </if>
+			<if test="poleTemperature != null">`pole_temperature` = #{poleTemperature}, </if>
+			<if test="poleType != null">`pole_type` = #{poleType}, </if>
+			<if test="poleParamDesc != null">`pole_param_desc` = #{poleParamDesc} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="deleteBatch">
+		update sys_basic_light_pole set exist = 0 where id in
+		<foreach item="poleId" collection="array" open="(" separator="," close=")">
+			#{poleId}
+		</foreach>
+		;
+		update sys_light_info set box_id = 0 where pole_id in
+		<foreach item="poleId" collection="array" open="(" separator="," close=")">
+			#{poleId}
+		</foreach>
+	</update>
+
 </mapper>

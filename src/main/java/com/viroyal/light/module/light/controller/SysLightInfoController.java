@@ -3,7 +3,9 @@ package com.viroyal.light.module.light.controller;
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.module.light.entity.SysLightInfo;
+import com.viroyal.light.module.light.entity.vo.SysInfoBasicLightVo;
 import com.viroyal.light.module.light.entity.vo.SysLightInfoVo;
+import com.viroyal.light.module.light.service.ISysInfoBasicLightService;
 import com.viroyal.light.module.light.service.ISysLightInfoService;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -31,6 +33,9 @@ import java.util.Map;
 public class SysLightInfoController {
     @Autowired
     ISysLightInfoService sysLightInfoService;
+
+    @Autowired
+    ISysInfoBasicLightService sysInfoBasicLightService;
 
     @ApiOperation("移动端添加路灯")
     @ApiResponses({
@@ -142,6 +147,10 @@ public class SysLightInfoController {
             @ApiImplicitParam(paramType="query", name="streetId", dataType="Long", value="街道Id(common_region_id)"),
             @ApiImplicitParam(paramType="query", name="streetName", dataType="String", value="街道名(模糊查询)"),
             @ApiImplicitParam(paramType="query", name="userId", dataType="Long", value="用户Id"),
+            @ApiImplicitParam(paramType="query", name="poleId", dataType="Long", value="灯杆Id"),
+            @ApiImplicitParam(paramType="query", name="boxId", dataType="Long", value="灯箱Id"),
+            @ApiImplicitParam(paramType="query", name="basicId", dataType="Long", value="安装路灯Id"),
+            @ApiImplicitParam(paramType="query", name="alarmId", dataType="Long", value="警报id"),
             @ApiImplicitParam(paramType="query", name="userName", dataType="String", value="维修员名字"),
             @ApiImplicitParam(paramType="query", name="groupId", dataType="Long", value="组Id"),
             @ApiImplicitParam(paramType="query", name="code", dataType="String", value="路灯编号(模糊查询)"),
@@ -161,6 +170,65 @@ public class SysLightInfoController {
     @RequiresPermissions("sys:lightInfo:list")
     public String queryWithCondition(@RequestParam Map<String, Object> params){
         return sysLightInfoService.queryWithCondition(params);
+    }
+
+    @ApiOperation("移动端通过路灯信息id获得安装路灯")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name="infoId", dataType="Long" ,value="路灯信息id")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="查询成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="查询失败")
+    })
+    @RequestMapping(value = "/getLightById", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:infoBasic:list")
+    public String getLightById(String infoId){
+        return sysLightInfoService.getLightById(infoId);
+    }
+
+    @ApiOperation("移动端添加路灯上的安装路灯")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name="infoId", required = true, dataType="Long" ,value="路灯信息id"),
+            @ApiImplicitParam(paramType="query", name="basicId", required = true, dataType="Long" ,value="安装路灯id，多个用逗号隔开")
+    })
+    @ApiResponses({
+            @ApiResponse(code=200,message="添加成功"),
+            @ApiResponse(code = 400, message = "添加错误"),
+            @ApiResponse(code=500,message="添加失败")
+    })
+    @RequestMapping(value = "/saveBasicLight", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:infoBasic:save")
+    public String saveBasicLight(@RequestParam(value = "infoId") String infoId, @RequestParam(value = "basicId") String basicId){
+        return sysInfoBasicLightService.save(infoId, basicId);
+    }
+
+    @ApiOperation("移动端更新路灯上的安装路灯")
+    @ApiResponses({
+            @ApiResponse(code=200,message="更新成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="更新失败")
+    })
+    @RequestMapping(value = "/updateBasicLight", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:infoBasic:update")
+    public String updateBasicLight(SysInfoBasicLightVo infoBasicLightVo){
+        return sysInfoBasicLightService.update(infoBasicLightVo);
+    }
+
+    @ApiOperation("移动端删除路灯上的安装路灯关联")
+    @ApiResponses({
+            @ApiResponse(code=200,message="删除成功"),
+            @ApiResponse(code = 400, message = "请求错误"),
+            @ApiResponse(code=500,message="删除失败")
+    })
+    @RequestMapping(value = "/deleteBasicLight", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("sys:infoBasic:delete")
+    public String deleteBasicLight(@RequestParam(value = "ids[]") String[] ids){
+        return sysInfoBasicLightService.deleteBatch(ids);
     }
 
     @ExceptionHandler({Exception.class})

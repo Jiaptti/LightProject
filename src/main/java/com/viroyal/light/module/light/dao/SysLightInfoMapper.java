@@ -1,6 +1,7 @@
 package com.viroyal.light.module.light.dao;
 
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import com.viroyal.light.module.light.entity.SysBasicLight;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -68,6 +69,13 @@ public interface SysLightInfoMapper extends BaseMapper<SysLightInfo> {
      */
     @CacheEvict(value = "lightInfo", allEntries=true)
     void updateBatch(List<SysLightInfo> sysLightInfoList);
+
+    /**
+     * 通过路灯信息id获得所有安装路灯
+     * @param  infoId 路灯信息id
+     * @return 安装路灯列表
+     */
+    List<SysBasicLight> getLightById(Long infoId);
 
     /**
      * 清除所有路灯分组

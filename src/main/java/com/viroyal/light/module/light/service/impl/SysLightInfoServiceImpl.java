@@ -6,6 +6,7 @@ import com.viroyal.light.common.page.DataPage;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.CommonUtil;
 import com.viroyal.light.common.utils.NumberUtils;
+import com.viroyal.light.module.light.entity.SysBasicLight;
 import com.viroyal.light.module.light.entity.SysLightInfo;
 import com.viroyal.light.module.light.dao.SysLightInfoMapper;
 import com.viroyal.light.module.light.entity.vo.SysLightInfoVo;
@@ -63,6 +64,18 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_STREET_ID_NOT_NULL);
             return JSON.toJSONString(resultMap);
+        } else if(lightInfoVo.getPoleId() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_POLE_NOT_NULL);
+            return JSON.toJSONString(resultMap);
+        } else if(lightInfoVo.getBasicId() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_BASIC_NOT_NULL);
+            return JSON.toJSONString(resultMap);
+        } else if(lightInfoVo.getBoxId() == null){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.LIGHT_INFO_BOX_NOT_NULL);
+            return JSON.toJSONString(resultMap);
         } else {
             try{
                 SysLightInfo lightInfo = new SysLightInfo();
@@ -109,12 +122,7 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(StringUtils.isBlank(lightInfoVo.getCode()) && StringUtils.isBlank(lightInfoVo.getLightInfo())
-                && StringUtils.isBlank(lightInfoVo.getStatus()) && lightInfoVo.getLongitude() == null
-                && lightInfoVo.getLatitude() == null && lightInfoVo.getAutoReport() == null &&
-                lightInfoVo.getGroupId() == null && StringUtils.isBlank(lightInfoVo.getLightInfo())
-                && lightInfoVo.getStrategyId()==null && lightInfoVo.getUserId() == null
-                && lightInfoVo.getStreetId() == null){
+        } else if(CommonUtil.checkObjFieldIsNull(lightInfoVo)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);
@@ -235,6 +243,26 @@ public class SysLightInfoServiceImpl extends ServiceImpl<SysLightInfoMapper, Sys
             e.printStackTrace();
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_FAILUER + " : " + e.getMessage());
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    @Override
+    public String getLightById(String infoId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if(StringUtils.isBlank(infoId)){
+            resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE + " : " + BaseConstant.REQUEST_ERROR);
+        } else {
+            List<SysBasicLight> basicLightList = sysLightInfoMapper.getLightById(Long.parseLong(infoId));
+            if(basicLightList.size() > 0){
+                resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
+                resultMap.put(BaseConstant.VALUE_LIST, basicLightList);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
+            } else {
+                resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
+                resultMap.put(BaseConstant.MESSAGE, BaseConstant.QUERY_FAILURE + " : " + BaseConstant.NO_QUERY_RESULT);
+            }
         }
         return JSON.toJSONString(resultMap);
     }

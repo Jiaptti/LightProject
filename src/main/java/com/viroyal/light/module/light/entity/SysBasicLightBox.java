@@ -48,6 +48,11 @@ public class SysBasicLightBox extends Model<SysBasicLightBox> {
      */
 	@TableField("box_work_voltage")
 	private String boxWorkVoltage;
+	/**
+	 * 灯箱工作电流
+	 */
+	@TableField("box_work_current")
+	private String boxWorkCurrent;
     /**
      * 工作温度
      */

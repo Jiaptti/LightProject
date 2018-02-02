@@ -1,13 +1,12 @@
-package com.viroyal.light.module.user.service.impl;
+package com.viroyal.light.module.light.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.viroyal.light.common.utils.BaseConstant;
 import com.viroyal.light.common.utils.CommonUtil;
-import com.viroyal.light.common.utils.NumberUtils;
-import com.viroyal.light.module.user.entity.SysRolePermission;
-import com.viroyal.light.module.user.dao.SysRolePermissionMapper;
-import com.viroyal.light.module.user.entity.vo.SysRolePermissionVo;
-import com.viroyal.light.module.user.service.ISysRolePermissionService;
+import com.viroyal.light.module.light.entity.SysInfoBasicLight;
+import com.viroyal.light.module.light.dao.SysInfoBasicLightMapper;
+import com.viroyal.light.module.light.entity.vo.SysInfoBasicLightVo;
+import com.viroyal.light.module.light.service.ISysInfoBasicLightService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,49 +20,48 @@ import java.util.Map;
 
 /**
  * <p>
- * 服务实现类
+ *  服务实现类
  * </p>
  *
  * @author jiaptti
- * @since 2017-12-01
+ * @since 2018-02-02
  */
 @Service
-public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> implements ISysRolePermissionService {
+public class SysInfoBasicLightServiceImpl extends ServiceImpl<SysInfoBasicLightMapper, SysInfoBasicLight> implements ISysInfoBasicLightService {
 
     @Autowired
-    SysRolePermissionMapper sysRolePermissionMapper;
+    SysInfoBasicLightMapper sysInfoBasicLightMapper;
 
     @Transactional
     @Override
-    public String save(String roleId, String permissionId) {
+    public String save(String infoId, String basicId) {
         Map<String, Object> resultMap = new HashMap<>();
-        if (StringUtils.isEmpty(roleId)) {
+        if (StringUtils.isEmpty(infoId)) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.REQUEST_ERROR);
             return JSON.toJSONString(resultMap);
         }
         try {
-            if(!StringUtils.isBlank(permissionId)){
-                sysRolePermissionMapper.deleteAllPerms(Long.parseLong(roleId));
-                List<SysRolePermission> rolePermissionList = new ArrayList<>();
-                String[] ids = permissionId.split(",");
+            if(!StringUtils.isBlank(basicId)){
+                List<SysInfoBasicLight> infoBasicLightList = new ArrayList<>();
+                String[] ids = basicId.split(",");
                 if (ids.length > 1) {
                     for (int i = 0; i < ids.length; i++) {
-                        SysRolePermission rolePermission = new SysRolePermission();
-                        rolePermission.setRid(Long.valueOf(roleId));
-                        rolePermission.setPid(Long.valueOf(ids[i]));
-                        rolePermissionList.add(rolePermission);
+                        SysInfoBasicLight basicLight = new SysInfoBasicLight();
+                        basicLight.setInfoId(Long.valueOf(infoId));
+                        basicLight.setBasicId(Long.valueOf(ids[i]));
+                        infoBasicLightList.add(basicLight);
                     }
                 } else {
-                    if(!StringUtils.equals(permissionId, "0")){
-                        SysRolePermission rolePermission = new SysRolePermission();
-                        rolePermission.setRid(Long.valueOf(roleId));
-                        rolePermission.setPid(Long.valueOf(permissionId));
-                        rolePermissionList.add(rolePermission);
+                    if(!StringUtils.equals(basicId, "0")){
+                        SysInfoBasicLight basicLight = new SysInfoBasicLight();
+                        basicLight.setInfoId(Long.valueOf(infoId));
+                        basicLight.setBasicId(Long.valueOf(basicId));
+                        infoBasicLightList.add(basicLight);
                     }
                 }
-                if(rolePermissionList.size() > 0){
-                    sysRolePermissionMapper.save(rolePermissionList);
+                if(infoBasicLightList.size() > 0){
+                    sysInfoBasicLightMapper.save(infoBasicLightList);
                 }
                 resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
                 resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
@@ -78,21 +76,21 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 
     @Transactional
     @Override
-    public String update(SysRolePermissionVo rolePermissionVo) {
+    public String update(SysInfoBasicLightVo infoBasicLightVo) {
         Map<String, Object> resultMap = new HashMap<>();
-        if(rolePermissionVo.getId() == null){
+        if(infoBasicLightVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(CommonUtil.checkObjFieldIsNull(rolePermissionVo)){
+        } else if(CommonUtil.checkObjFieldIsNull(infoBasicLightVo)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);
         }
         try {
-            SysRolePermission rolePermission = new SysRolePermission();
-            CommonUtil.copyProperties(rolePermission, rolePermissionVo, new String[]{"exist"});
-            sysRolePermissionMapper.update(rolePermission);
+            SysInfoBasicLight basicLight = new SysInfoBasicLight();
+            CommonUtil.copyProperties(basicLight, infoBasicLightVo, new String[]{"exist"});
+            sysInfoBasicLightMapper.update(basicLight);
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } catch (Exception e) {
@@ -114,7 +112,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
         }
         try {
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
-            sysRolePermissionMapper.deleteBatch(ids);
+            sysInfoBasicLightMapper.deleteBatch(ids);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.SUCCESS_RESULT);
         } catch (Exception e) {
             e.printStackTrace();

@@ -23,27 +23,27 @@
 
 	<select id="queryWithCondition" resultMap="BaseResultMap">
 		select distinct ba.id, ba.alarm_report_time, ba.alarm_max_voltage,
-		ba.alarm_min_voltage, ba.alarm_max_temperature, ba.alarm_min_temperature
+		ba.alarm_min_voltage, ba.alarm_max_temperature, ba.alarm_min_temperature,
 		ba.alarm_max_current, ba.alarm_min_current, ba.alarm_max_humidity,
-		ba.alarm_min_humidity, ba.alarm_max_brightness, ba.alarm_min_brightness
+		ba.alarm_min_humidity, ba.alarm_max_brightness, ba.alarm_min_brightness,
 		ba.alarm_traffic, ba.alarm_name
 		from sys_basic_alarm as ba
 		where 1 = 1 and ba.exist = 1
 		<if test="alarmReportTime != null">and ba.alarm_report_time = #{alarmReportTime} </if>
-		<if test="alarmVoltage != null"> and <![CDATA[  #{alarmVoltage} <= ba.alarm_max_voltage] and
-			#{alarmVoltage} >= ba.alarm_min_voltage ]]></if>
-		<if test="alarmTemperature != null"> and <![CDATA[  #{alarmTemperature} <= ba.alarm_max_temperature] and
-			#{alarmTemperature} >= ba.alarm_min_temperature ]]></if>
-		<if test="alarmCurrent != null">  and <![CDATA[  #{alarmCurrent} <= ba.alarm_max_current] and
-			#{alarmCurrent} >= ba.alarm_min_current ]]> </if>
-		<if test="alarmHumidity != null">  and <![CDATA[  #{alarmHumidity} <= ba.alarm_max_humidity] and
-			#{alarmHumidity} >= ba.alarm_min_humidity ]]> </if>
-		<if test="alarmBrightness != null">  and <![CDATA[  #{alarmBrightness} <= ba.alarm_max_brightness] and
-			#{alarmBrightness} >= ba.alarm_min_brightness ]]> </if>
-		<if test="alarmTraffic != null">and ba.alarm_traffic = #{alarm_traffic} </if>
+		<if test="alarmVoltage != null"> and <![CDATA[  #{alarmVoltage} >= ba.alarm_max_voltage or
+			#{alarmVoltage} <= ba.alarm_min_voltage ]]></if>
+		<if test="alarmTemperature != null"> and <![CDATA[  #{alarmTemperature} >= ba.alarm_max_temperature or
+			#{alarmTemperature} <= ba.alarm_min_temperature ]]></if>
+		<if test="alarmCurrent != null">  and <![CDATA[  #{alarmCurrent} >= ba.alarm_max_current or
+			#{alarmCurrent} <= ba.alarm_min_current ]]> </if>
+		<if test="alarmHumidity != null">  and <![CDATA[  #{alarmHumidity} >= ba.alarm_max_humidity or
+			#{alarmHumidity} <= ba.alarm_min_humidity ]]> </if>
+		<if test="alarmBrightness != null">  and <![CDATA[  #{alarmBrightness} >= ba.alarm_max_brightness or
+			#{alarmBrightness} <= ba.alarm_min_brightness ]]> </if>
+		<if test="alarmTraffic != null">and ba.alarm_traffic = #{alarmTraffic} </if>
 		<if test="alarmName != null">and ba.alarm_name like CONCAT('%', #{alarmName}, '%') </if>
-		<if test="sort == 'asc' ">order by lg.id asc</if>
-		<if test="sort == 'desc' "> order by lg.id desc</if>
+		<if test="sort == 'asc' "> order by ba.id asc</if>
+		<if test="sort == 'desc' ">  order by ba.id desc</if>
 	</select>
 
 	<insert id="save" parameterType="com.viroyal.light.module.light.entity.SysBasicAlarm"

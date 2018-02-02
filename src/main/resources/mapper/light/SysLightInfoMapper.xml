@@ -17,23 +17,37 @@
         <result column="auto_report" property="autoReport"/>
         <result column="pole_id" property="poleId"/>
         <result column="box_id" property="boxId"/>
-        <result column="basic_id" property="basicId"/>
         <result column="alarm_id" property="alarmId"/>
-        <result column="open_time" property="openTime"/>
-        <result column="close_time" property="closeTime"/>
-        <result column="strategy_open_time" property="strategyOpenTime"/>
-        <result column="strategy_close_time" property="strategyCloseTime"/>
         <result column="exist" property="exist"/>
+        <collection property="basicLightList" column="id" ofType="com.viroyal.light.module.light.entity.SysBasicLight" select="getBasicLightList">
+        </collection>
     </resultMap>
 
+    <resultMap id="BasicLightMap" type="com.viroyal.light.module.light.entity.SysBasicLight" >
+        <id column="id" property="id" />
+        <result column="light_brand" property="lightBrand" />
+        <result column="light_type" property="lightType" />
+    </resultMap>
+
+    <select id="getBasicLightList" resultMap="BasicLightMap">
+        select bl.id, bl.light_brand,bl.light_type
+        from sys_basic_light as bl, sys_info_basic_light as ibl, sys_light_info as i
+        where ibl.basic_id = bl.id  and i.id = ibl.info_id
+    </select>
+
+    <!-- 通过路灯信息id获得所有安装路灯 -->
+    <select id="getLightById" parameterType="Long" resultMap="BasicLightMap">
+        select bl.id, bl.light_brand,bl.light_type
+        from sys_basic_light as bl, sys_info_basic_light as ibl
+        where ibl.basic_id = bl.id and bl.exist = 1 and ibl.exist = 1 and ibl.info_id = #{infoId}
+    </select>
 
     <!-- 通过各种条件查询路灯 -->
     <select id="queryWithCondition" resultMap="BaseResultMap">
         select distinct i.id, i.code, i.`status`,i.auto_report,
-        i.street_id,i.user_id,i.group_id,
-        i.current_threshold, i.light_info, i.latitude,
-        i.longitude, i.strategy_id,
-        ls.open_time, ls.close_time, ls.strategy_open_time, ls.strategy_close_time
+        i.pole_id, i.box_id, i.alarm_id,
+        i.street_id,i.user_id,i.group_id, i.light_info,
+        i.latitude,i.longitude, i.strategy_id
         from sys_light_info as i
         left join sys_light_strategy as ls on i.strategy_id = ls.id
         left join sys_user as us on us.id = i.user_id
@@ -47,6 +61,10 @@
         <if test="streetId != null">and i.street_id = #{streetId}</if>
         <if test="streetName != null">and r.region_name like CONCAT(#{streetName}, '%')</if>
         <if test="userId != null">and i.user_id = #{userId}</if>
+        <if test="poleId != null">and i.pole_id = #{poleId}</if>
+        <if test="boxId != null">and i.box_id = #{boxId}</if>
+        <if test="basicId != null">and i.basic_id = #{basicId}</if>
+        <if test="alarmId != null">and i.alarm_id = #{alarmId}</if>
         <if test="userName != null">and us.nickname = #{userName}</if>
         <if test="groupId != null">and i.group_id = #{groupId}</if>
         <if test="code != null">and i.code like CONCAT('%', #{code}, '%')</if>
@@ -73,6 +91,10 @@
 		`user_id`,
 		`street_id`,
 		`group_id`,
+		`pole_id`,
+		`box_id`,
+		`basic_id`,
+		`alarm_id`,
 		`auto_report`
 		)
 		values
@@ -87,6 +109,10 @@
 		#{userId},
 		#{streetId},
 		#{groupId},
+		#{poleId},
+		#{boxId},
+		#{basicId},
+		#{alarmId},
 		#{autoReport}
 		)
 	</insert>
@@ -104,6 +130,10 @@
             <if test="userId != null">`user_id` = #{userId},</if>
             <if test="streetId != null">`street_id` = #{streetId},</if>
             <if test="groupId != null">`group_id` = #{groupId},</if>
+            <if test="poleId != null">`pole_id` = #{poleId},</if>
+            <if test="boxId != null">`box_id` = #{boxId},</if>
+            <if test="basicId != null">`basic_id` = #{basicId},</if>
+            <if test="alarmId != null">`alarm_id` = #{alarmId},</if>
             <if test="autoReport != null">`auto_report` = #{autoReport},</if>
         </set>
         where id = #{id}
@@ -135,6 +165,7 @@
             where street_id = #{item.streetId}
         </foreach>
     </update>
+
 
     <update id="deleteBatch">
         update sys_light_info set exist = 0 where id in

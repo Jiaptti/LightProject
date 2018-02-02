@@ -91,9 +91,7 @@ public class SysLightStrategyServiceImpl extends ServiceImpl<SysLightStrategyMap
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if (lightStrategyVo.getSmoothLevel() == null && lightStrategyVo.getTrafficLevel() == null
-                && StringUtils.isBlank(lightStrategyVo.getOpenTime()) && StringUtils.isBlank(lightStrategyVo.getCloseTime())
-                && StringUtils.isBlank(lightStrategyVo.getStrategyCloseTime()) && StringUtils.isBlank(lightStrategyVo.getStrategyOpenTime())) {
+        } else if (CommonUtil.checkObjFieldIsNull(lightStrategyVo)) {
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);

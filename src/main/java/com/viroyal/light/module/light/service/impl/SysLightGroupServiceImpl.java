@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -31,6 +32,7 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
 	@Autowired
     SysLightGroupMapper sysLightGroupMapper;
 
+	@Transactional
     @Override
     public String save(SysLightGroupVo lightGroupVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -59,17 +61,17 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
         return JSON.toJSONString(resultMap);
     }
 
+    @Transactional
     @Override
     public String update(SysLightGroupVo lightGroupVo) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if(lightGroupVo.getId() == null){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_UPDATE_ID);
             return JSON.toJSONString(resultMap);
-        } else if(lightGroupVo.getResponsibleId() == null && lightGroupVo.getGroupId() == null
-                && StringUtils.isBlank(lightGroupVo.getGroupName()) && lightGroupVo.getGroupStrategyId() == null){
+        } else if(CommonUtil.checkObjFieldIsNull(lightGroupVo)){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.UPDATE_FAILURE + " : " + BaseConstant.NO_DATA_TO_UPDATE);
             return JSON.toJSONString(resultMap);
         }else{
             SysLightGroup sysLightGroup = new SysLightGroup();
@@ -85,12 +87,13 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
         return JSON.toJSONString(resultMap);
     }
 
+    @Transactional
     @Override
     public String deleteBatch(Object[] ids) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if(ids.length == 0){
             resultMap.put(BaseConstant.CODE, BaseConstant.ERROR_CODE);
-            resultMap.put(BaseConstant.MESSAGE, BaseConstant.SAVE_FAILURE + " : " + BaseConstant.NO_DELETE_ID);
+            resultMap.put(BaseConstant.MESSAGE, BaseConstant.DELETE_FAILURE + " : " + BaseConstant.NO_DELETE_ID);
         } else {
             sysLightGroupMapper.deleteBatch(ids);
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
@@ -144,6 +147,7 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
         return JSON.toJSONString(dataPage);
     }
 
+    @Transactional
     @Override
     public String dispatchStrategy(String groupId, String strategyId) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -154,6 +158,7 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
         }try {
             List<SysLightGroup> infoList = new ArrayList<>();
             String[] ids = groupId.split(",");
+            sysLightGroupMapper.clearGroupStrategy(ids);
             if (ids.length > 1) {
                 for (int i = 0; i < ids.length; i++) {
                     SysLightGroup sysLightGroup = new SysLightGroup();
@@ -162,12 +167,15 @@ public class SysLightGroupServiceImpl extends ServiceImpl<SysLightGroupMapper, S
                     infoList.add(sysLightGroup);
                 }
             } else {
-                SysLightGroup sysLightGroup = new SysLightGroup();
-                sysLightGroup.setGroupStrategyId(Long.valueOf(strategyId));
-                sysLightGroup.setId(Long.valueOf(groupId));
-                infoList.add(sysLightGroup);
+                if(!StringUtils.equals(strategyId, "0")){
+                    SysLightGroup sysLightGroup = new SysLightGroup();
+                    sysLightGroup.setGroupStrategyId(Long.valueOf(strategyId));
+                    sysLightGroup.setId(Long.valueOf(groupId));
+                    infoList.add(sysLightGroup);
+                }
             }
-            sysLightGroupMapper.dispatchStrategy(infoList);
+            if(infoList.size() > 0)
+                sysLightGroupMapper.dispatchStrategy(infoList);
             resultMap.put(BaseConstant.CODE, BaseConstant.SUCCESS_CODE);
             resultMap.put(BaseConstant.MESSAGE, BaseConstant.LIGHT_INFO_DISPATCH_SUCCESS);
         } catch (Exception e) {

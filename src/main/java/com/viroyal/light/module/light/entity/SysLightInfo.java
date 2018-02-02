@@ -13,6 +13,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -86,11 +87,6 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	@TableField("pole_id")
 	private Long poleId;
 	/**
-	 * 灯箱id
-	 */
-	@TableField("box_id")
-	private Long boxId;
-	/**
 	 * 安装路灯id
 	 */
 	@TableField("basic_id")
@@ -105,20 +101,11 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	 */
 	@TableField("exist")
 	private Integer exist;
-
+	/**
+	 * 安装路灯列表
+	 */
 	@TableField(exist = false)
-	private String openTime;
-
-	@TableField(exist = false)
-	private String closeTime;
-
-	@TableField(exist = false)
-	@JSONField(format="yyyy-MM-dd")
-	private Date strategyOpenTime;
-
-	@TableField(exist = false)
-	@JSONField(format="yyyy-MM-dd")
-	private Date strategyCloseTime;
+	List<SysBasicLight> basicLightList;
 
 	@Override
 	protected Serializable pkVal() {

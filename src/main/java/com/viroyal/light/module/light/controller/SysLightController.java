@@ -80,6 +80,8 @@ public class SysLightController {
             @ApiImplicitParam(paramType="query", name="pageId", dataType="Int", value="第几页"),
             @ApiImplicitParam(paramType="query", name="pageSize", dataType="Int", value="多少条"),
             @ApiImplicitParam(paramType="query", name="lightId", dataType="Int", value="路灯数据id"),
+            @ApiImplicitParam(paramType="query", name="infoCode", dataType="String", value="路灯编码(模糊查询)"),
+            @ApiImplicitParam(paramType="query", name="lightInfo", dataType="String", value="路灯信息(模糊查询)"),
             @ApiImplicitParam(paramType="query", name="status", dataType="Int", value="是否打开(1/0表示开/关)"),
             @ApiImplicitParam(paramType="query", name="voltageGt", dataType="Int", value="电压(这里表示大于)"),
             @ApiImplicitParam(paramType="query", name="voltageLt", dataType="Int", value="电压(这里表示小于)"),

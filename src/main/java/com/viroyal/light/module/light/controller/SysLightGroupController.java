@@ -24,6 +24,7 @@ import java.util.Map;
  * @author jiaptti
  * @since 2018-01-04
  */
+@Api("SysLightGroupController相关api")
 @Controller
 @RequestMapping(value = "/lightGroup")
 public class SysLightGroupController {
