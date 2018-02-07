@@ -1,18 +1,13 @@
 package com.viroyal.light.module.light.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.viroyal.light.module.location.entity.SysRegion;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,10 +82,10 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	@TableField("pole_id")
 	private Long poleId;
 	/**
-	 * 安装路灯id
+	 * 灯箱id
 	 */
-	@TableField("basic_id")
-	private Long basicId;
+	@TableField("box_id")
+	private Long boxId;
 	/**
 	 * 警报id
 	 */
@@ -106,6 +101,31 @@ public class SysLightInfo extends Model<SysLightInfo> {
 	 */
 	@TableField(exist = false)
 	List<SysBasicLight> basicLightList;
+	/**
+	 * 分组名
+	 */
+	@TableField(exist = false)
+	String groupName;
+	/**
+	 * 策略名
+	 */
+	@TableField(exist = false)
+	String strategyName;
+	/**
+	 * 负责人名字
+	 */
+	@TableField(exist = false)
+	String responsibleName;
+	/**
+	 * 负责人账号
+	 */
+	@TableField(exist = false)
+	String responsibleAccount;
+	/**
+	 * 所属街道
+	 */
+	@TableField(exist = false)
+	String streetName;
 
 	@Override
 	protected Serializable pkVal() {

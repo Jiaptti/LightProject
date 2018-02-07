@@ -84,6 +84,11 @@ public class SysLight extends Model<SysLight> {
 	 */
 	@TableField("exist")
 	private Integer exist;
+	/**
+	 * 路灯警报id
+	 */
+	@TableField(exist = false)
+	private Integer alarmId;
 
 	@Override
 	protected Serializable pkVal() {

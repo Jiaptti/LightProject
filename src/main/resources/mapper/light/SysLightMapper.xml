@@ -17,15 +17,17 @@
         <result column="last_update_time" property="lastUpdateTime"/>
         <result column="code" property="code"/>
         <result column="light_info" property="lightInfo"/>
+        <result column="alarm_id" property="alarmId"/>
         <result column="exist" property="exist"/>
     </resultMap>
 
     <select id="queryWithCondition" resultMap="BaseResultMap">
         select distinct light.id, light.status, light.`current`,light.datetime,
-        light.humidity, light.lightness,light.temperature,
+        light.humidity, light.lightness,light.temperature, ba.id as alarm_id,
         light.traffic_flow,light.voltage, i.`code`, i.light_info
         from sys_light as light
         left join sys_light_info as i on i.id = light.info_id
+        left join sys_basic_alarm as ba on ba.id = i.alarm_id
         where 1 = 1 and light.exist = 1 and i.exist = 1
         <if test="lightId != null">and light.id = #{lightId}</if>
         <if test="status != null">and light.`status` = #{status}</if>

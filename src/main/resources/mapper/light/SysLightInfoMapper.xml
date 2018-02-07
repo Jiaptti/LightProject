@@ -19,7 +19,13 @@
         <result column="box_id" property="boxId"/>
         <result column="alarm_id" property="alarmId"/>
         <result column="exist" property="exist"/>
-        <collection property="basicLightList" column="id" ofType="com.viroyal.light.module.light.entity.SysBasicLight" select="getBasicLightList">
+        <result column="group_name" property="groupName"/>
+        <result column="type" property="strategyName"/>
+        <result column="nickname" property="responsibleName"/>
+        <result column="username" property="responsibleAccount"/>
+        <result column="region_name" property="streetName"/>
+        <collection property="basicLightList" column="id"
+                    ofType="com.viroyal.light.module.light.entity.SysBasicLight" select="getBasicLightList">
         </collection>
     </resultMap>
 
@@ -29,10 +35,11 @@
         <result column="light_type" property="lightType" />
     </resultMap>
 
-    <select id="getBasicLightList" resultMap="BasicLightMap">
-        select bl.id, bl.light_brand,bl.light_type
-        from sys_basic_light as bl, sys_info_basic_light as ibl, sys_light_info as i
-        where ibl.basic_id = bl.id  and i.id = ibl.info_id
+    <select id="getBasicLightList" resultMap="BasicLightMap" parameterType="Long">
+        select bl.id, bl.light_brand,bl.light_type from sys_info_basic_light as ibl
+        left join sys_basic_light as bl on ibl.basic_id = bl.id
+        left join sys_light_info as li on li.id = ibl.info_id
+        where li.id = #{id} and ibl.exist = 1 and bl.exist = 1 and li.exist = 1
     </select>
 
     <!-- 通过路灯信息id获得所有安装路灯 -->
@@ -47,16 +54,19 @@
         select distinct i.id, i.code, i.`status`,i.auto_report,
         i.pole_id, i.box_id, i.alarm_id,
         i.street_id,i.user_id,i.group_id, i.light_info,
-        i.latitude,i.longitude, i.strategy_id
+        i.latitude,i.longitude, i.strategy_id,
+        ls.type, lg.group_name, us.nickname, us.username, r.region_name
         from sys_light_info as i
         left join sys_light_strategy as ls on i.strategy_id = ls.id
+        left join sys_light_group as lg on lg.id = i.group_id
         left join sys_user as us on us.id = i.user_id
         left join sys_region as r on r.common_region_id = i.street_id
         left join sys_region as sr on r.up_region_id = sr.common_region_id
-        where 1 = 1 and i.exist = 1
+        where 1 = 1 and i.exist = 1 and r.exist = 1 and sr.exist = 1 and
+        us.exist = 1 and lg.exist = 1 and ls.exist = 1
         <if test="infoId != null">and i.id = #{infoId}</if>
         <if test="areaId != null">and r.up_region_id = #{areaId}</if>
-        <if test="areaName != null">and sr.region_name like CONCAT(#{areaName}, '%')</if>
+        <if test="areaName != null">and sr.region_name like CONCAT(#{areaName}, '%') </if>
         <if test="cityId != null">and r.common_region_id like CONCAT(#{cityId}, '%') and r.region_desc = '街道'</if>
         <if test="streetId != null">and i.street_id = #{streetId}</if>
         <if test="streetName != null">and r.region_name like CONCAT(#{streetName}, '%')</if>
